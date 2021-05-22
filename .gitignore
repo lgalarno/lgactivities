@@ -111,5 +111,4 @@ venv.bak/
 /static_dev/
 /media/
 
-/manage.py
 /lgactivities/settings/local.py
