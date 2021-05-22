@@ -1,4 +1,3 @@
-/lgactivities/local/local.py
 db.sqlite3
 *.pyc
 staticfiles
@@ -113,3 +112,4 @@ venv.bak/
 /media/
 
 /manage.py
+/lgactivities/settings/local.py
