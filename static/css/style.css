@@ -1,0 +1,130 @@
+.success {
+  color: green;
+}
+.error {
+  color: red;
+}
+footer {
+  background-color: #efefef;
+  color: black;
+}
+
+table.dataTable thead .sorting_asc {
+  background: url("https://cdn.datatables.net/1.10.24/images/sort_asc.png") no-repeat center left;
+}
+table.dataTable thead .sorting_desc {
+  background: url("https://cdn.datatables.net/1.10.24/images/sort_desc.png") no-repeat center left;
+}
+table.dataTable thead .sorting {
+  background: url("https://cdn.datatables.net/1.10.24/images/sort_both.png") no-repeat center left;
+}
+
+.leaflet-container {  /* all maps */
+  height: 400px;
+}
+
+.calendar {
+  width: 100%;
+  margin: auto;
+  font-size: 12px;
+  color: #ff8033;
+
+}
+
+.calendar tr, .calendar td {
+  border: 1px solid black;
+}
+
+.calendar th {
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  background: #ccffff;
+}
+
+.calendar td {
+  width: 180px;
+  height: 100px;
+  padding: 20px 0px 0px 5px;
+}
+
+.month {
+  font-size: 25px;
+}
+
+.date {
+  font-size: 16px;
+}
+
+.has_date {
+  background: #e6ffff;
+}
+
+.has_no_date {
+  background: #f2f2f2;
+}
+
+.calendar ul {
+  height: 100%;
+  padding: 0px 5px 0px 0px;
+  list-style: none;
+}
+
+.calendar li::before {
+  content: "|"; /* Insert content that looks like bullets */
+  padding-right: 8px;
+  font-weight: bold;
+  /*font-size: large;*/
+}
+
+.calendar .Run {
+  color: green;
+}
+.calendar .Ride {
+  color: red;
+}
+
+a {
+  color: #17a2b8;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+.btn {
+  outline: none;
+  color: black;
+  background-color: transparent;
+  box-shadow: 0 0 0 0;
+}
+
+.clearfix {
+  margin: 15px;
+}
+
+.strava_link {
+  color: #FC4C02;
+  font-size: 0.5em;
+}
+
+table.dataTable .current_effort {
+  background: #ccffff;
+
+}
+/*.form {*/
+/*  margin: auto;*/
+/*}*/
+
+/*.form input, .form select, .form textarea {*/
+/*  border-radius: 5px;*/
+/*  border: 1px solid #17a2b8;*/
+/*  outline: none;*/
+/*  background: none;*/
+/*  padding: 5px;*/
+/*  width: 100%;*/
+/*}*/

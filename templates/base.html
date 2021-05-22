@@ -1,0 +1,23 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+{% include 'header.html' %}
+
+<body>
+<main role="main" class="container-fluid">
+{% include 'navbar.html' %}
+    <br>
+{% include 'messages_display.html' %}
+    {% block content %}
+
+    {% endblock content %}
+
+{% include 'footer.html' %}
+
+{% block js %}
+{% endblock js %}
+
+</main> <!-- /container -->
+</body>
+</html>

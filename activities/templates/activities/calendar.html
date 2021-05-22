@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}calendar{% endblock %}
+{% block content %}
+    <div class="row justify-content-md-center">
+        <div class="col-10 ">
+            <a class="btn btn-info" href="{% url 'getactivities:getactivities' %}"> + Get activities </a>
+            <a class="btn btn-info right mr-2" href="{% url 'activities:calendar' %}?{{ cal.next_month }} "> Next Month > </a>
+            <a class="btn btn-info right mr-2" href="{% url 'activities:calendar' %}?{{ cal.next_year }} "> >> </a>
+            <h3 class="right mr-2"> {{ cal.year }} </h3>
+            <a class="btn btn-info right mr-2" href="{% url 'activities:calendar' %}?{{ cal.prev_year }}"> << </a>
+            <a class="btn btn-info right mr-2" href="{% url 'activities:calendar' %}?{{ cal.prev_month }}"> < Previous Month </a>
+
+            {{ calendar }}
+            <small>&copy; Sajib Hossain (calendar)</small>
+        </div>
+    </div>
+{% endblock content %}

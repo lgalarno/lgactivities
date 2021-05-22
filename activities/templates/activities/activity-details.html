@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load leaflet_tags %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+        <div class="row">
+            <div class="col col-md-4">
+                <h2>{{ activity.name }} <span><a href="{{ activity.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
+                <small>{{ activity.start_date_local }}</small>
+                <input type="hidden" id="leafletCenter" value="{{ center }}">
+                <input type="hidden" id="leafletCoord" value="{{ coord }}">
+                {% leaflet_map "activity" callback="leaflet_map_init" %}
+            </div>
+            <div class="col col-md-8">
+            <div class="table-responsive">
+                    <h3>Segment efforts</h3>
+                    {% if segments_efforts %}
+                        <div class="table-responsive">
+                        <table class="table" >
+                            <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Time</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for effort in segments_efforts %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url "activities:segment_details" activity_id=activity.id effort_id=effort.id %}" >{{ effort.segment.name }}</a>
+                                    </td>
+                                    <td>{{ effort.get_time }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </div>
+                    {% endif %}
+            </div>
+            </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/activities.js' %}"></script>
+{% endblock js %}
