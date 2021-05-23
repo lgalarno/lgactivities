@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from dotenv import load_dotenv
 from pathlib import Path
 import os
-import sys
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -182,10 +182,6 @@ LOGIN_URL = '/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-LEAFLET_CONFIG = {
-    'TILES': [('Streets', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {'attribution': '<a href="http://www.openstreetmap.org/about/" target="_blank" title="OpenStreetMap">© OpenStreetMap</a>'})]
-}
 
 STRAVA_API = 'lgactivities'
 
