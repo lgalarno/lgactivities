@@ -13,7 +13,7 @@ STRAVA_API = settings.STRAVA_API
 
 def requestcode(request):
     a = get_object_or_404(StravaApp, name=STRAVA_API)
-    auth_url = f"{settings.STRAVA_URLS['oauth']}authorize?client_id={a.client_id}&response_type=code&redirect_uri=http://localhost:8000/connection/exchange_token&approval_prompt=force&scope=read,activity:read_all"
+    auth_url = f"{settings.STRAVA_URLS['oauth']}authorize?client_id={a.client_id}&response_type=code&redirect_uri=http://{a.callback_domain}/connection/exchange_token&approval_prompt=force&scope=read,activity:read_all"
     return redirect(auth_url)
     # return HttpResponse('Hello')
 
