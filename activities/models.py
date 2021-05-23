@@ -8,7 +8,7 @@ import datetime
 
 
 class Activity(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=127)
     start_lat = models.FloatField(blank=True, null=True)
@@ -45,7 +45,7 @@ class Activity(models.Model):
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
 
 class Segment(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     staring = models.BooleanField(default=False, blank=True)
     start_lat = models.FloatField(blank=True, null=True)
@@ -97,7 +97,7 @@ class Map(models.Model):
 
 
 class SegmentEffort(models.Model):
-    id = models.IntegerField(primary_key=True)
+    id = models.BigIntegerField(primary_key=True)
     activity = models.ForeignKey(to=Activity,
                                  on_delete=models.CASCADE)
     elapsed_time = models.IntegerField(blank=True, null=True)
