@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'crispy_forms',
-    'leaflet',
     'rest_framework',
     # custom app
     'activities',
