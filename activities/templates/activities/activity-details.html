@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load leaflet_tags %}
 {% load static %}
 {% block title %}{{ title }}{% endblock %}
 
@@ -10,7 +9,7 @@
                 <small>{{ activity.start_date_local }}</small>
                 <input type="hidden" id="leafletCenter" value="{{ center }}">
                 <input type="hidden" id="leafletCoord" value="{{ coord }}">
-                {% leaflet_map "activity" callback="leaflet_map_init" %}
+                 <div id="mapid"></div>
             </div>
             <div class="col col-md-8">
             <div class="table-responsive">

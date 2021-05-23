@@ -207,7 +207,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
-
+# TODO remove if no django leaflet
 if os.name == 'nt':
     import platform
     OSGEO4W = r"C:\OSGeo4W"

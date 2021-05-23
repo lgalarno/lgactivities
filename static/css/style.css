@@ -19,7 +19,7 @@ table.dataTable thead .sorting {
   background: url("https://cdn.datatables.net/1.10.24/images/sort_both.png") no-repeat center left;
 }
 
-.leaflet-container {  /* all maps */
+#mapid {  /* all maps */
   height: 400px;
 }
 

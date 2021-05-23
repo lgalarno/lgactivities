@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load leaflet_tags %}
 {% load static %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
@@ -18,7 +17,7 @@
             <small>{{ activity.start_date_local }}</small>
             <input type="hidden" id="leafletCenter" value="{{ center }}">
             <input type="hidden" id="leafletCoord" value="{{ coord }}">
-            {% leaflet_map "segment" callback="leaflet_map_init" %}
+            <div id="mapid"></div>
         </div>
         <div class="col col-md-8">
             <h3>This effort: {{ this_effort.get_time }}</h3>
