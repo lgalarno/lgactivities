@@ -20,7 +20,16 @@
             <div id="mapid"></div>
         </div>
         <div class="col col-md-8">
-            <h3>This effort: {{ this_effort.get_time }}</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>This effort: {{ this_effort.get_time }}</th>
+                            <th>KOM: {{ this_effort.segment.kom }}</th>
+                            <th>QOM: {{ this_effort.segment.qom }}</th>
+                            <th>updated: {{ this_effort.segment.updated }}</th>
+                        </tr>
+                    </thead>
+                </table>
             <h3>All efforts</h3>
             {% if efforts %}
                 <div class="table-responsive">

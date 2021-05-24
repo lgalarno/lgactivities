@@ -30,6 +30,7 @@ class CalendarView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
+        print(d)
         cal = Calendar(d.year, d.month)
         html_cal = cal.formatmonth(withyear=True)
         context['calendar'] = mark_safe(html_cal)
@@ -65,30 +66,34 @@ def segment_details(request, activity_id, effort_id):
     activity = get_object_or_404(Activity, pk=activity_id)
     this_effort = get_object_or_404(SegmentEffort, pk=effort_id)
     segment = get_object_or_404(Segment, pk=this_effort.segment_id)
-    if not segment.has_map:
-        e, access_token = check_token()
-        if e is True:
-            header = {'Authorization': f'Bearer {access_token}'}
-            param = {
-            }
-            url = f"{settings.STRAVA_URLS['athlete']}segments/{segment.id}"
-            segment_detail = requests.get(url, headers=header, params=param, verify=False).json()
-            # print(segment_detail)
-            if 'errors' in segment_detail:
-                e = formaterror(segment_detail['errors'])
-                messages.warning(request, f'An error occurred while getting the segment: {e}')
-                return HttpResponseRedirect('/')
-            else:
+
+    # if not segment.has_map:
+    e, access_token = check_token()
+    if e is True:
+        header = {'Authorization': f'Bearer {access_token}'}
+        param = {
+        }
+        url = f"{settings.STRAVA_URLS['athlete']}segments/{segment.id}"
+        segment_detail = requests.get(url, headers=header, params=param, verify=False).json()
+        if 'errors' in segment_detail:
+            e = formaterror(segment_detail['errors'])
+            messages.warning(request, f'An error occurred while getting the segment: {e}')
+            return HttpResponseRedirect('/')
+        else:
+            if not segment.has_map:
                 m = Map(
                     segment=segment,
                     polyline=segment_detail['map']['polyline'],
                 )
                 m.save()
-
                 segment.start_lat = segment_detail['start_latlng'][0]
                 segment.start_lng = segment_detail['start_latlng'][1]
                 segment.save()
-
+        if not segment.updated:
+            segment.kom = segment_detail['xoms']['kom']
+            segment.qom = segment_detail['xoms']['qom']
+            segment.updated = segment_detail['updated_at']
+            segment.save()
     segment_map = polyline.decode(segment.map.polyline)
     efforts = segment.get_all_efforts()
     if segment.start_lat and segment.start_lng:

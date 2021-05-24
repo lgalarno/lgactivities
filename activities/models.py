@@ -50,6 +50,9 @@ class Segment(models.Model):
     staring = models.BooleanField(default=False, blank=True)
     start_lat = models.FloatField(blank=True, null=True)
     start_lng = models.FloatField(blank=True, null=True)
+    updated = models.DateTimeField(blank=True, null=True)
+    kom = models.CharField(max_length=20, blank=True, null=True)
+    qom = models.CharField(max_length=20, blank=True, null=True)
 
     def __str__(self):
         return self.name
@@ -80,9 +83,11 @@ class Segment(models.Model):
 class Map(models.Model):
     activity = models.OneToOneField(to=Activity,
                                     on_delete=models.CASCADE,
+                                    blank=True,
                                     null=True)
     segment = models.OneToOneField(to=Segment,
                                    on_delete=models.CASCADE,
+                                   blank=True,
                                    null=True)
     polyline = models.TextField(blank=True, null=True)
 
@@ -93,7 +98,6 @@ class Map(models.Model):
             return f'Activity: {self.activity.name}'
         elif self.segment:
             return f'Segment: {self.segment.name}'
-
 
 
 class SegmentEffort(models.Model):
