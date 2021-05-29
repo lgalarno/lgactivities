@@ -41,6 +41,11 @@ class Activity(models.Model):
     def get_strava_url(self):
         return f'https://www.strava.com/activities/{self.id}'
 
+    @property
+    def get_mapdata_api_url(self):
+        return reverse('activities:activities-api:SegmentMapAPI', kwargs={'model_type': 'activity',
+                                                                          "model_id": self.id})
+
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
 
@@ -69,7 +74,16 @@ class Segment(models.Model):
 
     @property
     def get_staring_api_url(self):
-        return reverse('activities:SegmentStaringAPIToggle', kwargs={"segment_id": self.id})
+        return reverse('activities:activities-api:SegmentStaringAPIToggle', kwargs={"segment_id": self.id})
+
+    @property
+    def get_mapdata_api_url(self):
+        return reverse('activities:activities-api:SegmentMapAPI', kwargs={'model_type': 'segment',
+                                                                          "model_id": self.id})
+
+    @property
+    def get_plotdata_api_url(self):
+        return reverse('activities:activities-api:SegmentDataAPI', kwargs={"segment_id": self.id})
 
     @property
     def has_map(self):

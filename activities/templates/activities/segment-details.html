@@ -15,9 +15,9 @@
             </h2>
             <h3> ({{ activity.name }}) <span><a href="{{ this_effort.get_strava_url }}"  class="strava_link" target="_blank"> View on Strava</a></span></h3>
             <small>{{ activity.start_date_local }}</small>
-            <input type="hidden" id="leafletCenter" value="{{ center }}">
-            <input type="hidden" id="leafletCoord" value="{{ coord }}">
-            <div id="mapid"></div>
+{#            <input type="hidden" id="leafletCenter" value="{{ center }}">#}
+{#            <input type="hidden" id="leafletCoord" value="{{ coord }}">#}
+            <div id="mapid" endpoint="{{ segment.get_mapdata_api_url }}"></div>
         </div>
         <div class="col col-md-8">
                 <table class="table">
@@ -55,7 +55,16 @@
             {% endif %}
         </div>
     </div>
+    <div class="row">
 
+        <div class="col col">
+            <br>
+            <hr>
+            <h3>Recent efforts</h3>
+            <div id="recent_efforts_chart" style="height:300px;"></div>
+            <hr>
+        </div>
+    </div>
 {% endblock %}
 
 {% block js %}

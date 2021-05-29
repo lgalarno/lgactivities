@@ -9,7 +9,7 @@
                 <small>{{ activity.start_date_local }}</small>
                 <input type="hidden" id="leafletCenter" value="{{ center }}">
                 <input type="hidden" id="leafletCoord" value="{{ coord }}">
-                 <div id="mapid"></div>
+                 <div id="mapid" endpoint="{{ activity.get_mapdata_api_url }}">></div>
             </div>
             <div class="col col-md-8">
             <div class="table-responsive">

@@ -125,7 +125,6 @@ def lastactivities(request):
             context = activity
     else:
         messages.warning(request, 'An error occurred while refreshing the code: ' + e)
-    print(context)
     return render(request, 'getactivities/last.html', context)
 
-
+# TODO stared segments

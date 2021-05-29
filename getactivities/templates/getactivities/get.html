@@ -10,14 +10,14 @@
         <div class="form-group row">
             <label class="col-sm-1 col-form-label" for="start">Start Date</label>
             <div class="col-sm-2">
-                <input name="start_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_from }}" />
+                <input name="start_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_from }}" min="{{ date_from }}" />
                 <small class="form-text text-muted">The start date for the query.</small>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-1 col-form-label" for="start">End Date</label>
             <div class="col-sm-2">
-                <input name="end_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_to }}" />
+                <input name="end_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_to }}" min="{{ date_from }}" />
                 <small class="form-text text-muted">The end date for the query.</small>
             </div>
         </div>

@@ -12,7 +12,45 @@ $(document).ready(
     }
     );
 
+
+// plotly
+// Plot recent efforts
+// recent_efforts = document.getElementById('recent_efforts_chart');
+// Plotly.newPlot( recent_efforts, [{
+// x: [1, 2, 3, 4, 5],
+// y: [1, 2, 4, 8, 16] }], {
+// margin: { t: 0 } } );
+
+
 // leaflet_map_init
+let endpoint = document.getElementById("mapid").getAttribute('endpoint');
+var coord = [];
+var center = [];
+ $.ajax({
+    url: endpoint,
+    method: "GET",
+    //data: {},
+    success: function (data){
+        coord = data.coord;
+        center = data.center;
+        leafletmap()
+    }, error: function (error){
+        console.log("error")
+        console.log(error)
+    }
+})
+
+function leafletmap(){
+     var map = L.map('mapid').setView(JSON.parse(center), 15);
+     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+     let polyline = new L.Polyline([
+        JSON.parse(coord)
+        ]).addTo(map);
+    }
+
+/*
 let center = document.getElementById("leafletCenter").value;
 let coord = document.getElementById("leafletCoord").value;
 var map = L.map('mapid').setView(JSON.parse(center), 15);
@@ -22,6 +60,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let polyline = new L.Polyline([
     JSON.parse(coord)
     ]).addTo(map);
+*/
 
 
 function updateTitle(btn, verb){
