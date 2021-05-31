@@ -5,7 +5,7 @@ from .models import Activity, Map, Segment, SegmentEffort
 
 class SegmentAdmin(admin.ModelAdmin):
     search_fields = ['name', 'id']
-    list_display = ['name', 'has_map']
+    list_display = ['name', 'updated']
 
     class Meta:
         model = Segment

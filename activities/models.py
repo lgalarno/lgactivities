@@ -29,10 +29,6 @@ class Activity(models.Model):
         return self.segmenteffort_set.all()
 
     @property
-    def get_center(self):
-        return [self.start_lat, self.start_lng]
-
-    @property
     def get_html_url(self):
         url = reverse('activities:activity-details', args=(self.id,))
         return f'<a href="{url}"> {self.name} </a>'
@@ -40,11 +36,6 @@ class Activity(models.Model):
     @property
     def get_strava_url(self):
         return f'https://www.strava.com/activities/{self.id}'
-
-    @property
-    def get_mapdata_api_url(self):
-        return reverse('activities:activities-api:SegmentMapAPI', kwargs={'model_type': 'activity',
-                                                                          "model_id": self.id})
 
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
@@ -62,6 +53,15 @@ class Segment(models.Model):
     def __str__(self):
         return self.name
 
+    def update_from_strava(self, segment_detail):
+        self.start_lat = segment_detail['start_latlng'][0]
+        self.start_lng = segment_detail['start_latlng'][1]
+        self.kom = segment_detail['xoms']['kom']
+        self.qom = segment_detail['xoms']['qom']
+        self.updated = segment_detail['updated_at']
+        self.save()
+        return self
+
     def get_absolute_url(self):
         return reverse('activities:segment_details', args=(self.id,))
 
@@ -69,29 +69,12 @@ class Segment(models.Model):
         return self.segmenteffort_set.all()
 
     @property
-    def get_center(self):
-        return [self.start_lat, self.start_lng]
-
-    @property
     def get_staring_api_url(self):
         return reverse('activities:activities-api:SegmentStaringAPIToggle', kwargs={"segment_id": self.id})
 
     @property
-    def get_mapdata_api_url(self):
-        return reverse('activities:activities-api:SegmentMapAPI', kwargs={'model_type': 'segment',
-                                                                          "model_id": self.id})
-
-    @property
     def get_plotdata_api_url(self):
         return reverse('activities:activities-api:SegmentDataAPI', kwargs={"segment_id": self.id})
-
-    @property
-    def has_map(self):
-        try:
-            self.map
-            return True
-        except:
-            return False
 
 
 class Map(models.Model):
@@ -105,7 +88,9 @@ class Map(models.Model):
                                    null=True)
     polyline = models.TextField(blank=True, null=True)
 
-    # segment_efforts
+    @property
+    def get_mapdata_api_url(self):
+        return reverse('activities:activities-api:GetMapDataAPI', kwargs={"model_id": self.id})
 
     def __str__(self):
         if self.activity:
@@ -128,6 +113,9 @@ class SegmentEffort(models.Model):
                                 null=True,
                                 blank=True,
                                 on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ['start_date_local']
 
     def __str__(self):
         return f"{self.activity.name}: {self.segment.name}"

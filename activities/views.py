@@ -47,7 +47,6 @@ def segment_details(request, activity_id, effort_id):
     this_effort = get_object_or_404(SegmentEffort, pk=effort_id)
     segment = get_object_or_404(Segment, pk=this_effort.segment_id)
 
-    # if not segment.has_map:
     e, access_token = check_token()
     if e is True:
         header = {'Authorization': f'Bearer {access_token}'}
@@ -60,20 +59,14 @@ def segment_details(request, activity_id, effort_id):
             messages.warning(request, f'An error occurred while getting the segment: {e}')
             return HttpResponseRedirect('/')
         else:
-            if not segment.has_map:
-                m = Map(
-                    segment=segment,
-                    polyline=segment_detail['map']['polyline'],
-                )
-                m.save()
-                segment.start_lat = segment_detail['start_latlng'][0]
-                segment.start_lng = segment_detail['start_latlng'][1]
-                segment.save()
-        if not segment.updated:
-            segment.kom = segment_detail['xoms']['kom']
-            segment.qom = segment_detail['xoms']['qom']
-            segment.updated = segment_detail['updated_at']
-            segment.save()
+            if not segment.updated:
+                m, created = Map.objects.get_or_create(
+                                      segment=segment)
+                if created:
+                    m.polyline = segment_detail['map']['polyline']
+                    m.save()
+                segment = segment.update_from_strava(segment_detail=segment_detail)
+
     efforts = segment.get_all_efforts()
     context = {
         'activity': activity,

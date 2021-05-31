@@ -7,9 +7,7 @@
             <div class="col col-md-4">
                 <h2>{{ activity.name }} <span><a href="{{ activity.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
                 <small>{{ activity.start_date_local }}</small>
-                <input type="hidden" id="leafletCenter" value="{{ center }}">
-                <input type="hidden" id="leafletCoord" value="{{ coord }}">
-                 <div id="mapid" endpoint="{{ activity.get_mapdata_api_url }}">></div>
+                 <div id="mapid" endpoint="{{ activity.map.get_mapdata_api_url }}">></div>
             </div>
             <div class="col col-md-8">
             <div class="table-responsive">
