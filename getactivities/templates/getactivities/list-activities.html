@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    {%  for a in activity_list %}
+        <a href="{% url 'activities:activity-details' activity_id=a.id %}">{{ a.name }} <small>{{ a.get_date }}</small> {{ a.type }}</a>
+        <br>
+    {% endfor %}
+{% endblock content %}

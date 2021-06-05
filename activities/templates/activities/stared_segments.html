@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+    {% comment %}            <div class="col col-md-4">
+    aaa
+        </div>{% endcomment %}
+        <div class="col col-md-12">
+            <h3>Segments</h3>
+            {% if segment_list %}
+                <div class="table-responsive">
+                    <table class="table" >
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Number of efforts</th>
+                            <th scope="col">Best time</th>
+                            <th scope="col">Last effort</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for segment in segment_list %}
+                            <tr>
+                                <td>
+                                    <a href="{% url "activities:segment_details" activity_id=segment.get_best_effort.activity_id effort_id=segment.get_best_effort.pk %}">{{ segment.name }}</a>
+                                </td>
+                                <td>{{ segment.get_number_efforts }}</td>
+                                <td>
+                                    <a href="{% url 'activities:activity-details' segment.get_best_effort.activity_id %}" >
+                                    {{ segment.get_best_effort.get_time }} <small> {{ segment.get_best_effort.get_date }} - {{ segment.get_best_effort.activity.name }}</small>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'activities:activity-details' segment.get_last_effort.activity_id %}" >
+                                    {{ segment.get_last_effort.activity.name }} <small> {{ segment.get_last_effort.get_date }}</small>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

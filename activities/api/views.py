@@ -33,7 +33,7 @@ class SegmentStaringAPIToggle(APIView):
         }
         return Response(data)
 
-# TODO Plot RecentEffortsData
+
 class RecentEffortsDataAPI(APIView):
     """
     * Requires authentication.

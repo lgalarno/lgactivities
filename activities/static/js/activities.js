@@ -1,3 +1,6 @@
+/////////////////////////////////////////////////////////////
+// DataTable
+/////////////////////////////////////////////////////////////
 $(document).ready(
     function () {
         $('#efforts_table').DataTable({
@@ -12,9 +15,12 @@ $(document).ready(
     }
     );
 
-
+/////////////////////////////////////////////////////////////
 // plotly
 // Plot recent efforts
+// used in segment details
+// Get data from api
+/////////////////////////////////////////////////////////////
 let segment_data_endpoint = document.getElementById("recent_efforts_chart");
 if (segment_data_endpoint != null) {
     segment_data_url = segment_data_endpoint.getAttribute('endpoint');
@@ -60,8 +66,6 @@ function plot_plotly() {
         }
         };
     var data = [trace0, trace1];
-
-    console.log(data)
     var layout = {
         yaxis: {
             tickformat: '%H:%M:%S',
@@ -83,10 +87,14 @@ function plot_plotly() {
            ],
         showlegend: false
     };
-    Plotly.newPlot( 'recent_efforts_chart', data, layout);
+    Plotly.newPlot( 'recent_efforts_chart', data, layout, {responsive: true});
 }
 
+/////////////////////////////////////////////////////////////
 // leaflet_map_init
+// used in activity and segment details
+// Get data from api
+/////////////////////////////////////////////////////////////
 let mapid_endpoint = document.getElementById("mapid");
 if (mapid_endpoint != null) {
     mapid_url = mapid_endpoint.getAttribute('endpoint');
@@ -107,7 +115,6 @@ if (mapid_endpoint != null) {
     })
 }
 
-
 function leafletmap(){
      var map = L.map('mapid'); // .setView(JSON.parse(center), 15);
      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -119,7 +126,11 @@ function leafletmap(){
      map.fitBounds(JSON.parse(coord));
     }
 
-
+/////////////////////////////////////////////////////////////
+// Segment staring
+// used in segment details
+// using api
+/////////////////////////////////////////////////////////////
 function updateTitle(btn, verb){
      btn.attr("title", verb)
     }
@@ -149,5 +160,4 @@ $(".btn-staring").click(function (e){
             }
         })
     }
-
 })

@@ -1,9 +1,9 @@
 from django.conf import settings
 from django.contrib import messages
 from django.http import Http404
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+from django.shortcuts import render, redirect
+from django.views.generic import ListView
 
-import time
 import requests
 from datetime import datetime
 
@@ -99,14 +99,21 @@ def getactivities(request):
             'date_from': date_from,
             'date_to': date_from
         }
-    return render(request, 'getactivities/get.html', context)
+    context['title'] = 'get-activity'
+    return render(request, 'getactivities/get-getactivities.html', context)
 
 
-def listactivities(request):
-    context = {}
-    return render(request, 'getactivities/list.html', context)
+class ListactivitiesView(ListView):
+    model = Activity
+    template_name = 'getactivities/list-activities.html'
 
-def lastactivities(request):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['title'] = 'list-activities'
+        return context
+
+
+def lastactivity(request):
     context = {}
     e, access_token = check_token()
     if e is True:
@@ -125,4 +132,6 @@ def lastactivities(request):
             context = activity
     else:
         messages.warning(request, 'An error occurred while refreshing the code: ' + e)
-    return render(request, 'getactivities/last.html', context)
+
+    context['title'] = 'last-activity'
+    return render(request, 'getactivities/last-activities.html', context)

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}getactivities{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block content %}
     <form action="{% url 'getactivities:getactivities' %}" method="POST" id="form" onsubmit="return waiting_js(this);" >

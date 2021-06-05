@@ -1,15 +1,14 @@
 from django.conf import settings
 from django.contrib import messages
+from django.views.generic import ListView
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.utils.safestring import mark_safe
-from django.views.generic import ListView
 
 import requests
 
 from connections.utils import check_token, formaterror
 from .models import Activity, Segment, SegmentEffort, Map
 from .utils import Calendar, get_date
-
 
 # Create your views here.
 
@@ -25,9 +24,10 @@ class CalendarView(ListView):
         context = super().get_context_data(**kwargs)
         d = get_date(self.request.GET.get('month', None))
         cal = Calendar(d.year, d.month)
-        html_cal = cal.formatmonth(withyear=True)
+        html_cal = cal.formatmonth(withyear=False)
         context['calendar'] = mark_safe(html_cal)
         context['cal'] = cal
+        context['title'] = 'calendar'
         return context
 
 
@@ -73,6 +73,19 @@ def segment_details(request, activity_id, effort_id):
         'this_effort': this_effort,
         'segment': segment,
         'efforts': efforts,
-        'title': 'Efforts'
+        'title': 'segment details'
     }
     return render(request, 'activities/segment-details.html', context)
+
+
+class StaredSegmentsListView(ListView):
+    model = Segment
+    template_name = "activities/stared_segments.html"
+
+    def get_queryset(self):
+        return Segment.objects.filter(staring=True)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['title'] = 'stared segments'
+        return context

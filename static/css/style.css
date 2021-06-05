@@ -84,8 +84,26 @@ table.dataTable thead .sorting {
   color: red;
 }
 
-a {
+.calendar a {
   color: #17a2b8;
+}
+.calendar a:hover {
+  color: #0b505b;
+}
+
+.links-arrows a {
+  color: #4d4d4d;
+}
+.links-arrows a:hover {
+  color: #000000;
+  text-decoration: none;
+}
+
+a {
+  color: #4d4d4d;
+}
+a:hover {
+  color: #000000;
 }
 
 .btn {

@@ -28,6 +28,9 @@ class Activity(models.Model):
     def get_all_segments(self):
         return self.segmenteffort_set.all()
 
+    def get_date(self, *args, **kwargs):
+        return self.start_date_local.strftime("%m/%d/%Y")
+
     @property
     def get_html_url(self):
         url = reverse('activities:activity-details', args=(self.id,))
@@ -67,6 +70,21 @@ class Segment(models.Model):
 
     def get_all_efforts(self):
         return self.segmenteffort_set.all()
+
+    def get_all_times(self):
+        return [e.get_time() for e in self.get_all_efforts()]
+        # all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
+
+    def get_best_effort(self):
+        return self.segmenteffort_set.all().order_by('elapsed_time').first()
+
+    @property
+    def get_number_efforts(self):
+        return self.segmenteffort_set.all().count()
+
+    @property
+    def get_last_effort(self):
+        return self.segmenteffort_set.all().order_by('-start_date_local').first()
 
     @property
     def get_staring_api_url(self):
@@ -122,6 +140,9 @@ class SegmentEffort(models.Model):
 
     def get_time(self, *args, **kwargs):
         return str(datetime.timedelta(seconds=self.elapsed_time))
+
+    def get_date(self, *args, **kwargs):
+        return self.start_date_local.strftime("%m/%d/%Y")
 
     def save(self, *args, **kwargs):
         s = Segment.objects.get(id=self.segment.id)
