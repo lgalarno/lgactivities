@@ -6,7 +6,7 @@ import datetime
 
 # Create your models here.
 
-
+#TODO allow emoji in title and name. DB utf8mb4_unicode_ci
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)

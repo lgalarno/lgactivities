@@ -88,6 +88,9 @@ DATABASES = {
         'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'NAME': os.getenv('DATABASE_NAME'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'use_unicode': True, },
     },
 }
 

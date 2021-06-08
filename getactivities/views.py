@@ -67,7 +67,7 @@ def getactivities(request):
                                 for se in segment_efforts:
                                     segment, created = Segment.objects.get_or_create(
                                         id=se['segment']['id'],
-                                        name=se['segment']['name']
+                                        name=se['segment']['name']  # TODO possible bug
                                     )
                                     obj = SegmentEffort(
                                         id=se['id'],

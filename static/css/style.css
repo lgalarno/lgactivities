@@ -23,6 +23,7 @@ table.dataTable thead .sorting {
   height: 400px;
 }
 
+
 .calendar {
   width: 100%;
   margin: auto;
@@ -39,7 +40,8 @@ table.dataTable thead .sorting {
   padding: 10px;
   text-align: center;
   font-size: 16px;
-  background: #ccffff;
+  /*background: #ccffff;*/
+  background: white;
 }
 
 .calendar td {
@@ -49,19 +51,24 @@ table.dataTable thead .sorting {
 }
 
 .month {
-  font-size: 25px;
+  font-size: 24px;
 }
-
+.year {
+  font-size: 25px;
+  color: black;
+}
 .date {
   font-size: 16px;
 }
 
 .has_date {
-  background: #e6ffff;
+  /*background: #e6ffff;*/
+  background: #f2f2f2;;
 }
 
 .has_no_date {
-  background: #f2f2f2;
+  /*background: #f2f2f2;*/
+  background: #d9d9d9;
 }
 
 .calendar ul {
@@ -90,14 +97,15 @@ table.dataTable thead .sorting {
 .calendar a:hover {
   color: #0b505b;
 }
-
-.links-arrows a {
+.calendar .links-arrow {
   color: #4d4d4d;
 }
-.links-arrows a:hover {
+
+.calendar .links-arrow:hover {
   color: #000000;
   text-decoration: none;
 }
+
 
 a {
   color: #4d4d4d;

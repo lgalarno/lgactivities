@@ -3,10 +3,10 @@
 {% block content %}
     <div class="row justify-content-md-center">
         <div class="col-sm-2">
-            <h4 class="links-arrows" >
-                <a  href="{% url 'activities:calendar' %}?{{ cal.prev_year }}"> << </a>
+            <h4 class="year calendar">
+                <a class="links-arrow" href="{% url 'activities:calendar' %}?{{ cal.prev_year }}"> << </a>
                 &nbsp&nbsp{{ cal.year }}&nbsp&nbsp
-                <a href="{% url 'activities:calendar' %}?{{ cal.next_year }} "> >> </a>
+                <a class="links-arrow" href="{% url 'activities:calendar' %}?{{ cal.next_year }} "> >> </a>
             </h4>
         </div>
 
