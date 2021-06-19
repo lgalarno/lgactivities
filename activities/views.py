@@ -48,7 +48,7 @@ def segment_details(request, activity_id, effort_id):
     segment = get_object_or_404(Segment, pk=this_effort.segment_id)
 
     e, access_token = check_token()
-    if e is True:
+    if not e:
         header = {'Authorization': f'Bearer {access_token}'}
         param = {
         }
