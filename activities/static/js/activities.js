@@ -23,7 +23,7 @@ $(document).ready(
 /////////////////////////////////////////////////////////////
 let segment_data_endpoint = document.getElementById("recent_efforts_chart");
 if (segment_data_endpoint != null) {
-    segment_data_url = segment_data_endpoint.getAttribute('endpoint');
+     segment_data_url = segment_data_endpoint.getAttribute('endpoint');
      $.ajax({
         url: segment_data_url,
         method: "GET",
@@ -34,21 +34,25 @@ if (segment_data_endpoint != null) {
             best_perf_time = data.best_perf_time;
             best_perf_date = data.best_perf_date;
             best_perf_index = data.best_perf_index;
+            point_url = data.activity_url;
+            activity_names = data.activity_names;
             // console.log(all_times);
             plot_plotly();
         }, error: function (error){
             console.log("error")
             console.log(error)
         }
-    })
-}
+    });
+};
+
 function plot_plotly() {
     var trace0 = {
         type: "scatter",
         mode: "markers",
         name: 'Effort',
         x: all_dates,
-        y: all_times.map(time => '2020-01-08 ' + time)
+        y: all_times.map(time => '2020-01-08 ' + time),
+        text: activity_names,
         };
     var trace1 = {
         type: 'scatter',
@@ -87,8 +91,21 @@ function plot_plotly() {
            ],
         showlegend: false
     };
-    Plotly.newPlot( 'recent_efforts_chart', data, layout, {responsive: true});
-}
+    Plotly.newPlot( segment_data_endpoint, data, layout, {responsive: true});
+    segment_data_endpoint.on('plotly_click', function(data){
+        console.log(data);
+        if (data.points.length > 0) {
+        let link = point_url[data.points[0].pointNumber];
+
+        // Note: window navigation here.
+        window.location = link;
+        }
+    });
+    // Plotly.newPlot( 'recent_efforts_chart', data, layout, {responsive: true});
+};
+
+
+
 
 /////////////////////////////////////////////////////////////
 // leaflet_map_init
@@ -107,7 +124,7 @@ if (mapid_endpoint != null) {
         success: function (data){
             coord = data.coord;
             // center = data.center;
-            leafletmap()
+            leafletmap(coord)
         }, error: function (error){
             console.log("error")
             console.log(error)
@@ -115,15 +132,40 @@ if (mapid_endpoint != null) {
     })
 }
 
-function leafletmap(){
-     var map = L.map('mapid'); // .setView(JSON.parse(center), 15);
-     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-     let polyline = new L.Polyline([
-        JSON.parse(coord)
-        ]).addTo(map);
-     map.fitBounds(JSON.parse(coord));
+function leafletmap(coord){
+    let coord_json = JSON.parse(coord);
+    var map = L.map('mapid'); // .setView(JSON.parse(center), 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+       }).addTo(map);
+    let polyline = new L.Polyline([
+       coord_json //JSON.parse(coord)
+       ]).addTo(map);
+    let beg = coord_json[0];
+    let end = coord_json[coord_json.length-1];
+    var greenIcon = L.icon({
+        iconUrl: "/static/images/marker-icon-green.png",
+        shadowUrl: '/static/images/marker-shadow.png',
+        iconSize: [15, 25],
+        iconAnchor: [12, 24],
+        popupAnchor: [1, -34],
+        shadowSize: [25, 25]
+        });
+    var redIcon = L.icon({
+        iconUrl: "/static/images/marker-icon-red.png",
+        shadowUrl: '/static/images/marker-shadow.png',
+        iconSize: [15, 25],
+        iconAnchor: [12, 24],
+        popupAnchor: [1, -34],
+        shadowSize: [25, 25]
+        });
+    //
+    //
+    L.marker(beg, {icon: greenIcon}).addTo(map);
+    L.marker(end, {icon: redIcon}).addTo(map);
+    map.fitBounds(JSON.parse(coord));
+
+
     }
 
 /////////////////////////////////////////////////////////////

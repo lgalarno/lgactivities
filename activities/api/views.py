@@ -47,13 +47,16 @@ class RecentEffortsDataAPI(APIView):
         all_times = [e.get_time() for e in all_efforts]
         all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
         best_perf_index = all_times.index(min(all_times))
-
+        activity_url = [e.activity.get_absolute_url() for e in all_efforts]
+        activity_names = [e.activity.name for e in all_efforts]
         data = {
             'all_dates': all_dates,
             'all_times': all_times,
             'best_perf_time': all_times[best_perf_index],
             'best_perf_date': all_dates[best_perf_index],
-            'best_perf_index': best_perf_index
+            'best_perf_index': best_perf_index,
+            'activity_url': activity_url,
+            'activity_names': activity_names,
         }
         return Response(data)
 
@@ -67,16 +70,6 @@ class GetMapDataAPI(APIView):
 
     def get(self, request, model_type=None, model_id=None, format=None):
         obj = get_object_or_404(Map, pk=model_id)
-        # if model_type == 'segment':
-        #     obj = get_object_or_404(Segment, pk=model_id)
-        # elif model_type == 'activity':
-        #     obj = get_object_or_404(Activity, pk=model_id)
-        # else:
-        #     raise Http404
-        # if obj.start_lat and obj.start_lng:
-        #     center = f'[{obj.start_lat}, {obj.start_lng}]'
-        # else:
-        # center = '[46.87591, -71.28951]'
         segment_map = polyline.decode(obj.polyline)
         data = {
             # 'center': center,
