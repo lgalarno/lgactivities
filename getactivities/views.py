@@ -65,7 +65,7 @@ def getactivities(request):
                                         elapsed_time=se.get('elapsed_time'),
                                         start_date=se.get('start_date'),
                                         start_date_local=se.get('start_date_local'),
-                                        distance=se('distance'),
+                                        distance=se.get('distance'),
                                         segment=segment,
                                     )
                                     obj.save()
