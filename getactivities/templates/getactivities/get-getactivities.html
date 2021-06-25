@@ -10,7 +10,6 @@
         <div class="form-group row">
             <label class="col-sm-1 col-form-label" for="start">Start Date</label>
             <div class="col-sm-2">
-{#                <input name="start_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_from }}" min="{{ date_from }}" />#}
                 <input name="start_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_from }}" />
                 <small class="form-text text-muted">The start date for the query.</small>
             </div>
@@ -18,31 +17,32 @@
         <div class="form-group row">
             <label class="col-sm-1 col-form-label" for="start">End Date</label>
             <div class="col-sm-2">
-{#                <input name="end_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_to }}" min="{{ date_from }}" />#}
                 <input name="end_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_to }}" />
                 <small class="form-text text-muted">The end date for the query.</small>
             </div>
         </div>
         <div>
-{#            <input type="submit" class="btn btn-primary"  id="btnDownload" name="btnDownload" value="Get activities" >#}
             <button class="btn btn-primary" type="submit" id="btnDownload" name="btnDownload"><i class="fa fa-spinner fa-spin" id="icnDownload" style="display: none"></i> Get activities</button>
             <div class="overlay"></div>
         </div>
     </form>
+
 {% endblock content %}
+
 {% block js %}
-<script type="text/javascript">
 
-  function waiting_js(form) // Submit button clicked
-  {
-{% comment %}      var btnDownload = document.getElementById('btnDownload');
-      console.log(btnDownload.value){% endcomment %}
-      var icnDownload = document.getElementById("icnDownload");
-      form.btnDownload.value = "Please wait...";
-      form.btnDownload.disabled = true;
-      icnDownload.style.display = "inline-block";
-      return true;
-  }
+    <script type="text/javascript">
 
-</script>
+      function waiting_js(form) // Submit button clicked
+      {
+    {% comment %}      var btnDownload = document.getElementById('btnDownload');
+          console.log(btnDownload.value){% endcomment %}
+          var icnDownload = document.getElementById("icnDownload");
+          form.btnDownload.value = "Please wait...";
+          form.btnDownload.disabled = true;
+          icnDownload.style.display = "inline-block";
+          return true;
+      }
+
+    </script>
 {% endblock js %}

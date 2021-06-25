@@ -3,17 +3,19 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-        <div class="row">
-            <div class="col col-md-4">
-                <h2>{{ activity.name }} <span><a href="{{ activity.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
-                <small>{{ activity.start_date_local }}</small>
-                 <div id="mapid" endpoint="{{ activity.map.get_mapdata_api_url }}">></div>
-            </div>
-            <div class="col col-md-8">
+    <div class="row">
+        <div class="col col-md-4">
+            <h2>{{ activity.name }} <span><a href="{{ activity.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
+            <small>{{ activity.start_date_local }}</small>
+            {% if not activity.map.polyline == '' %}
+                <div id="mapid" endpoint="{{ activity.map.get_mapdata_api_url }}">></div>
+            {% endif %}
+        </div>
+        <div class="col col-md-8">
             <div class="table-responsive">
-                    <h3>Segment efforts</h3>
-                    {% if segments_efforts %}
-                        <div class="table-responsive">
+                <h3>Segment efforts</h3>
+                {% if segments_efforts %}
+                    <div class="table-responsive">
                         <table class="table" >
                             <thead>
                             <tr>
@@ -32,10 +34,10 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        </div>
-                    {% endif %}
+                    </div>
+                {% endif %}
             </div>
-            </div>
+        </div>
     </div>
 {% endblock %}
 {% block js %}

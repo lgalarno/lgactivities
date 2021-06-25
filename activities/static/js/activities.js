@@ -43,7 +43,8 @@ if (segment_data_endpoint != null) {
             console.log(error)
         }
     });
-};
+}
+
 
 function plot_plotly() {
     var trace0 = {
@@ -93,7 +94,6 @@ function plot_plotly() {
     };
     Plotly.newPlot( segment_data_endpoint, data, layout, {responsive: true});
     segment_data_endpoint.on('plotly_click', function(data){
-        console.log(data);
         if (data.points.length > 0) {
         let link = point_url[data.points[0].pointNumber];
 
@@ -101,10 +101,7 @@ function plot_plotly() {
         window.location = link;
         }
     });
-    // Plotly.newPlot( 'recent_efforts_chart', data, layout, {responsive: true});
-};
-
-
+}
 
 
 /////////////////////////////////////////////////////////////

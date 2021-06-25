@@ -6,19 +6,20 @@
 </header>
 
 <body>
-<main role="main" class="container-fluid">
-{% include 'navbar.html' %}
-    <br>
-{% include 'messages_display.html' %}
-    {% block content %}
+    {% include 'navbar.html' %}
 
-    {% endblock content %}
+    <main role="main" class="container-fluid">
+        <br>
+        {% include 'messages_display.html' %}
+        {% block content %}
+        {% endblock content %}
 
-{% include 'footer.html' %}
+    </main> <!-- /container -->
 
-{% block js %}
-{% endblock js %}
+    {% include 'footer.html' %}
 
-</main> <!-- /container -->
+    {% block js %}
+    {% endblock js %}
+
 </body>
 </html>

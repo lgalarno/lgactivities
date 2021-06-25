@@ -30,18 +30,17 @@ def getactivities(request):
                 'before': int(datetime.strptime(end_date, '%Y-%m-%d').timestamp()),
             }
             url = f"{settings.STRAVA_URLS['athlete']}athlete/activities"
-            # activities = requests.get(url, headers=header, params=param, verify=False).json()
             e, activities = _requestStrava(url, headers, params, verify=False)
             if not e:
                 for activity in activities:
                     a, created = Activity.objects.get_or_create(
-                        id=activity['id'],
-                        name=activity['name'],
-                        type=activity['type'],
-                        start_lat=activity['start_latlng'][0],
-                        start_lng=activity['start_latlng'][1],
-                        start_date=activity['start_date'],
-                        start_date_local=activity['start_date_local'],
+                        id=activity.get('id'),
+                        name=activity.get('name'),
+                        type=activity.get('type'),
+                        # start_lat=activity['start_latlng'][0],
+                        # start_lng=activity['start_latlng'][1],
+                        start_date=activity.get('start_date'),
+                        start_date_local=activity.get('start_date_local'),
                     )
                     if created:
                         params = {}
@@ -61,12 +60,12 @@ def getactivities(request):
                                         name=se['segment']['name']
                                     )
                                     obj = SegmentEffort(
-                                        id=se['id'],
+                                        id=se.get('id'),
                                         activity=a,
-                                        elapsed_time=se['elapsed_time'],
-                                        start_date=se['start_date'],
-                                        start_date_local=se['start_date_local'],
-                                        distance=se['distance'],
+                                        elapsed_time=se.get('elapsed_time'),
+                                        start_date=se.get('start_date'),
+                                        start_date_local=se.get('start_date_local'),
+                                        distance=se('distance'),
                                         segment=segment,
                                     )
                                     obj.save()
