@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'getactivities:listactivities' %}">About</a>
+                <a class="nav-link" href="#">About</a>
             </li>
             {% if request.user.is_authenticated %}
                 <li class="nav-item">
@@ -22,11 +22,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'connections:requestcode' %}">Connect to Strava</a>
-{% comment %}                        <a class="dropdown-item" href="{% url 'activities:calendar' %}">Calendar</a>
-                        <a class="dropdown-item" href="{% url 'activities:stared-segments' %}">Stared Segments</a>{% endcomment %}
                         <a class="dropdown-item" href="{% url 'getactivities:lastactivity' %}">Last Activity</a>
                         <a class="dropdown-item" href="{% url 'getactivities:getactivities' %}">Get Activities</a>
-                        <a class="dropdown-item" href="{% url 'getactivities:listactivities' %}">List Activities</a>
                     </div>
                 </li>
             {% endif %}

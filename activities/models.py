@@ -6,7 +6,7 @@ import datetime
 
 # Create your models here.
 
-#TODO allow emoji in title and name. DB utf8mb4_unicode_ci
+#TODO users in Activity
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
@@ -42,7 +42,7 @@ class Activity(models.Model):
 
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
-
+#TODO if users in Activity, rewrite staring
 class Segment(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
