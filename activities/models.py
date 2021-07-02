@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.shortcuts import reverse
 
@@ -5,10 +6,12 @@ import datetime
 
 
 # Create your models here.
+User = settings.AUTH_USER_MODEL
 
-#TODO users in Activity
+
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=127)
     start_lat = models.FloatField(blank=True, null=True)
@@ -42,11 +45,10 @@ class Activity(models.Model):
 
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
-#TODO if users in Activity, rewrite staring
 class Segment(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
-    staring = models.BooleanField(default=False, blank=True)
+    # staring = models.BooleanField(default=False, blank=True)
     start_lat = models.FloatField(blank=True, null=True)
     start_lng = models.FloatField(blank=True, null=True)
     updated = models.DateTimeField(blank=True, null=True)
@@ -78,6 +80,15 @@ class Segment(models.Model):
     def get_best_effort(self):
         return self.segmenteffort_set.all().order_by('elapsed_time').first()
 
+    def get_stared(self, user):
+        return self.staredsegment_set.filter(user=user)
+
+    def is_stared(self, user):
+        if len(self.staredsegment_set.filter(user=user)) > 0:
+            return True
+        else:
+            return False
+
     @property
     def get_number_efforts(self):
         return self.segmenteffort_set.all().count()
@@ -93,6 +104,11 @@ class Segment(models.Model):
     @property
     def get_plotdata_api_url(self):
         return reverse('activities:activities-api:SegmentDataAPI', kwargs={"segment_id": self.id})
+
+
+class StaredSegment(models.Model):
+    segment = models.ForeignKey(to=Segment, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
 
 
 class Map(models.Model):

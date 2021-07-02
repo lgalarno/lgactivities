@@ -6,9 +6,8 @@ from rest_framework import authentication, permissions
 
 import json
 import polyline
-import datetime
 
-from activities.models import Segment, Activity, Map
+from activities.models import Segment, Activity, Map, StaredSegment
 
 
 class SegmentStaringAPIToggle(APIView):
@@ -20,14 +19,23 @@ class SegmentStaringAPIToggle(APIView):
 
     def get(self, request, segment_id=None, format=None):
         obj = get_object_or_404(Segment, pk=segment_id)
-        s = obj.staring
-        if s:
-            obj.staring = False
-            staring = False
-        else:
-            obj.staring = True
+        print(request.user)
+        s, created = StaredSegment.objects.get_or_create(
+            segment=obj,
+            user=request.user
+        )
+        if created:
             staring = True
-        obj.save()
+        else:
+            staring = False
+            s.delete()
+        # if s:
+        #     obj.staring = False
+        #     staring = False
+        # else:
+        #     obj.staring = True
+        #     staring = True
+        # obj.save()
         data = {
             'staring': staring
         }

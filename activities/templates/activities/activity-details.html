@@ -5,10 +5,10 @@
 {% block content %}
     <div class="row">
         <div class="col col-md-4">
-            <h2>{{ activity.name }} <span><a href="{{ activity.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
-            <small>{{ activity.start_date_local }}</small>
-            {% if not activity.map.polyline == '' %}
-                <div id="mapid" endpoint="{{ activity.map.get_mapdata_api_url }}">></div>
+            <h2>{{ object.name }} <span><a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
+            <small>{{ object.start_date_local }}</small>
+            {% if not object.map.polyline == '' %}
+                <div id="mapid" endpoint="{{ object.map.get_mapdata_api_url }}">></div>
             {% endif %}
         </div>
         <div class="col col-md-8">
@@ -27,7 +27,7 @@
                             {% for effort in segments_efforts %}
                                 <tr>
                                     <td>
-                                        <a href="{% url "activities:segment_details" activity_id=activity.id effort_id=effort.id %}" >{{ effort.segment.name }}</a>
+                                        <a href="{% url "activities:segment_details" activity_id=object.id effort_id=effort.id %}" >{{ effort.segment.name }}</a>
                                     </td>
                                     <td>{{ effort.get_time }}</td>
                                 </tr>

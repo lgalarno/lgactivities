@@ -132,41 +132,27 @@ SITE_ID = 1
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
-
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 # Provider specific local
-# SOCIALACCOUNT_PROVIDERS = {
-#     'strava': {
-#         # For each OAuth based provider, either add a ``SocialApp``
-#         # (``socialaccount`` app) containing the required client
-#         # credentials, or list them here:
-#         'APP': {
-#             'client_id': os.getenv('client_id'),
-#             'secret': os.getenv('client_secret'),
-#             'key': os.getenv('Refresh_Token')
-#         }
-#     }
-# }
-
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 # ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = False
 # ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
-# ACCOUNT_SESSION_REMEMBER = True
-# ACCOUNT_UNIQUE_EMAIL = True
-# ACCOUNT_EMAIL_VERIFICATION ='none'
-# # save email in username field
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 # ACCOUNT_ADAPTER = 'profiles.account_adapter.AccountAdapter'
+# SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 SOCIALACCOUNT_STORE_TOKENS = True
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_PROVIDERS = {'strava': {}}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -186,16 +172,13 @@ LOGIN_URL = '/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STRAVA_API = 'lgactivities'
-
-STRAVA_URLS = {
-    # 'token': 'https://www.strava.com/oauth/token',
-    # 'auth': "https://www.strava.com/oauth/authorize",
-    # 'activities': "https://www.strava.com/api/v3/athlete/activities",
-    # 'activity': "https://www.strava.com/api/v3/activities/",
-    'oauth': "https://www.strava.com/oauth/",
-    'athlete': "https://www.strava.com/api/v3/",
-
+STRAVA_API = {
+    'name': 'lgactivities',
+    'callback_domain': "localhost:8000",
+    'URLS': {
+        'oauth': "https://www.strava.com/oauth/",
+        'athlete': "https://www.strava.com/api/v3/",
+    }
 }
 
 REST_FRAMEWORK = {
@@ -205,3 +188,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -15,11 +15,11 @@ Including another URLconf
 """
 from django.urls import path
 
-from .views import requestcode, exchange_token
+from .views import exchange_token, requestcode
 
 app_name = 'connections'
 
 urlpatterns = [
-    path('', requestcode, name="requestcode"),
+    path('requestcode/', requestcode, name="requestcode"),
     path('exchange_token/', exchange_token, name="exchange_token"),
 ]

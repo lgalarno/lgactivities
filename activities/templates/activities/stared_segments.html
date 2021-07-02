@@ -8,8 +8,8 @@
     aaa
         </div>{% endcomment %}
         <div class="col col-md-12">
+        {% if staredsegment_list %}
             <h3>Segments</h3>
-            {% if segment_list %}
                 <div class="table-responsive">
                     <table class="table" >
                         <thead>
@@ -21,20 +21,27 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for segment in segment_list %}
+                        {% for ss in staredsegment_list %}
                             <tr>
                                 <td>
-                                    <a href="{% url "activities:segment_details" activity_id=segment.get_best_effort.activity_id effort_id=segment.get_best_effort.pk %}">{{ segment.name }}</a>
+{#                                    <a href="{% url "activities:segment_details" activity_id=segment.get_best_effort.activity_id effort_id=segment.get_best_effort.pk %}">{{ segment.name }}</a>#}
+                                    <a href="{% url "activities:segment_details" activity_id=ss.segment.get_best_effort.activity_id effort_id=ss.segment.get_best_effort.pk %}">{{ ss.segment.name }}</a>
                                 </td>
-                                <td>{{ segment.get_number_efforts }}</td>
+                                <td>{{ ss.segment.get_number_efforts }}</td>
                                 <td>
-                                    <a href="{% url 'activities:activity-details' segment.get_best_effort.activity_id %}" >
+{% comment %}                                    <a href="{% url 'activities:activity-details' segment.get_best_effort.activity_id %}" >
                                     {{ segment.get_best_effort.get_time }} <small> {{ segment.get_best_effort.get_date }} - {{ segment.get_best_effort.activity.name }}</small>
+                                    </a>{% endcomment %}
+                                    <a href="{% url 'activities:activity-details' ss.segment.get_best_effort.activity_id %}" >
+                                        {{ ss.segment.get_best_effort.get_time }} <small> {{ ss.segment.get_best_effort.get_date }} - {{ ss.segment.get_best_effort.activity.name }}</small>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'activities:activity-details' segment.get_last_effort.activity_id %}" >
+{% comment %}                                    <a href="{% url 'activities:activity-details' segment.get_last_effort.activity_id %}" >
                                     {{ segment.get_last_effort.activity.name }} <small> {{ segment.get_last_effort.get_date }}</small>
+                                    </a>{% endcomment %}
+                                    <a href="{% url 'activities:activity-details' ss.segment.get_last_effort.activity_id %}" >
+                                        {{ ss.segment.get_last_effort.activity.name }} <small> {{ ss.segment.get_last_effort.get_date }}</small>
                                     </a>
                                 </td>
                             </tr>
@@ -42,6 +49,8 @@
                         </tbody>
                     </table>
                 </div>
+            {% else %}
+                <h3>You are not staring at any segments</h3>
             {% endif %}
         </div>
     </div>

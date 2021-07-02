@@ -6,13 +6,13 @@ from django.shortcuts import reverse
 from datetime import timedelta, datetime, date
 from dateutil.relativedelta import relativedelta
 
-from .models import Activity
-
 
 class Calendar(HTMLCalendar):
-    def __init__(self, year=None, month=None):
-        self.year = year
-        self.month = month
+    def __init__(self, qs=None, d=None):  # year=None, month=None):
+        self.qs = qs
+        d = self.get_date(d)
+        self.year = d.year
+        self.month = d.month
         self.date_ = date(self.year, self.month, day=1)
         self.days_in_month = monthrange(self.year, self.month)[1]
         self.last = self.date_.replace(day=self.days_in_month)
@@ -58,8 +58,7 @@ class Calendar(HTMLCalendar):
         :param withyear: write the year next to the month in the month row (tr) of the calendar
         :return: calendar
         """
-        activities = Activity.objects.filter(start_date_local__year=self.year, start_date_local__month=self.month)
-
+        activities = self.qs.filter(start_date_local__year=self.year, start_date_local__month=self.month) #Activity.objects.filter(start_date_local__year=self.year, start_date_local__month=self.month)
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
         # cal += f'<tr><th colspan="7" class="month">February</th></tr>'
@@ -82,6 +81,16 @@ class Calendar(HTMLCalendar):
         prev_month_link = f'<a class="links-arrow"  href="{_link}?{self.prev_month}"> < </a>&nbsp&nbsp'
         return tr[0:34] + prev_month_link + tr[34:-10] + next_month_link + tr[-10:]
 
+    def get_date(self, req_day):
+        if req_day:
+            year, month = (int(x) for x in req_day.split('-'))
+            return date(year, month, day=1)
+        else:
+            latest_activity = self.qs.order_by('start_date').last()
+            if latest_activity:
+                return latest_activity.start_date
+        return datetime.today()
+
     @property
     def prev_year(self):
         prev_year = self.first + relativedelta(months=-12)  # timedelta(months=12)
@@ -101,14 +110,3 @@ class Calendar(HTMLCalendar):
     def next_month(self):
         next_month = self.last + timedelta(days=1)
         return 'month=' + str(next_month.year) + '-' + str(next_month.month)
-
-
-def get_date(req_day):
-    if req_day:
-        year, month = (int(x) for x in req_day.split('-'))
-        return date(year, month, day=1)
-    else:
-        latest_activity = Activity.objects.order_by('start_date').last()
-        if latest_activity:
-            return latest_activity.start_date
-    return datetime.today()
