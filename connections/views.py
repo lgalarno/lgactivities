@@ -31,7 +31,7 @@ def exchange_token(request):
             'grant_type': "authorization_code",
             'f': 'json'
         }
-        res = requests.post(f"{settings.STRAVA_URLS['oauth']}token", data=payload, verify=False).json()
+        res = requests.post(f"{STRAVA_API['URLS']['oauth']}token", data=payload, verify=False).json()
         if 'errors' in res:
             e = formaterror(res['errors'])
             messages.warning(request, 'An error occurred while getting the activity: ' + e)

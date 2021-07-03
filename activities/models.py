@@ -4,8 +4,6 @@ from django.shortcuts import reverse
 
 import datetime
 
-
-# Create your models here.
 User = settings.AUTH_USER_MODEL
 
 
