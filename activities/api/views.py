@@ -19,7 +19,6 @@ class SegmentStaringAPIToggle(APIView):
 
     def get(self, request, segment_id=None, format=None):
         obj = get_object_or_404(Segment, pk=segment_id)
-        print(request.user)
         s, created = StaredSegment.objects.get_or_create(
             segment=obj,
             user=request.user

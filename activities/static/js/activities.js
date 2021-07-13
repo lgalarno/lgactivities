@@ -36,7 +36,6 @@ if (segment_data_endpoint != null) {
             best_perf_index = data.best_perf_index;
             point_url = data.activity_url;
             activity_names = data.activity_names;
-            // console.log(all_times);
             plot_plotly();
         }, error: function (error){
             console.log("error")
@@ -50,17 +49,18 @@ function plot_plotly() {
     var trace0 = {
         type: "scatter",
         mode: "markers",
-        name: 'Effort',
+        name: "",
         x: all_dates,
         y: all_times.map(time => '2020-01-08 ' + time),
         text: activity_names,
+        hoverinfo: 'all'
         };
     var trace1 = {
         type: 'scatter',
         mode: 'markers',
-        name: 'Best',
         x: [all_dates[best_perf_index]],
         y: ['2020-01-08 ' + all_times[best_perf_index]],
+        hoverinfo: 'skip',
         marker: {
             color: 'rgba(0, 0, 0, 0)',
             size: [20],
@@ -72,6 +72,7 @@ function plot_plotly() {
         };
     var data = [trace0, trace1];
     var layout = {
+        hovermode:'closest',
         yaxis: {
             tickformat: '%H:%M:%S',
         },
@@ -92,14 +93,14 @@ function plot_plotly() {
            ],
         showlegend: false
     };
-    Plotly.newPlot( segment_data_endpoint, data, layout, {responsive: true});
+    Plotly.newPlot(segment_data_endpoint, data, layout, {responsive: true});
     segment_data_endpoint.on('plotly_click', function(data){
         if (data.points.length > 0) {
-        let link = point_url[data.points[0].pointNumber];
+            let link = point_url[data.points[0].pointNumber];
 
-        // Note: window navigation here.
-        window.location = link;
-        }
+            // Note: window navigation here.
+            window.location = link;
+            }
     });
 }
 

@@ -25,7 +25,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('getactivities/', include('getactivities.urls', namespace="getactivities")),
     path('activities/', include('activities.urls', namespace="activities")),
-    path('connection/', include('connections.urls', namespace="connections")),
+    # path('connection/', include('connections.urls', namespace="connections")),
 ]
 
 if settings.DEBUG:

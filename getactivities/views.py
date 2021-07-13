@@ -7,8 +7,11 @@ from django.views.generic import ListView
 import requests
 from datetime import datetime
 
-from connections.utils import formaterror, check_token
+# from connections.utils import formaterror, check_token, get_token
+
 from activities.models import Activity, Map, Segment, SegmentEffort
+
+from .utils import formaterror, get_token
 
 STRAVA_API = settings.STRAVA_API
 # Create your views here.
@@ -21,7 +24,8 @@ def getactivities(request):
         end_date = request.POST.get('end_date', None)
         if start_date is None or end_date is None:
             raise Http404()
-        e, access_token = check_token()
+        # e, access_token = check_token()
+        e, access_token = get_token(user = request.user)
         if not e:
             headers = {'Authorization': f'Bearer {access_token}'}
             params = {
@@ -110,7 +114,8 @@ class ListactivitiesView(ListView):
 
 def lastactivity(request):
     context = {}
-    e, access_token = check_token()
+    # e, access_token = check_token()
+    e, access_token = get_token(user=request.user)
     if not e:
         headers = {'Authorization': f'Bearer {access_token}'}
         params = {'per_page': 1, 'page': 1}

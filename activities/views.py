@@ -8,7 +8,9 @@ from django.utils.safestring import mark_safe
 
 import requests
 
-from connections.utils import check_token, formaterror
+# from connections.utils import check_token, formaterror, get_token
+from getactivities.utils import formaterror, get_token
+
 from .models import Activity, Segment, SegmentEffort, Map, StaredSegment
 from .utils import Calendar
 
@@ -56,7 +58,8 @@ def segment_details(request, activity_id, effort_id):
     activity = get_object_or_404(Activity, pk=activity_id)
     this_effort = get_object_or_404(SegmentEffort, pk=effort_id)
     segment = get_object_or_404(Segment, pk=this_effort.segment_id)
-    e, access_token = check_token()
+    # e, access_token = check_token()
+    e, access_token = get_token(user=request.user)
     if not e:
         header = {'Authorization': f'Bearer {access_token}'}
         param = {
