@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # custom app
     'activities',
-    'connections',
+    # 'connections',
     'getactivities',
 ]
 
@@ -151,7 +151,18 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 # SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_PROVIDERS = {'strava': {}}
+SOCIALACCOUNT_PROVIDERS = {'strava': {
+    'AUTH_PARAMS': {
+        'SCOPE': [
+            'read',
+            'activity:read_all'
+        ],
+        'access_type': 'offline',
+        }
+    }
+}
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -165,9 +176,10 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.getenv('STATIC_ROOT')
 MEDIA_ROOT = os.getenv('MEDIA_ROOT')
 
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/activities/'
+LOGIN_URL = '/accounts/login/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -191,4 +203,3 @@ REST_FRAMEWORK = {
     ]
 }
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
