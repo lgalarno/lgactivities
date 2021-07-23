@@ -4,9 +4,6 @@
 
 {% block content %}
     <div class="row">
-    {% comment %}            <div class="col col-md-4">
-    aaa
-        </div>{% endcomment %}
         <div class="col col-md-12">
         {% if staredsegment_list %}
             <h3>Segments</h3>
@@ -24,24 +21,17 @@
                         {% for ss in staredsegment_list %}
                             <tr>
                                 <td>
-{#                                    <a href="{% url "activities:segment_details" activity_id=segment.get_best_effort.activity_id effort_id=segment.get_best_effort.pk %}">{{ segment.name }}</a>#}
-                                    <a href="{% url "activities:segment_details" activity_id=ss.segment.get_best_effort.activity_id effort_id=ss.segment.get_best_effort.pk %}">{{ ss.segment.name }}</a>
+                                    <a href="{{ ss.get_best_effort_url }}">{{ ss.segment.name }}</a>
                                 </td>
-                                <td>{{ ss.segment.get_number_efforts }}</td>
+                                <td>{{ ss.get_number_efforts }}</td>
                                 <td>
-{% comment %}                                    <a href="{% url 'activities:activity-details' segment.get_best_effort.activity_id %}" >
-                                    {{ segment.get_best_effort.get_time }} <small> {{ segment.get_best_effort.get_date }} - {{ segment.get_best_effort.activity.name }}</small>
-                                    </a>{% endcomment %}
-                                    <a href="{% url 'activities:activity-details' ss.segment.get_best_effort.activity_id %}" >
-                                        {{ ss.segment.get_best_effort.get_time }} <small> {{ ss.segment.get_best_effort.get_date }} - {{ ss.segment.get_best_effort.activity.name }}</small>
+                                    <a href="{% url 'activities:activity-details' ss.get_best_effort.activity_id %}" >
+                                        {{ ss.get_best_effort.get_time }} <small> {{ ss.get_best_effort.get_date }} - {{ ss.get_best_effort.activity.name }}</small>
                                     </a>
                                 </td>
                                 <td>
-{% comment %}                                    <a href="{% url 'activities:activity-details' segment.get_last_effort.activity_id %}" >
-                                    {{ segment.get_last_effort.activity.name }} <small> {{ segment.get_last_effort.get_date }}</small>
-                                    </a>{% endcomment %}
-                                    <a href="{% url 'activities:activity-details' ss.segment.get_last_effort.activity_id %}" >
-                                        {{ ss.segment.get_last_effort.activity.name }} <small> {{ ss.segment.get_last_effort.get_date }}</small>
+                                    <a href="{% url 'activities:activity-details' ss.get_last_effort.activity_id %}" >
+                                        {{ ss.get_last_effort.activity.name }} <small> {{ ss.get_last_effort.get_date }}</small>
                                     </a>
                                 </td>
                             </tr>

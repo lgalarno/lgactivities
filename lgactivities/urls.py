@@ -25,6 +25,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('getactivities/', include('getactivities.urls', namespace="getactivities")),
     path('activities/', include('activities.urls', namespace="activities")),
+    path('profile/', include('profiles.urls', namespace="profiles")),
     # path('connection/', include('connections.urls', namespace="connections")),
 ]
 

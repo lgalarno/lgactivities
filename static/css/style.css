@@ -147,6 +147,10 @@ table.dataTable .current_effort {
   background: #ccffff;
 }
 
+.avatar_img {
+  border-radius: 50%;
+}
+
 /*.form {*/
 /*  margin: auto;*/
 /*}*/

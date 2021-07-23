@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <h4>Profile:</h4>
+    <br>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="row ">
+            <div class="col col-lg-6">
+                {{ form|crispy  }}
+            </div>
+            <div class="col col-lg-6">
+                <p>Strava id: <strong>{{ StravaID }}</strong></p>
+                {% if avatar %}
+                    <img src="{{ avatar }}" alt="Strava avatar">
+                {% endif %}
+                {% if city and country %}
+                    <p>{{ city }}, {{ country }}</p>
+                {% endif %}
+                {#                {{ strava_profile_form|crispy  }}#}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock content %}

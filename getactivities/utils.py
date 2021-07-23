@@ -10,7 +10,7 @@ from allauth.socialaccount.models import SocialApp, SocialToken
 
 STRAVA_API = settings.STRAVA_API
 
-#TODO move all utils in get activities?
+
 def refresh_token(sa, t):
     e = False
     payload = {

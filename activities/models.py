@@ -1,10 +1,8 @@
-from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import reverse
 
 import datetime
-
-User = settings.AUTH_USER_MODEL
 
 
 class Activity(models.Model):
@@ -65,35 +63,21 @@ class Segment(models.Model):
         self.save()
         return self
 
-    def get_absolute_url(self):
-        return reverse('activities:segment_details', args=(self.id,))
+    # def get_absolute_url(self):
+    #     return reverse('activities:segment_details', args=(self.id,))
 
-    def get_all_efforts(self):
-        return self.segmenteffort_set.all()
+    def get_all_efforts(self, user=None):
+        return self.segmenteffort_set.filter(activity__user=user)
 
-    def get_all_times(self):
-        return [e.get_time() for e in self.get_all_efforts()]
-        # all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
 
-    def get_best_effort(self):
-        return self.segmenteffort_set.all().order_by('elapsed_time').first()
-
-    def get_stared(self, user):
+    def get_stared(self, user=None):
         return self.staredsegment_set.filter(user=user)
 
-    def is_stared(self, user):
+    def is_stared(self, user=None):
         if len(self.staredsegment_set.filter(user=user)) > 0:
             return True
         else:
             return False
-
-    @property
-    def get_number_efforts(self):
-        return self.segmenteffort_set.all().count()
-
-    @property
-    def get_last_effort(self):
-        return self.segmenteffort_set.all().order_by('-start_date_local').first()
 
     @property
     def get_staring_api_url(self):
@@ -103,10 +87,50 @@ class Segment(models.Model):
     def get_plotdata_api_url(self):
         return reverse('activities:activities-api:SegmentDataAPI', kwargs={"segment_id": self.id})
 
+    # def get_all_times(self, user=None):
+    #     return [e.get_time() for e in self.get_all_efforts(user)]
+
+    # def get_best_effort(self, user=None):
+    #     print('3')
+    #     print(user)
+    #     return self.segmenteffort_set.filter(activity__user=user).order_by('elapsed_time').first()
+
+    # def get_best_effort_url(self, user=None):
+    #     print('4')
+    #     print(user)
+    #     best = self.get_best_effort(user)
+    #     return reverse('activities:segment_details', kwargs={'activity_id':best.activity_id,
+    #                                                          'effort_id': best.pk
+    #                                                          })
+
+    # def get_number_efforts(self, user=None):
+    #     return self.segmenteffort_set.filter(activity__user=user).count()
+
+    # def get_last_effort(self, user=None):
+    #     return self.segmenteffort_set.filter(activity__user=user).order_by('-start_date_local').first()
+
 
 class StaredSegment(models.Model):
     segment = models.ForeignKey(to=Segment, on_delete=models.CASCADE)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.segment.name}"
+
+    def get_number_efforts(self):
+        return self.segment.segmenteffort_set.filter(activity__user=self.user).count()
+
+    def get_best_effort(self):
+        return self.segment.segmenteffort_set.filter(activity__user=self.user).order_by('elapsed_time').first()
+
+    def get_last_effort(self):
+        return self.segment.segmenteffort_set.filter(activity__user=self.user).order_by('-start_date_local').first()
+
+    def get_best_effort_url(self):
+        best = self.get_best_effort()
+        return reverse('activities:segment_details', kwargs={'activity_id':best.activity_id,
+                                                             'effort_id': best.pk
+                                                             })
 
 
 class Map(models.Model):
@@ -133,6 +157,7 @@ class Map(models.Model):
 
 class SegmentEffort(models.Model):
     id = models.BigIntegerField(primary_key=True)
+    # user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     activity = models.ForeignKey(to=Activity,
                                  on_delete=models.CASCADE)
     elapsed_time = models.IntegerField(blank=True, null=True)

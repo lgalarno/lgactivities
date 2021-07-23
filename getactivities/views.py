@@ -78,9 +78,9 @@ def getactivities(request):
             else:
                 messages.warning(request, f'An error occurred while getting the activity: {e}')
 
-        elif access_token is None:
-            request.session['nextpage'] = request.path
-            return redirect('connections:requestcode')
+        # elif access_token is None:
+        #     request.session['nextpage'] = request.path
+        #     return redirect('connections:requestcode')
 
         else:
             messages.warning(request, f'An error occurred while getting the activity: {e}')

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     # custom app
     'activities',
-    # 'connections',
+    'profiles',
     'getactivities',
 ]
 

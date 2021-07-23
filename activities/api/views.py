@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, Http404
+from django.shortcuts import get_object_or_404
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -28,13 +28,6 @@ class SegmentStaringAPIToggle(APIView):
         else:
             staring = False
             s.delete()
-        # if s:
-        #     obj.staring = False
-        #     staring = False
-        # else:
-        #     obj.staring = True
-        #     staring = True
-        # obj.save()
         data = {
             'staring': staring
         }
@@ -50,7 +43,7 @@ class RecentEffortsDataAPI(APIView):
 
     def get(self, request, segment_id=None, format=None):
         segment = get_object_or_404(Segment, pk=segment_id)
-        all_efforts = segment.get_all_efforts()
+        all_efforts = segment.get_all_efforts(user=request.user)
         all_times = [e.get_time() for e in all_efforts]
         all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
         best_perf_index = all_times.index(min(all_times))
@@ -79,7 +72,6 @@ class GetMapDataAPI(APIView):
         obj = get_object_or_404(Map, pk=model_id)
         segment_map = polyline.decode(obj.polyline)
         data = {
-            # 'center': center,
             'coord': json.dumps(segment_map),
         }
         return Response(data)
