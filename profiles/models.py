@@ -32,7 +32,7 @@ class StravaProfile(models.Model):
         return self.user.username
 
     def get_avatar_from_url(self, url=None):
-        img_tmp = NamedTemporaryFile(delete=True)
+        img_tmp = NamedTemporaryFile()
         if url is None:
             url = self.avatar_url
         if url is not None:
