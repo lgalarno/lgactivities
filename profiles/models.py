@@ -5,7 +5,7 @@ from django.db import models
 from django.dispatch import receiver
 
 from allauth.socialaccount.models import SocialAccount
-from allauth.account.signals import user_signed_up
+from allauth.account.signals import user_signed_up, user_logged_in
 
 from urllib.request import urlopen
 
@@ -15,13 +15,12 @@ import os
 
 
 def upload_location(instance, filename):
-    return f"avatar/{instance}/{filename}"
+    return f"avatars/{instance}/{filename}"
 
 
 #TODO store username from Strava with signals?
 #TODO add extra data from Strava?
 #TODO save avatar locally
-#TODO update StravaProfile
 class StravaProfile(models.Model):
     user        = models.OneToOneField(User, related_name="strava_profile", on_delete=models.CASCADE)
     city        = models.CharField(max_length=120, blank=True, null=True)
@@ -36,15 +35,13 @@ class StravaProfile(models.Model):
         img_tmp = NamedTemporaryFile(delete=True)
         if url is None:
             url = self.avatar_url
-        if url is None:
-            return False
-        with urlopen(url) as uo:
-            assert uo.status == 200
-            img_tmp.write(uo.read())
-            img_tmp.flush()
-        img = File(img_tmp)
-        self.avatar.save(f"avatar.jpg", img)
-        return True
+        if url is not None:
+            with urlopen(url) as uo:
+                assert uo.status == 200
+                img_tmp.write(uo.read())
+                img_tmp.flush()
+            img = File(img_tmp)
+            self.avatar.save(f"avatar.jpg", img)
 
 
 @receiver(user_signed_up)
@@ -54,17 +51,27 @@ def retrieve_social_data(request, user, **kwargs):
     sa = SocialAccount.objects.get(user=user)
     # check if the user has signed up via social media
     if sa:
-        profile = StravaProfile(user=user)
-        profile.avatar_url = sa.get_avatar_url()
-        profile.avatar = profile.get_avatar_from_url(profile.avatar_url)
+        avatar_url = sa.get_avatar_url()
+        profile, created = StravaProfile.objects.get_or_create(user=user)
+        profile.avatar_url = avatar_url
+        # profile.avatar = get_avatar_from_url(avatar_url)
+        profile.get_avatar_from_url(avatar_url)
         profile.city = sa.extra_data.get("city")
         profile.country = sa.extra_data.get("country")
         profile.save()
         username = sa.extra_data.get("username")
-        if (not username == "") and (not username == None) :
+        if (not username == "") and (not username==None):
             u = User.objects.get(pk=user.pk)
             u.username = username
             u.save()
+
+
+#TODO update StravaProfile
+@receiver(user_logged_in)
+def update_social_data(request, user, **kwargs):
+    sa, created = StravaProfile.objects.get_or_create(user=user)
+    if created:
+        retrieve_social_data(request, user, **kwargs)
 
 
 @receiver(models.signals.post_delete, sender=StravaProfile)

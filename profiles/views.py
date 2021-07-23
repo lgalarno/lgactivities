@@ -29,7 +29,8 @@ class EditProfile(UpdateView):
         context['StravaID'] = sau.uid
         context['city'] = sid.city
         context['country'] = sid.country
-        context['avatar'] = sid.avatar.url
+        if sid.avatar:
+            context['avatar'] = sid.avatar.url
         return context
 
     def get_success_url(self):
