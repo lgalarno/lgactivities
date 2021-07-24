@@ -18,9 +18,6 @@ def upload_location(instance, filename):
     return f"avatars/{instance}/{filename}"
 
 
-#TODO store username from Strava with signals?
-#TODO add extra data from Strava?
-#TODO save avatar locally
 class StravaProfile(models.Model):
     user        = models.OneToOneField(User, related_name="strava_profile", on_delete=models.CASCADE)
     city        = models.CharField(max_length=120, blank=True, null=True)
@@ -41,7 +38,12 @@ class StravaProfile(models.Model):
                 img_tmp.write(uo.read())
                 img_tmp.flush()
             img = File(img_tmp)
-            self.avatar.save(f"avatar.jpg", img)
+            # Check if a previous avatar exists; if yes, delete it because ImageField would instead
+            # save it with another generated filename
+            if self.avatar:
+                if os.path.isfile(self.avatar.path):
+                    os.remove(self.avatar.path)
+            self.avatar.save("avatar.jpg", img)
 
 
 @receiver(user_signed_up)
@@ -69,39 +71,10 @@ def retrieve_social_data(request, user, **kwargs):
 #TODO update StravaProfile
 @receiver(user_logged_in)
 def update_social_data(request, user, **kwargs):
-    sa, created = StravaProfile.objects.get_or_create(user=user)
+    sp, created = StravaProfile.objects.get_or_create(user=user)
     if created:
         retrieve_social_data(request, user, **kwargs)
-
-
-@receiver(models.signals.post_delete, sender=StravaProfile)
-def auto_delete_file_on_delete(sender, instance, **kwargs):
-    """
-    Deletes file from filesystem
-    when corresponding `StravaProfile` object is deleted.
-    """
-    if instance.avatar:
-        if os.path.isfile(instance.avatar.path):
-            os.remove(instance.avatar.path)
-
-
-@receiver(models.signals.pre_save, sender=StravaProfile)
-def auto_delete_file_on_change(sender, instance, **kwargs):
-    """
-    Deletes old file from filesystem
-    when corresponding `StravaProfile` object is updated
-    with new file.
-    """
-    if not instance.pk:
-        return False
-    try:
-        old_avatar = StravaProfile.objects.get(pk=instance.pk).avatar
-    except StravaProfile.DoesNotExist:
-        return False
-# TODO make it better...
-    new_avatar = instance.avatar
-    if not bool(old_avatar):
-        return False
-    if not old_avatar == new_avatar:
-        if os.path.isfile(old_avatar.path):
-            os.remove(old_avatar.path)
+    else:
+        sa = SocialAccount.objects.get(user=user)
+        if sp.avatar_url != sa.get_avatar_url():
+            retrieve_social_data(request, user, **kwargs)
