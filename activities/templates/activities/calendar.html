@@ -13,27 +13,11 @@
         <div class="col-sm-10">
             <a class="float-right" href="{% url 'getactivities:getactivities' %}"> + Get activities </a>
         </div>
-{% comment %}         <div class="col-sm-4">
-            <a class="btn btn-info float-right" href="{% url 'activities:calendar' %}?{{ cal.next_month }} "> Next Month > </a>
-            <a class="btn btn-info float-right" href="{% url 'activities:calendar' %}?{{ cal.next_year }} "> >> </a>
-            <h3 class="float-right"> {{ cal.year }} </h3>
-            <a class="btn btn-info float-right" href="{% url 'activities:calendar' %}?{{ cal.prev_year }}"> << </a>
-            <a class="btn btn-info float-right" href="{% url 'activities:calendar' %}?{{ cal.prev_month }}"> < Previous Month </a>
-        </div>{% endcomment %}
          <div class="col col-md-12">
             {{ calendar }}
-            <small>&copy; Sajib Hossain (calendar)</small>
         </div>
     </div>
 
-{% comment %}    <script>
-    /////////////////////////////////////////////////////////////
-    // Links to previous and next months in the calendar
-    /////////////////////////////////////////////////////////////
-        let cal_month = document.getElementsByClassName("month");
-        let new_cal_month = '<a href="{% url 'activities:calendar' %}?{{ cal.prev_month }} "> < </a>' + '&nbsp&nbsp'+ cal_month[0].innerHTML + '&nbsp&nbsp'+ '<a href="{% url 'activities:calendar' %}?{{ cal.next_month }} "> > </a>';
-        cal_month[0].innerHTML = new_cal_month;
-    </script>{% endcomment %}
 {% endblock content %}
 
 

@@ -16,7 +16,7 @@ from .utils import Calendar
 
 STRAVA_API = settings.STRAVA_API
 
-
+#TODO create calendar app
 class CalendarView(LoginRequiredMixin, ListView):
     login_url = 'login'
     model = Activity

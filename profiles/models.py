@@ -33,10 +33,11 @@ class StravaProfile(models.Model):
         if url is None:
             url = self.avatar_url
         if url is not None:
+            print('aaa')
             with urlopen(url) as uo:
-                assert uo.status == 200
-                img_tmp.write(uo.read())
-                img_tmp.flush()
+                if uo.status == 200:
+                    img_tmp.write(uo.read())
+                    img_tmp.flush()
             img = File(img_tmp)
             # Check if a previous avatar exists; if yes, delete it because ImageField would instead
             # save it with another generated filename
