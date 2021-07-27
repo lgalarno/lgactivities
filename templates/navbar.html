@@ -27,7 +27,7 @@
                     <i class="fa fa-calendar-alt fa-lg" aria-hidden="true"></i> Calendar
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'activities:calendar' %}"><i class="fa fa-calendar-alt fa-sm" aria-hidden="true"></i> View</a>
+                    <a class="dropdown-item" href="{% url 'calendarapp:calendar_view' %}"><i class="fa fa-calendar-alt fa-sm" aria-hidden="true"></i> View</a>
                     <a class="dropdown-item" href="{% url 'getactivities:getactivities' %}"><i class="far fa-calendar-plus"></i> Get activities</a>
                 </div>
             </li>
@@ -41,7 +41,6 @@
         </ul>
         {% endif %}
         <ul class="nav ml-auto">
-
             <li class="nav nav-item">
                 <a class="nav-link" href=
                 {% if not request.user.is_authenticated and not "login" in request.get_full_path %}

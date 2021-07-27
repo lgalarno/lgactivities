@@ -69,7 +69,6 @@ def retrieve_social_data(request, user, **kwargs):
             u.save()
 
 
-#TODO update StravaProfile
 @receiver(user_logged_in)
 def update_social_data(request, user, **kwargs):
     sp, created = StravaProfile.objects.get_or_create(user=user)

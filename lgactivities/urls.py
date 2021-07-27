@@ -26,7 +26,7 @@ urlpatterns = [
     path('getactivities/', include('getactivities.urls', namespace="getactivities")),
     path('activities/', include('activities.urls', namespace="activities")),
     path('profile/', include('profiles.urls', namespace="profiles")),
-    # path('connection/', include('connections.urls', namespace="connections")),
+    path('calendar/', include('calendarapp.urls', namespace="calendarapp")),
 ]
 
 if settings.DEBUG:

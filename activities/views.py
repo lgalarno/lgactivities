@@ -3,37 +3,16 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from django.utils.safestring import mark_safe
 
 import requests
 
 from getactivities.utils import formaterror, get_token
 
 from .models import Activity, Segment, SegmentEffort, Map, StaredSegment
-from .utils import Calendar
 
 # Create your views here.
 
 STRAVA_API = settings.STRAVA_API
-
-#TODO create calendar app
-class CalendarView(LoginRequiredMixin, ListView):
-    login_url = 'login'
-    model = Activity
-    template_name = 'activities/calendar.html'
-
-    def get_queryset(self):
-        return Activity.objects.filter(user=self.request.user)
-
-    def get_context_data(self, *args, **kwargs):
-        qs = self.get_queryset()
-        context = super().get_context_data(**kwargs)
-        cal = Calendar(qs=qs, d=self.request.GET.get('month', None))  #  year=d.year, month=d.month)
-        html_cal = cal.formatmonth(withyear=False)
-        context['calendar'] = mark_safe(html_cal)
-        context['cal'] = cal
-        context['title'] = 'calendar'
-        return context
 
 
 class ActivityDetailsView(LoginRequiredMixin, DetailView):

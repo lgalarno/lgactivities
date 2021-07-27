@@ -76,7 +76,7 @@ class Calendar(HTMLCalendar):
         This may break in the future!
         """
         tr = super().formatmonthname(theyear, themonth, withyear=withyear)
-        _link = reverse("activities:calendar")
+        _link = reverse("calendarapp:calendar_view")
         next_month_link = f'&nbsp&nbsp<a class="links-arrow" href="{_link}?{self.next_month }"> > </a>'
         prev_month_link = f'<a class="links-arrow"  href="{_link}?{self.prev_month}"> < </a>&nbsp&nbsp'
         return tr[0:34] + prev_month_link + tr[34:-10] + next_month_link + tr[-10:]
