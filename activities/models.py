@@ -29,7 +29,8 @@ ACTIVITY_ICONS = {
     "Hike": "hiking.png",
     "VirtualRide": "virtualride.png",
     "RollerSki": "rollerski.png",
-    "Snowshoe": "snowshoe.png"
+    "Snowshoe": "snowshoe.png",
+    "NordicSki": "nordicski.png"
 }
 
 class Activity(models.Model):
