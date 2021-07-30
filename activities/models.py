@@ -58,8 +58,24 @@ class Activity(models.Model):
     def get_date(self, *args, **kwargs):
         return self.start_date_local.strftime("%m/%d/%Y")
 
+    #TODO keep or remove?
     def get_type_icon(self):
-        self.icon = icon_path+ACTIVITY_ICONS.get(self.type)
+        type_icon = ACTIVITY_ICONS.get(self.type)
+        if type_icon is not None:
+            self.icon = icon_path + type_icon
+        else:
+            mail_subject = 'lgactivities - New activity type'
+            mail_body = f"""
+            A new activity type was entered into the database of lgactivities and will require a new icon:
+
+            Activity type: {self.type}
+            Activity ID: {self.id}
+            user: {self.user}
+
+            This email was sent by lgactivities.
+            """
+            send_email(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+            self.icon = ""
         self.save()
         return self.icon
 
