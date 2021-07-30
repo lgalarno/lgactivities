@@ -204,3 +204,5 @@ REST_FRAMEWORK = {
     ]
 }
 
+FROM_EMAIL=os.getenv('FROM_EMAIL')
+EMAIL_PASSWORD=os.getenv('EMAIL_PASSWORD')

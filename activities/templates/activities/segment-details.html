@@ -5,7 +5,9 @@
 {% block content %}
     <div class="row">
         <div class="col col-md-4">
-            <h2>{{ segment.name }}
+            <h2>
+                <img src="{% static activity.icon %}" width="24" height="24" class="d-inline-block" alt="{{ object.type }}">
+                {{ segment.name }}
                 <small>
 {#                    {% if this_effort.segment.staring %}#}
                     {% if staring %}

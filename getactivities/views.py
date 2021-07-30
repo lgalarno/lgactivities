@@ -46,7 +46,7 @@ def getactivities(request):
                     )
                     if created:
                         params = {}
-                        url = f"{STRAVA_API['URLS']['athlete']}activities/{a.id}"
+                        url = f"{STRAVA_API['URLS']['athlete']}activities/{a.id}/?include_all_efforts=True"
                         e, activity_detailed = _requestStrava(url, headers, params, verify=False)
                         if not e:
                             m = Map(

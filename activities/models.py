@@ -1,15 +1,43 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.dispatch import receiver
 from django.shortcuts import reverse
 
 import datetime
 
+from .utils import send_email
+
+#TODO get icons for activities and bookmark? star?
+
+# ACTIVITY_ICONS = {
+#     "Run": "fas fa-running",
+#     "Ride": "fas fa-biking",
+#     "Workout": "fas fa-dumbbell",
+#     "IceSkate": "fas fa-skating",
+#     "Hike": "fas fa-hiking",
+#     "VirtualRide": "fas fa-biking",
+#     "RollerSki": "",
+# }
+
+icon_path = "images/activity-types/"
+
+ACTIVITY_ICONS = {
+    "Run": "run.png",
+    "Ride": "biking.png",
+    "Workout": "workout.png",
+    "IceSkate": "iceskate.png",
+    "Hike": "hiking.png",
+    "VirtualRide": "virtualride.png",
+    "RollerSki": "rollerski.png",
+    "Snowshoe": "snowshoe.png"
+}
 
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=127)
+    icon = models.CharField(max_length=127, blank=True, null=True)
     start_lat = models.FloatField(blank=True, null=True)
     start_lng = models.FloatField(blank=True, null=True)
     start_date = models.DateTimeField(blank=True, null=True)
@@ -30,6 +58,11 @@ class Activity(models.Model):
     def get_date(self, *args, **kwargs):
         return self.start_date_local.strftime("%m/%d/%Y")
 
+    def get_type_icon(self):
+        self.icon = icon_path+ACTIVITY_ICONS.get(self.type)
+        self.save()
+        return self.icon
+
     @property
     def get_html_url(self):
         url = reverse('activities:activity-details', args=(self.id,))
@@ -40,11 +73,34 @@ class Activity(models.Model):
         return f'https://www.strava.com/activities/{self.id}'
 
 
+@receiver(models.signals.pre_save, sender=Activity)
+def get_type_icon(sender, instance, **kwargs):
+    """
+    """
+    type = instance.type
+    i = ACTIVITY_ICONS.get(type)
+    if i is not None:
+        instance.icon = icon_path + ACTIVITY_ICONS.get(type)
+    else:
+        mail_subject = 'lgactivities - New activity type'
+        mail_body = f"""
+        A new activity type was entered into the database of lgactivities and will require a new icon:
+        
+        Activity type: {type}
+        Activity ID: {instance.id}
+        user: {instance.user}
+        
+        This email was sent by lgactivities.
+        """
+        send_email(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+        instance.icon = ""
+    return instance
+
+
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
 class Segment(models.Model):
     id = models.BigIntegerField(primary_key=True)
     name = models.CharField(max_length=255)
-    # staring = models.BooleanField(default=False, blank=True)
     start_lat = models.FloatField(blank=True, null=True)
     start_lng = models.FloatField(blank=True, null=True)
     updated = models.DateTimeField(blank=True, null=True)
@@ -87,28 +143,6 @@ class Segment(models.Model):
     def get_plotdata_api_url(self):
         return reverse('activities:activities-api:SegmentDataAPI', kwargs={"segment_id": self.id})
 
-    # def get_all_times(self, user=None):
-    #     return [e.get_time() for e in self.get_all_efforts(user)]
-
-    # def get_best_effort(self, user=None):
-    #     print('3')
-    #     print(user)
-    #     return self.segmenteffort_set.filter(activity__user=user).order_by('elapsed_time').first()
-
-    # def get_best_effort_url(self, user=None):
-    #     print('4')
-    #     print(user)
-    #     best = self.get_best_effort(user)
-    #     return reverse('activities:segment_details', kwargs={'activity_id':best.activity_id,
-    #                                                          'effort_id': best.pk
-    #                                                          })
-
-    # def get_number_efforts(self, user=None):
-    #     return self.segmenteffort_set.filter(activity__user=user).count()
-
-    # def get_last_effort(self, user=None):
-    #     return self.segmenteffort_set.filter(activity__user=user).order_by('-start_date_local').first()
-
 
 class StaredSegment(models.Model):
     segment = models.ForeignKey(to=Segment, on_delete=models.CASCADE)
@@ -131,6 +165,11 @@ class StaredSegment(models.Model):
         return reverse('activities:segment_details', kwargs={'activity_id':best.activity_id,
                                                              'effort_id': best.pk
                                                              })
+
+    def get_type(self):
+        se = self.segment.segmenteffort_set.filter(activity__user=self.user).first()
+        print(se)
+        return se.activity.type
 
 
 class Map(models.Model):

@@ -11,6 +11,7 @@
                     <table class="table" >
                         <thead>
                         <tr>
+{#                            <th scope="col">Type</th>#}
                             <th scope="col">Name</th>
                             <th scope="col">Number of efforts</th>
                             <th scope="col">Best time</th>
@@ -20,8 +21,12 @@
                         <tbody>
                         {% for ss in staredsegment_list %}
                             <tr>
+{#                                <td><img src="{% static ss.get_best_effort.activity.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type }}"></td>#}
                                 <td>
-                                    <a href="{{ ss.get_best_effort_url }}">{{ ss.segment.name }}</a>
+                                    <a href="{{ ss.get_best_effort_url }}">
+                                        <img src="{% static ss.get_best_effort.activity.icon %}" width="24" height="24" class="d-inline-block" alt="{{ object.type }}">
+                                        {{ ss.segment.name }}
+                                    </a>
                                 </td>
                                 <td>{{ ss.get_number_efforts }}</td>
                                 <td>

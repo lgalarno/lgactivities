@@ -5,7 +5,13 @@
 {% block content %}
     <div class="row">
         <div class="col col-md-4">
-            <h2>{{ object.name }} <span><a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a></span></h2>
+            <h2>
+                <img src="{% static object.icon %}" width="24" height="24" class="d-inline-block" alt="{{ object.type }}">
+                {{ object.name }}
+                <span>
+                    <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>
+                </span>
+            </h2>
             <small>{{ object.start_date_local }}</small>
             {% if not object.map.polyline == '' %}
                 <div id="mapid" endpoint="{{ object.map.get_mapdata_api_url }}">></div>
