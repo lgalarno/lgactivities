@@ -178,7 +178,7 @@ STATIC_ROOT = os.getenv('STATIC_ROOT')
 MEDIA_ROOT = os.getenv('MEDIA_ROOT')
 
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/activities/'
+LOGIN_REDIRECT_URL = '/calendar/'
 LOGIN_URL = '/accounts/login/'
 
 

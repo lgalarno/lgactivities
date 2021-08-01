@@ -21,4 +21,5 @@ def send_email(to_email, mail_subject, mail_body):
         connection.quit()
         return True
     except Exception as e:
+        connection.quit()
         return e
