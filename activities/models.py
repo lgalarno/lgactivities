@@ -5,9 +5,10 @@ from django.shortcuts import reverse
 
 import datetime
 
-from .utils import send_email
+# from .utils import send_email
 
 #TODO get icons for activities and bookmark? star?
+#TODO  send mail in activities models
 
 # ACTIVITY_ICONS = {
 #     "Run": "fas fa-running",

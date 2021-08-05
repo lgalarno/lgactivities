@@ -9,15 +9,15 @@
                 <img src="{% static activity.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type }}">
                 {{ segment.name }}
                 <small>
-{#                    {% if this_effort.segment.staring %}#}
+{#                    {% if object.segment.staring %}#}
                     {% if staring %}
-                        <a class="btn-staring" title="Segment stared" data-href="{{ segment.get_staring_api_url }}" data-staring="{{ this_effort.segment.staring }}" href="#"><i class="fas fa-bookmark" aria-hidden="true" ></i></a>
+                        <a class="btn-staring" title="Segment stared" data-href="{{ segment.get_staring_api_url }}" data-staring="{{ object.segment.staring }}" href="#"><i class="fas fa-bookmark" aria-hidden="true" ></i></a>
                     {% else %}
-                        <a class="btn-staring" title="Segment not stared" data-href="{{ segment.get_staring_api_url }}" data-staring="{{ this_effort.segment.staring }}" href="#"><i class="far fa-bookmark" aria-hidden="true" ></i></a>
+                        <a class="btn-staring" title="Segment not stared" data-href="{{ segment.get_staring_api_url }}" data-staring="{{ object.segment.staring }}" href="#"><i class="far fa-bookmark" aria-hidden="true" ></i></a>
                     {% endif %}
                 </small>
             </h2>
-            <h3> ({{ activity.name }}) <span><a href="{{ this_effort.get_strava_url }}"  class="strava_link" target="_blank"> View on Strava</a></span></h3>
+            <h3> ({{ activity.name }}) <span><a href="{{ object.get_strava_url }}"  class="strava_link" target="_blank"> View on Strava</a></span></h3>
             <small>{{ activity.start_date_local }}</small>
             <div id="mapid" endpoint="{{ segment.map.get_mapdata_api_url }}"></div>
         </div>
@@ -25,10 +25,10 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>This effort: {{ this_effort.get_time }}</th>
-                            <th>KOM: {{ this_effort.segment.kom }}</th>
-                            <th>QOM: {{ this_effort.segment.qom }}</th>
-                            <th>updated: {{ this_effort.segment.updated }}</th>
+                            <th>This effort: {{ object.get_time }}</th>
+                            <th>KOM: {{ object.segment.kom }}</th>
+                            <th>QOM: {{ object.segment.qom }}</th>
+                            <th>updated: {{ object.segment.updated }}</th>
                         </tr>
                     </thead>
                 </table>
@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                     {% for effort in efforts %}
-                        <tr {% if effort == this_effort %} class="current_effort" {% endif %}>
+                        <tr {% if effort == object %} class="current_effort" {% endif %}>
                             <td>
                                 <a href="{% url "activities:activity-details" effort.activity.id %}" >{{ effort.activity.name }}
                                 <small>{{ effort.activity.get_date }}</small>
