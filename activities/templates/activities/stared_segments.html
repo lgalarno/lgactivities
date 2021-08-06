@@ -31,7 +31,7 @@
                                 <td>{{ ss.get_number_efforts }}</td>
                                 <td>
                                     <a href="{% url 'activities:activity-details' ss.get_best_effort.activity_id %}" >
-                                        {{ ss.get_best_effort.get_time }} <small> {{ ss.get_best_effort.get_date }} - {{ ss.get_best_effort.activity.name }}</small>
+                                        {{ ss.get_best_effort.get_time }} <small> {{ ss.get_best_effort.activity.name }} - {{ ss.get_best_effort.get_date }}</small>
                                     </a>
                                 </td>
                                 <td>

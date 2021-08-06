@@ -5,10 +5,9 @@ from django.shortcuts import reverse
 
 import datetime
 
-# from .utils import send_email
+from .utils import send_email
 
-#TODO get icons for activities and bookmark? star?
-#TODO  send mail in activities models
+#TODO get icons for activities bookmark and calendar in navbar
 
 # ACTIVITY_ICONS = {
 #     "Run": "fas fa-running",
@@ -129,12 +128,16 @@ class Segment(models.Model):
         return self.name
 
     def update_from_strava(self, segment_detail):
-        self.start_lat = segment_detail['start_latlng'][0]
-        self.start_lng = segment_detail['start_latlng'][1]
+        # self.start_lat = segment_detail['start_latlng'][0]
+        # self.start_lng = segment_detail['start_latlng'][1]
         self.kom = segment_detail['xoms']['kom']
         self.qom = segment_detail['xoms']['qom']
         self.updated = segment_detail['updated_at']
         self.save()
+        m, created = Map.objects.get_or_create(segment=self)
+        if created:
+            m.polyline = segment_detail['map']['polyline']
+            m.save()
         return self
 
     # def get_absolute_url(self):
@@ -180,13 +183,10 @@ class StaredSegment(models.Model):
 
     def get_best_effort_url(self):
         best = self.get_best_effort()
-        return reverse('activities:segment_details', kwargs={'activity_id':best.activity_id,
-                                                             'effort_id': best.pk
-                                                             })
+        return reverse('activities:effort_details', kwargs={'pk': best.pk})
 
     def get_type(self):
         se = self.segment.segmenteffort_set.filter(activity__user=self.user).first()
-        print(se)
         return se.activity.type
 
 
@@ -214,7 +214,6 @@ class Map(models.Model):
 
 class SegmentEffort(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    # user = models.ForeignKey(to=User, on_delete=models.CASCADE)
     activity = models.ForeignKey(to=Activity,
                                  on_delete=models.CASCADE)
     elapsed_time = models.IntegerField(blank=True, null=True)
