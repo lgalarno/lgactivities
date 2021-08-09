@@ -58,10 +58,9 @@ class Calendar(HTMLCalendar):
         :param withyear: write the year next to the month in the month row (tr) of the calendar
         :return: calendar
         """
-        activities = self.qs.filter(start_date_local__year=self.year, start_date_local__month=self.month) #Activity.objects.filter(start_date_local__year=self.year, start_date_local__month=self.month)
+        activities = self.qs.filter(start_date_local__year=self.year, start_date_local__month=self.month)
         cal = f'<table border="0" cellpadding="0" cellspacing="0" class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'
-        # cal += f'<tr><th colspan="7" class="month">February</th></tr>'
         cal += f'{self.formatweekheader()}\n'
         for week in self.monthdays2calendar(self.year, self.month):
             cal += f'{self.formatweek(week, activities)}\n'

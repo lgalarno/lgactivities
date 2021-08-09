@@ -24,7 +24,6 @@ def getactivities(request):
         end_date = request.POST.get('end_date', None)
         if start_date is None or end_date is None:
             raise Http404()
-        # e, access_token = check_token()
         e, access_token = get_token(user = request.user)
         if not e:
             headers = {'Authorization': f'Bearer {access_token}'}

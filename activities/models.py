@@ -7,8 +7,6 @@ import datetime
 
 from .utils import send_email
 
-#TODO get icons for activities bookmark and calendar in navbar
-
 # ACTIVITY_ICONS = {
 #     "Run": "fas fa-running",
 #     "Ride": "fas fa-biking",
