@@ -7,8 +7,6 @@ from django.views.generic import ListView
 import requests
 from datetime import datetime
 
-# from connections.utils import formaterror, check_token, get_token
-
 from activities.models import Activity, Map, Segment, SegmentEffort
 
 from .utils import formaterror, get_token
@@ -22,6 +20,8 @@ def getactivities(request):
         context = {}
         start_date = request.POST.get('start_date', None)
         end_date = request.POST.get('end_date', None)
+        print(start_date)
+        print(end_date)
         if start_date is None or end_date is None:
             raise Http404()
         e, access_token = get_token(user = request.user)

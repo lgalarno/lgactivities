@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block title %}{{ title }}{% endblock %}
@@ -22,7 +24,10 @@
             </div>
         </div>
         <div>
-            <button class="btn btn-primary" type="submit" id="btnDownload" name="btnDownload"><i class="fa fa-spinner fa-spin" id="icnDownload" style="display: none"></i> Get activities</button>
+            <button class="btn btn-primary" type="submit" id="btnDownload" name="btnDownload">
+                <i class="fa fa-spinner fa-spin" id="icnDownload" style="display: none"></i>
+                 Get activities
+            </button>
             <div class="overlay"></div>
         </div>
     </form>
@@ -30,13 +35,11 @@
 {% endblock content %}
 
 {% block js %}
-
-    <script type="text/javascript">
+<script src="{% static 'js/getactivities.js' %}"></script>
+{% comment %}    <script type="text/javascript">
 
       function waiting_js(form) // Submit button clicked
       {
-    {% comment %}      var btnDownload = document.getElementById('btnDownload');
-          console.log(btnDownload.value){% endcomment %}
           var icnDownload = document.getElementById("icnDownload");
           form.btnDownload.value = "Please wait...";
           form.btnDownload.disabled = true;
@@ -44,5 +47,5 @@
           return true;
       }
 
-    </script>
+    </script>{% endcomment %}
 {% endblock js %}

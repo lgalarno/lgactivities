@@ -5,7 +5,7 @@ from django.shortcuts import reverse
 
 import datetime
 
-from .utils import send_email
+from .tasks import send_email
 
 # ACTIVITY_ICONS = {
 #     "Run": "fas fa-running",
@@ -73,7 +73,7 @@ class Activity(models.Model):
 
             This email was sent by lgactivities.
             """
-            send_email(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+            send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
             self.icon = ""
         self.save()
         return self.icon
@@ -91,6 +91,8 @@ class Activity(models.Model):
 @receiver(models.signals.pre_save, sender=Activity)
 def get_type_icon(sender, instance, **kwargs):
     """
+    Task to send an e-mail notification when a new activity type is created.
+    And administrator will have to update ACTIVITY_ICONS accordingly
     """
     type = instance.type
     i = ACTIVITY_ICONS.get(type)
@@ -107,7 +109,7 @@ def get_type_icon(sender, instance, **kwargs):
         
         This email was sent by lgactivities.
         """
-        send_email(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+        send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
         instance.icon = ""
     return instance
 
