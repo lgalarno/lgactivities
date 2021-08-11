@@ -17,7 +17,7 @@ app.autodiscover_tasks()
 # app.conf.result_backend = "django-db"
 app.conf.update(
     #broker_url=settings.REDIS_URL,
-    broker_url=settings.rabbitmq_URL,
+    broker_url=settings.RABBITMQ_URL,
     beat_scheduler='django_celery_beat.schedulers.DatabaseScheduler',
     result_backend="django-db",
 )
