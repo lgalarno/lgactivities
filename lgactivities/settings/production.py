@@ -218,3 +218,5 @@ CACHES = {
         }
     }
 }
+
+REDIS_URL = os.getenv('REDIS_URL')
