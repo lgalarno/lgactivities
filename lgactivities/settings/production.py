@@ -220,3 +220,4 @@ EMAIL_PASSWORD=os.getenv('EMAIL_PASSWORD')
 # }
 REDIS_URL = os.getenv('REDIS_URL')
 RABBITMQ_URL= os.getenv('RABBITMQ_URL')
+
