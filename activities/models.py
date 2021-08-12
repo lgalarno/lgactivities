@@ -29,7 +29,9 @@ ACTIVITY_ICONS = {
     "RollerSki": "rollerski.png",
     "Inline Skate": "InlineSkate.png",
     "Snowshoe": "snowshoe.png",
-    "NordicSki": "nordicski.png"
+    "NordicSki": "nordicski.png",
+    "Stand Up Paddling": "StandUpPaddling.png",
+    "Kayaking": "Kayaking.png"
 }
 
 class Activity(models.Model):
