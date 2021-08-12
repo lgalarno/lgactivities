@@ -27,6 +27,7 @@ ACTIVITY_ICONS = {
     "Hike": "hiking.png",
     "VirtualRide": "virtualride.png",
     "RollerSki": "rollerski.png",
+    "Inline Skate": "InlineSkate.png",
     "Snowshoe": "snowshoe.png",
     "NordicSki": "nordicski.png"
 }
