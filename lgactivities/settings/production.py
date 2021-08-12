@@ -209,15 +209,5 @@ REST_FRAMEWORK = {
 FROM_EMAIL=os.getenv('FROM_EMAIL')
 EMAIL_PASSWORD=os.getenv('EMAIL_PASSWORD')
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379/1",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
-REDIS_URL = os.getenv('REDIS_URL')
 RABBITMQ_URL= os.getenv('RABBITMQ_URL')
 
