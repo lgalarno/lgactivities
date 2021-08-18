@@ -7,44 +7,45 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         {% if request.user.is_authenticated %}
-        <ul class="nav ml-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {% if user.strava_profile.avatar %}
-                        <img src="{{ user.strava_profile.avatar.url }}" width="43" class="d-inline-block avatar_img" alt="avatar">
-                    {% else %}
-                        {{ user.email }}
-                    {% endif %}
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-{#                        <a class="dropdown-item" href="{% url 'getactivities:lastactivity' %}">Last Activity</a>#}
-                    <a class="dropdown-item" href="{% url 'profiles:EditProfile' %}"><i class="far fa-id-card"></i> Profile</a>
-                    <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-{#                    <i class="fa fa-calendar-alt fa-lg" aria-hidden="true"></i>#}
-                    <img src="{% static 'images/calendar_col.png' %}" width="24" height="24" class="d-inline-block" alt="calendar">
-                     Calendar
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'calendarapp:calendar_view' %}"><i class="fa fa-calendar-alt fa-sm" aria-hidden="true"></i> View</a>
-                    <a class="dropdown-item" href="{% url 'getactivities:getactivities' %}"><i class="far fa-calendar-plus"></i> Get activities</a>
-                </div>
-            </li>
+            <ul class="nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if user.strava_profile.avatar %}
+                            <img src="{{ user.strava_profile.avatar.url }}" width="43" class="d-inline-block avatar_img" alt="avatar">
+                        {% else %}
+                            {{ user.email }}
+                        {% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    {#                        <a class="dropdown-item" href="{% url 'getactivities:lastactivity' %}">Last Activity</a>#}
+                        <a class="dropdown-item" href="{% url 'profiles:EditProfile' %}"><i class="far fa-id-card"></i> Profile</a>
+                        <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {#                    <i class="fa fa-calendar-alt fa-lg" aria-hidden="true"></i>#}
+                        <img src="{% static 'images/calendar_col.png' %}" width="24" height="24" class="d-inline-block" alt="calendar">
+                         Calendar
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'calendarapp:calendar_view' %}"><i class="fa fa-calendar-alt fa-sm" aria-hidden="true"></i> View</a>
+                        <a class="dropdown-item" href="{% url 'getactivities:getactivities' %}"><i class="far fa-calendar-plus"></i> Get activities</a>
+                        <a class="dropdown-item" href="{% url 'getactivities:task_view' %}"><i class="fa fa-tasks"></i> Create a task</a>
+                    </div>
+                </li>
 
-{% comment %}            <li class="nav-item">
-                <a class="nav-link" href="{% url 'activities:calendar' %}" title="Calendar"><i class="fa fa-calendar-alt fa-lg" aria-hidden="true"></i> Calendar</a>
-            </li>{% endcomment %}
-            <li class="nav-item">
-{#                <a class="nav-link" href="{% url 'activities:stared-segments' %}" title="Stared segments"><i class="fas fa-bookmark fa-lg" aria-hidden="true"></i> Stared segments</a>#}
-                <a class="nav-link" href="{% url 'activities:stared-segments' %}" title="Stared segments">
-                    <img src="{% static 'images/bookmark_blue.png' %}" width="24" height="24" class="d-inline-block" alt="Stared segments">
-                     Stared segments
-                </a>
-            </li>
-        </ul>
+    {% comment %}            <li class="nav-item">
+                    <a class="nav-link" href="{% url 'activities:calendar' %}" title="Calendar"><i class="fa fa-calendar-alt fa-lg" aria-hidden="true"></i> Calendar</a>
+                </li>{% endcomment %}
+                <li class="nav-item">
+    {#                <a class="nav-link" href="{% url 'activities:stared-segments' %}" title="Stared segments"><i class="fas fa-bookmark fa-lg" aria-hidden="true"></i> Stared segments</a>#}
+                    <a class="nav-link" href="{% url 'activities:stared-segments' %}" title="Stared segments">
+                        <img src="{% static 'images/bookmark_blue.png' %}" width="24" height="24" class="d-inline-block" alt="Stared segments">
+                         Stared segments
+                    </a>
+                </li>
+            </ul>
         {% endif %}
         <ul class="nav ml-auto">
             <li class="nav nav-item">

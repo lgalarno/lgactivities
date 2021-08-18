@@ -42,9 +42,6 @@ def update_segment(u, this_effort):
         if 'errors' in segment_detail:
             e = formaterror(segment_detail['errors'])
             return e
-            # e = formaterror(segment_detail['errors'])
-            # messages.warning(request, f'An error occurred while getting the segment: {e}')
-            # return HttpResponseRedirect('/')
         else:
             this_effort.segment.update_from_strava(segment_detail=segment_detail)
             return True

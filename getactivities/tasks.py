@@ -57,6 +57,8 @@ def getactivities_task(user = None, start_date=None, end_date=None):
                                 obj.distance = se.get('distance')
                                 obj.segment = segment
                                 obj.save()
+            return f"User {user} from {start_date} to {end_date} {len(activities)} new activities"
+    return f"User {user} from {start_date} to {end_date} ERROR!"
 
 
 def _requestStravaTask(url, headers, params, verify=False):

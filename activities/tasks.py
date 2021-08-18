@@ -18,15 +18,12 @@ def send_email(to_email, mail_subject, mail_body):
     mimemsg['To'] = to_email
     mimemsg['Subject']=mail_subject
     mimemsg.attach(MIMEText(mail_body, 'plain'))
-    print('email1')
     try:
-        print('email2')
         connection = smtplib.SMTP(host='smtp.office365.com', port=587)
         connection.starttls()
         connection.login(username,password)
         connection.send_message(mimemsg)
         connection.quit()
-        print('email3')
         return True
     except Exception as e:
         connection.quit()

@@ -6,46 +6,39 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <form action="{% url 'getactivities:getactivities' %}" method="POST" id="form" onsubmit="return waiting_js(this);" >
-        {% csrf_token %}
-        <h3>Select the dates range</h3>
-        <div class="form-group row">
-            <label class="col-sm-1 col-form-label" for="start">Start Date</label>
-            <div class="col-sm-2">
-                <input name="start_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_from }}" />
-                <small class="form-text text-muted">The start date for the query.</small>
-            </div>
+    <div class="row">
+        <div class="col col-lg-3">
+            <h4>Select the dates range:</h4>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-1 col-form-label" for="start">End Date</label>
-            <div class="col-sm-2">
-                <input name="end_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_to }}" />
-                <small class="form-text text-muted">The end date for the query.</small>
-            </div>
+        <div class="col col-lg-3">
+            <form action="{% url 'getactivities:getactivities' %}" method="POST" id="form" onsubmit="return waiting_js(this);" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="col-form-label" for="start">Start Date </label>
+                    <div class="">
+                        <input name="start_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_from }}" />
+                        <small class="form-text text-muted">The start date for the query.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-form-label" for="start">End Date</label>
+                    <div class="">
+                        <input name="end_date" type="date" class="form-control" required placeholder="yyyy-mm-dd" value="{{ date_to }}" />
+                        <small class="form-text text-muted">The end date for the query.</small>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-primary" type="submit" id="btnDownload" name="btnDownload">
+                        <i class="fa fa-spinner fa-spin" id="icnDownload" style="display: none"></i>
+                         Get activities
+                    </button>
+                    <div class="overlay"></div>
+                </div>
+            </form>
         </div>
-        <div>
-            <button class="btn btn-primary" type="submit" id="btnDownload" name="btnDownload">
-                <i class="fa fa-spinner fa-spin" id="icnDownload" style="display: none"></i>
-                 Get activities
-            </button>
-            <div class="overlay"></div>
-        </div>
-    </form>
-
+    </div>
 {% endblock content %}
 
 {% block js %}
-<script src="{% static 'js/getactivities.js' %}"></script>
-{% comment %}    <script type="text/javascript">
-
-      function waiting_js(form) // Submit button clicked
-      {
-          var icnDownload = document.getElementById("icnDownload");
-          form.btnDownload.value = "Please wait...";
-          form.btnDownload.disabled = true;
-          icnDownload.style.display = "inline-block";
-          return true;
-      }
-
-    </script>{% endcomment %}
+    <script src="{% static 'js/getactivities.js' %}"></script>
 {% endblock js %}
