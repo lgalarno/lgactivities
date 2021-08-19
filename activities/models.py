@@ -58,27 +58,6 @@ class Activity(models.Model):
     def get_date(self, *args, **kwargs):
         return self.start_date_local.strftime("%m/%d/%Y")
 
-    #TODO keep or remove?
-    def get_type_icon(self):
-        type_icon = ACTIVITY_ICONS.get(self.type)
-        if type_icon is not None:
-            self.icon = icon_path + type_icon
-        else:
-            mail_subject = 'lgactivities - New activity type'
-            mail_body = f"""
-            A new activity type was entered into the database of lgactivities and will require a new icon:
-
-            Activity type: {self.type}
-            Activity ID: {self.id}
-            user: {self.user}
-
-            This email was sent by lgactivities.
-            """
-            send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
-            self.icon = ""
-        self.save()
-        return self.icon
-
     @property
     def get_html_url(self):
         url = reverse('activities:activity-details', args=(self.id,))
@@ -88,7 +67,7 @@ class Activity(models.Model):
     def get_strava_url(self):
         return f'https://www.strava.com/activities/{self.id}'
 
-# TODO post save?
+
 @receiver(models.signals.pre_save, sender=Activity)
 def get_type_icon(sender, instance, **kwargs):
     """

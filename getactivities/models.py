@@ -17,7 +17,7 @@ TASK_FREQUENCY = (
 
 class GetActivitiesTask(models.Model):
     user = models.OneToOneField(User, related_name="get_activities_task", on_delete=models.CASCADE)
-    start_date = models.DateField()
+    start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     frequency = models.IntegerField(choices=TASK_FREQUENCY, default=7)
     periodic_task = models.ForeignKey(PeriodicTask, null=True, blank=True, on_delete=models.SET_NULL)

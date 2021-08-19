@@ -10,12 +10,10 @@
                 {{ object.segment.name }}
                 <small>
                     {% if staring %}
-{#                        <a class="btn-staring" title="Segment stared" data-href="{{ object.segment.get_staring_api_url }}" data-staring="{{ object.segment.staring }}" href="#"><i class="fas fa-bookmark" aria-hidden="true" ></i></a>#}
                         <a class="btn-staring" title="Segment stared" data-href="{{ object.segment.get_staring_api_url }}" data-staring="{{ object.segment.staring }}" href="#">
                             <img id="staring" src="{% static 'images/bookmark_blue.png' %}" width="24" height="24" class="d-inline-block" alt="Segment stared">
                         </a>
                     {% else %}
-{#                        <a class="btn-staring" title="Segment not stared" data-href="{{ object.segment.get_staring_api_url }}" data-staring="{{ object.segment.staring }}" href="#"><i class="far fa-bookmark" aria-hidden="true" ></i></a>#}
                         <a class="btn-staring" title="Segment not stared" data-href="{{ object.segment.get_staring_api_url }}" data-staring="{{ object.segment.staring }}" href="#">
                             <img id="staring" src="{% static 'images/bookmark_blue_outline.png' %}" width="24" height="24" class="d-inline-block" alt="Segment not stared">
                         </a>
@@ -40,7 +38,7 @@
             <h3>All efforts</h3>
             {% if efforts %}
                 <div class="table-responsive">
-                <table class="table" id="efforts_table">
+                <table class="table" id="data_table">
                     <thead>
                     <tr>
                         <th scope="col">Activity</th>

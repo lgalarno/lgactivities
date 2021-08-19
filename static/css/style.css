@@ -75,7 +75,6 @@ table.dataTable thead .sorting {
 }
 
 .calendar li::before {
-
   content: ">"; /* Insert content that looks like bullets */
   padding-right: 2px;
   font-weight: bold;
@@ -150,16 +149,3 @@ table.dataTable .current_effort {
 .avatar_img {
   border-radius: 50%;
 }
-
-/*.form {*/
-/*  margin: auto;*/
-/*}*/
-
-/*.form input, .form select, .form textarea {*/
-/*  border-radius: 5px;*/
-/*  border: 1px solid #17a2b8;*/
-/*  outline: none;*/
-/*  background: none;*/
-/*  padding: 5px;*/
-/*  width: 100%;*/
-/*}*/

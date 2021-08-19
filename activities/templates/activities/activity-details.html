@@ -22,7 +22,7 @@
                 <h3>Segment efforts</h3>
                 {% if segments_efforts %}
                     <div class="table-responsive">
-                        <table class="table" >
+                        <table class="table"  id="data_table">
                             <thead>
                             <tr>
                                 <th scope="col">Name</th>
@@ -33,7 +33,6 @@
                             {% for effort in segments_efforts %}
                                 <tr>
                                     <td>
-{#                                        <a href="{% url "activities:segment_details" activity_id=object.id effort_id=effort.id %}" >{{ effort.segment.name }}</a>#}
                                         <a href="{% url "activities:effort_details" pk=effort.id %}" >{{ effort.segment.name }}</a>
                                     </td>
                                     <td>{{ effort.get_time }}</td>

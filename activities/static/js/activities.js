@@ -3,7 +3,7 @@
 /////////////////////////////////////////////////////////////
 $(document).ready(
     function () {
-        $('#efforts_table').DataTable({
+        $('#data_table').DataTable({
                 "dom": 'ltip',
                 "searching": false,
                 "columnDefs": [
