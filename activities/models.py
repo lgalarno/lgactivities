@@ -82,19 +82,19 @@ def get_type_icon(sender, instance, **kwargs):
         if i is not None:
             instance.icon = icon_path + i
         else:
-            # mail_subject = 'lgactivities - New activity type'
-            # mail_body = f"""
-            # A new activity type was entered into the database of lgactivities and will require a new icon:
-            #
-            # Activity type: {type}
-            # Activity ID: {instance.id}
-            # user: {instance.user}
-            #
-            # This email was sent by lgactivities.
-            # """
-            # send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
-            # instance.icon = ""
-            instance.icon = 'email'
+            mail_subject = 'lgactivities - New activity type'
+            mail_body = f"""
+            A new activity type was entered into the database of lgactivities and will require a new icon:
+
+            Activity type: {type}
+            Activity ID: {instance.id}
+            user: {instance.user}
+
+            This email was sent by lgactivities.
+            """
+            send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+            instance.icon = ""
+            # instance.icon = 'email'
 
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460

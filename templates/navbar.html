@@ -31,7 +31,8 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'calendarapp:calendar_view' %}"><i class="fa fa-calendar-alt fa-sm" aria-hidden="true"></i> View</a>
                         <a class="dropdown-item" href="{% url 'getactivities:getactivities' %}"><i class="far fa-calendar-plus"></i> Get activities</a>
-                        <a class="dropdown-item" href="{% url 'getactivities:task_view' %}"><i class="fa fa-tasks"></i> Create a task</a>
+                        <a class="dropdown-item" href="{% url 'getactivities:import_task_view' %}"><i class="fa fa-tasks"></i> Import your activities</a>
+                        <a class="dropdown-item" href="{% url 'getactivities:sync_task_view' %}"><i class="fas fa-sync-alt"></i> Synchronize your activities</a>
                     </div>
                 </li>
 

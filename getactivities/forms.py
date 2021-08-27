@@ -1,11 +1,11 @@
 from django import forms
 
-from .models import GetActivitiesTask
+from .models import FetchActivitiesTask
 
 
 class GetActivitiesTaskForm(forms.ModelForm):
     class Meta:
-        model = GetActivitiesTask
+        model = FetchActivitiesTask
         fields = (
             'start_date',
             'frequency',

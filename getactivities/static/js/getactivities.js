@@ -10,3 +10,5 @@ function waiting_js(form) // Submit button clicked
     icnDownload.style.display = "inline-block";
     return true;
 }
+
+

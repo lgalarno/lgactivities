@@ -1,15 +1,23 @@
 from django.contrib import admin
 
-from .models import GetActivitiesTask
+from .models import ImportActivitiesTask, SyncActivitiesTask
 
 # Register your models here.
 
 
-class GetActivitiesTaskAdmin(admin.ModelAdmin):
-    search_fields = ['name', 'active']
+class ImportActivitiesTaskAdmin(admin.ModelAdmin):
+    search_fields = ['user', 'active']
 
     class Meta:
-        model = GetActivitiesTask
+        model = ImportActivitiesTask
 
 
-admin.site.register(GetActivitiesTask, GetActivitiesTaskAdmin)
+class SyncActivitiesTaskAdmin(admin.ModelAdmin):
+    search_fields = ['user', 'active']
+
+    class Meta:
+        model = SyncActivitiesTask
+
+
+admin.site.register(ImportActivitiesTask, ImportActivitiesTaskAdmin)
+admin.site.register(SyncActivitiesTask, SyncActivitiesTaskAdmin)
