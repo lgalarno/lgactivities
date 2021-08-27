@@ -37,7 +37,7 @@ def import_activities_task(user=None):
 
 
 @shared_task
-def get_activities_task(user=None):
+def sync_activities_task(user=None):
     try:
         u = User.objects.get(pk=user)
         get_task = SyncActivitiesTask.objects.get(user=u)

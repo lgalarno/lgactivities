@@ -8,10 +8,7 @@ from django_celery_beat.models import (
     PeriodicTasks,
 )
 
-import datetime
 import json
-
-from dateutil.relativedelta import relativedelta
 
 # Create your models here.
 
@@ -50,7 +47,7 @@ class ImportActivitiesTask(models.Model):
                 name=task_name,
                 task='getactivities.tasks.import_activities_task'
             )
-            obj.enabled=True
+            obj.enabled = True
             obj.save()
             PeriodicTasks.update_changed()
             self.periodic_task = obj
@@ -126,7 +123,7 @@ class SyncActivitiesTask(models.Model):
             }),
             crontab=schedule,
             name=task_name,
-            task='getactivities.tasks.get_activities_task'
+            task='getactivities.tasks.sync_activities_task'
         )
         obj.enabled = True
         obj.save()
