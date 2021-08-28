@@ -109,7 +109,7 @@ class SyncActivitiesTask(models.Model):
             task_name = task_name + 'Monthly'
         elif self.frequency == 7:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                day_of_week=0
+                day_of_week=1 # Monday, 00:00
             )
             task_name = task_name + 'Weekly'
         elif self.frequency == 1:
