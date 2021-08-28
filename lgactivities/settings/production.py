@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_celery_beat',
     'django_celery_results',
-    'django_windows_tools',
     'rest_framework',
     # custom app
     'activities',
