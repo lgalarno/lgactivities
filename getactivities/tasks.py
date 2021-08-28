@@ -26,11 +26,11 @@ def _update_task_model(model=None):
 def import_activities_task(user=None):
     try:
         u = User.objects.get(pk=user)
-        import_task = ImportActivitiesTask.objects.get(user=u.username)
+        import_task = ImportActivitiesTask.objects.get(user=u)
         # if not fetch_task.active:
         #     fetch_task.disable_periodic_task()
         #     return "Task done!"
-        get_activities(user=user, start_date=import_task.start_date, end_date=import_task.end_date)
+        get_activities(user=u, start_date=import_task.start_date, end_date=import_task.end_date)
         _update_task_model(import_task)
     except ImportActivitiesTask.DoesNotExist:
         return f"ERROR! User {user} task does not exist."
@@ -40,8 +40,8 @@ def import_activities_task(user=None):
 def sync_activities_task(user=None):
     try:
         u = User.objects.get(pk=user)
-        get_task = SyncActivitiesTask.objects.get(user=u.username)
-        get_activities(user=user, start_date=get_task.start_date, end_date=get_task.end_date)
+        get_task = SyncActivitiesTask.objects.get(user=u)
+        get_activities(user=u, start_date=get_task.start_date, end_date=get_task.end_date)
         _update_task_model(get_task)
     except SyncActivitiesTask.DoesNotExist:
         return f"ERROR! User {user} task does not exist."
