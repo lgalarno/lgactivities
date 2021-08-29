@@ -45,7 +45,7 @@ class ImportActivitiesTask(models.Model):
                     'user': self.user.pk,
                 }),
                 name=task_name,
-                task='getactivities.tasks.import_activities_task'
+                task='getactivities.tasks.get_activities_task'
             )
             obj.enabled = True
             obj.save()
@@ -88,7 +88,7 @@ def set_periodic_task(sender, instance, **kwargs):
 
 
 class SyncActivitiesTask(models.Model):
-    user = models.OneToOneField(User, related_name="get_activities_task", on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name="sync_activities_task", on_delete=models.CASCADE)
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     frequency = models.IntegerField(choices=TASK_FREQUENCY, default=7)
@@ -123,7 +123,7 @@ class SyncActivitiesTask(models.Model):
             }),
             crontab=schedule,
             name=task_name,
-            task='getactivities.tasks.sync_activities_task'
+            task='getactivities.tasks.get_activities_task'
         )
         obj.enabled = True
         obj.save()

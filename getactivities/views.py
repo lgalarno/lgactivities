@@ -143,7 +143,6 @@ def getactivities(request):
         end_date = datetime.strptime(context['date_to'], '%Y-%m-%d')
         if context['date_from'] is None or context['date_to'] is None:
             raise Http404()
-        print(request.user)
         return redirect('getactivities:getactivities')
         m = get_activities(user=request.user, start_date=start_date, end_date=end_date)
         messages.success(request, m)

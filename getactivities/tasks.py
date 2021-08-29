@@ -23,25 +23,40 @@ def _update_task_model(model=None):
 
 
 @shared_task
-def import_activities_task(user=None):
+def get_activities_task(user=None, get_tyoe=None):
     try:
         u = User.objects.get(pk=user)
-        import_task = ImportActivitiesTask.objects.get(user=u)
-        # if not fetch_task.active:
-        #     fetch_task.disable_periodic_task()
-        #     return "Task done!"
-        get_activities(user=u, start_date=import_task.start_date, end_date=import_task.end_date)
-        _update_task_model(import_task)
+        if get_tyoe == 'import':
+            get_task_model = ImportActivitiesTask.objects.get(user=u)
+        elif get_tyoe == 'sync':
+            get_task_model = SyncActivitiesTask.objects.get(user=u)
+        g = get_activities(user=u, start_date=get_task_model.start_date, end_date=get_task_model.end_date)
+        _update_task_model(get_task_model)
+        return g
     except ImportActivitiesTask.DoesNotExist:
         return f"ERROR! User {user} task does not exist."
 
 
-@shared_task
-def sync_activities_task(user=None):
-    try:
-        u = User.objects.get(pk=user)
-        get_task = SyncActivitiesTask.objects.get(user=u)
-        get_activities(user=u, start_date=get_task.start_date, end_date=get_task.end_date)
-        _update_task_model(get_task)
-    except SyncActivitiesTask.DoesNotExist:
-        return f"ERROR! User {user} task does not exist."
+
+# @shared_task
+# def import_activities_task(user=None):
+#     try:
+#         u = User.objects.get(pk=user)
+#         import_task = ImportActivitiesTask.objects.get(user=u)
+#         g = get_activities(user=u, start_date=import_task.start_date, end_date=import_task.end_date)
+#         _update_task_model(import_task)
+#         return g
+#     except ImportActivitiesTask.DoesNotExist:
+#         return f"ERROR! User {user} task does not exist."
+#
+#
+# @shared_task
+# def sync_activities_task(user=None):
+#     try:
+#         u = User.objects.get(pk=user)
+#         sync_task = SyncActivitiesTask.objects.get(user=u)
+#         g = get_activities(user=u, start_date=sync_task.start_date, end_date=sync_task.end_date)
+#         _update_task_model(sync_task)
+#         return g
+#     except SyncActivitiesTask.DoesNotExist:
+#         return f"ERROR! User {user} task does not exist."
