@@ -206,8 +206,11 @@ REST_FRAMEWORK = {
     ]
 }
 
-FROM_EMAIL=os.getenv('FROM_EMAIL')
-EMAIL_PASSWORD=os.getenv('EMAIL_PASSWORD')
+FROM_EMAIL = os.getenv('FROM_EMAIL')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
-RABBITMQ_URL= os.getenv('RABBITMQ_URL')
-
+# RABBITMQ_URL = os.getenv('RABBITMQ_URL')
+CELERY_BROKER_URL = os.getenv('RABBITMQ_URL')
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_WORKER_POOL = "solo"
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

@@ -23,13 +23,15 @@ def _update_task_model(model=None):
 
 
 @shared_task
-def get_activities_task(user=None, get_tyoe=None):
+def get_activities_task(user=None, get_type=None):
     try:
         u = User.objects.get(pk=user)
-        if get_tyoe == 'import':
+        if get_type == 'import':
             get_task_model = ImportActivitiesTask.objects.get(user=u)
-        elif get_tyoe == 'sync':
+        elif get_type == 'sync':
             get_task_model = SyncActivitiesTask.objects.get(user=u)
+        else:
+            return f"ERROR! User {user} task type does not exist."
         g = get_activities(user=u, start_date=get_task_model.start_date, end_date=get_task_model.end_date)
         _update_task_model(get_task_model)
         return g

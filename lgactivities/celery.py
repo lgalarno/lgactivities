@@ -10,9 +10,9 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
-app.conf.update(
-    broker_url=settings.RABBITMQ_URL,
-    beat_scheduler='django_celery_beat.schedulers.DatabaseScheduler',
-    result_backend="django-db",
-    worker_pool="solo"
-)
+# app.conf.update(
+#     broker_url=settings.RABBITMQ_URL,
+#     beat_scheduler='django_celery_beat.schedulers.DatabaseScheduler',
+#     result_backend="django-db",
+#     #worker_pool="solo"
+# )

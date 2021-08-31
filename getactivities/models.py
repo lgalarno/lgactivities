@@ -43,6 +43,7 @@ class ImportActivitiesTask(models.Model):
                 interval=schedule,
                 kwargs=json.dumps({
                     'user': self.user.pk,
+                    'get_type': 'import'
                 }),
                 name=task_name,
                 task='getactivities.tasks.get_activities_task'
@@ -120,6 +121,7 @@ class SyncActivitiesTask(models.Model):
         obj, _ = PeriodicTask.objects.get_or_create(
             kwargs=json.dumps({
                 'user': self.user.pk,
+                'get_type': 'sync'
             }),
             crontab=schedule,
             name=task_name,
