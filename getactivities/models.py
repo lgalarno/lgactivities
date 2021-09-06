@@ -105,17 +105,22 @@ class SyncActivitiesTask(models.Model):
             self.disable_periodic_task(save=True)
         if self.frequency == 30:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                day_of_month=1
+                day_of_month=1,
+                hour=0,
+                minute=0
             )
             task_name = task_name + 'Monthly'
         elif self.frequency == 7:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                day_of_week=1 # Monday, 00:00
+                day_of_week=1,  # Monday, 00:00
+                hour=0,
+                minute=0
             )
             task_name = task_name + 'Weekly'
         elif self.frequency == 1:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                hour=0
+                hour=0,
+                minute=0
             )
             task_name = task_name + 'Daily'
         obj, _ = PeriodicTask.objects.get_or_create(

@@ -138,8 +138,6 @@ def getactivities(request):
         'date_from': request.POST.get('start_date', None),
         'date_to': request.POST.get('end_date', None)
     }
-    print(context)
-    print(request.method)
     if request.method == "POST":
         start_date = datetime.strptime(context['date_from'], '%Y-%m-%d')
         end_date = datetime.strptime(context['date_to'], '%Y-%m-%d')

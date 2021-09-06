@@ -63,7 +63,7 @@ def formaterror(message):
         return 'unknown error'
 
 
-def get_activities(user=None, start_date = None, end_date = None):
+def get_activities(user=None, start_date=None, end_date=None):
     if start_date is None or end_date is None or user is None:
         return False
     e, access_token = get_token(user=user)
@@ -116,7 +116,8 @@ def get_activities(user=None, start_date = None, end_date = None):
                                 obj.start_date_local = se.get('start_date_local')
                                 obj.distance = se.get('distance')
                                 obj.save()
-            return f"{len(activities)} new activities from {start_date} to {end_date} for {user.username} "
+
+            return f"{len(activities)} new activities for {user.username}, from {datetime.date(start_date)} to {datetime.date(end_date)}  "
     return f"ERROR! User {user.username} - from {start_date} to {end_date}."
 
 
