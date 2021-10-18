@@ -32,7 +32,7 @@ ACTIVITY_ICONS = {
     "NordicSki": "nordicski.png",
     "StandUpPaddling": "StandUpPaddling.png",
     "Kayaking": "Kayaking.png",
-    "Virtual Run": "virtualrun.png"
+    "VirtualRun": "virtualrun.png"
 }
 
 
