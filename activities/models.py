@@ -31,8 +31,10 @@ ACTIVITY_ICONS = {
     "Snowshoe": "snowshoe.png",
     "NordicSki": "nordicski.png",
     "StandUpPaddling": "StandUpPaddling.png",
-    "Kayaking": "Kayaking.png"
+    "Kayaking": "Kayaking.png",
+    "Virtual Run": "virtualrun.png"
 }
+
 
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)

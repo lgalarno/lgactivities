@@ -5,7 +5,7 @@ from django.views.generic import UpdateView
 from allauth.socialaccount.models import SocialAccount
 
 from .models import StravaProfile
-
+from getactivities.models import SyncActivitiesTask, ImportActivitiesTask, Task_log
 # Create your views here.
 
 
@@ -21,8 +21,19 @@ class EditProfile(UpdateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'edit_profile'
-        sau = SocialAccount.objects.get(user_id=self.request.user.pk)
-        sid = StravaProfile.objects.get(user_id=self.request.user.pk)
+        u = self.get_object()
+        # try:
+        #     if u.sync_activities_task.active:
+        #         context['sync'] = SyncActivitiesTask.objects.get(user=u)
+        # except:
+        #     pass
+        # try:
+        #     if u.import_activities_task.active:
+        #         context['import'] = ImportActivitiesTask.objects.get(user=u)
+        # except:
+        #     pass
+        sau = SocialAccount.objects.get(user=u)
+        sid = StravaProfile.objects.get(user=u)
         context['StravaID'] = sau.uid
         context['city'] = sid.city
         context['country'] = sid.country

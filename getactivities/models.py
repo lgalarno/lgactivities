@@ -165,3 +165,16 @@ def set_periodic_task(sender, instance, **kwargs):
         Remove periodic task and we just enabled it.
         '''
         instance.disable_periodic_task(save=False)
+
+
+class Task_log(models.Model):
+    sync_task = models.OneToOneField(to=SyncActivitiesTask,
+                                    on_delete=models.CASCADE,
+                                    blank=True,
+                                    null=True)
+    import_task = models.OneToOneField(to=ImportActivitiesTask,
+                                   on_delete=models.CASCADE,
+                                   blank=True,
+                                   null=True)
+    log = models.CharField(max_length=255, blank=True, null=True)
+
