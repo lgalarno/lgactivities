@@ -1,9 +1,11 @@
 .success {
   color: green;
 }
+
 .error {
   color: red;
 }
+
 footer {
   background-color: #efefef;
   color: black;
@@ -122,6 +124,7 @@ table.dataTable thead .sorting {
 a {
   color: #4d4d4d;
 }
+
 a:hover {
   color: #000000;
 }
@@ -148,4 +151,8 @@ table.dataTable .current_effort {
 
 .avatar_img {
   border-radius: 50%;
+}
+
+hr.lga {
+  border-top: 2px solid #ff8033;
 }

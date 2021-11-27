@@ -15,7 +15,6 @@ from activities.models import Activity
 
 from profiles.models import StravaProfile
 
-# from .forms import GetActivitiesTaskForm
 from .models import ImportActivitiesTask, SyncActivitiesTask
 from .utils import formaterror, get_activities
 

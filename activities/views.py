@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.views.generic import ListView, DetailView
 
-from .models import Activity, SegmentEffort, Map, StaredSegment
+from .models import Activity, SegmentEffort, StaredSegment
 from .utils import update_segment
 
 # Create your views here.

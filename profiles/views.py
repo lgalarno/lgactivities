@@ -5,7 +5,7 @@ from django.views.generic import UpdateView
 from allauth.socialaccount.models import SocialAccount
 
 from .models import StravaProfile
-from getactivities.models import SyncActivitiesTask, ImportActivitiesTask, Task_log
+
 # Create your views here.
 
 
@@ -13,6 +13,7 @@ class EditProfile(UpdateView):
     model = User
     fields = ['email', 'username', 'first_name', 'last_name']
     template_name = 'edit_profile.html'
+    success_message = 'Changes successfully saved'
 
     def get_object(self):
         obj = get_object_or_404(User, pk=self.request.user.pk)

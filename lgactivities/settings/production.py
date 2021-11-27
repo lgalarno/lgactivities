@@ -179,9 +179,9 @@ MEDIA_URL = '/media/'
 STATIC_ROOT = os.getenv('STATIC_ROOT')
 MEDIA_ROOT = os.getenv('MEDIA_ROOT')
 
-LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/calendar/'
-LOGIN_URL = '/accounts/login/'
+LOGIN_URL = '/'
 
 
 # Default primary key field type

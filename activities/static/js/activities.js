@@ -162,8 +162,6 @@ function leafletmap(coord){
     L.marker(beg, {icon: greenIcon}).addTo(map);
     L.marker(end, {icon: redIcon}).addTo(map);
     map.fitBounds(JSON.parse(coord));
-
-
     }
 
 /////////////////////////////////////////////////////////////

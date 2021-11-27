@@ -7,16 +7,6 @@ import datetime
 
 from .tasks import send_email
 
-# ACTIVITY_ICONS = {
-#     "Run": "fas fa-running",
-#     "Ride": "fas fa-biking",
-#     "Workout": "fas fa-dumbbell",
-#     "IceSkate": "fas fa-skating",
-#     "Hike": "fas fa-hiking",
-#     "VirtualRide": "fas fa-biking",
-#     "RollerSki": "",
-# }
-
 icon_path = "images/activity-types/"
 
 ACTIVITY_ICONS = {
@@ -123,7 +113,6 @@ class Segment(models.Model):
 
     def get_all_efforts(self, user=None):
         return self.segmenteffort_set.filter(activity__user=user)
-
 
     def get_stared(self, user=None):
         return self.staredsegment_set.filter(user=user)
