@@ -11,6 +11,7 @@ from allauth.socialaccount.models import SocialApp, SocialToken, SocialAccount
 
 STRAVA_API = settings.STRAVA_API
 
+
 class GetactivitiesTest(TestCase):
 
     def setUp(self):
@@ -46,7 +47,6 @@ class GetactivitiesTest(TestCase):
             token_secret='9a9f6fd4085f126a4e8bc0aafcb634610d1485d9'
         )
         ta.save()
-
 
     def test_date_delta(self):
         u = User.objects.get(username="lgalarneau")

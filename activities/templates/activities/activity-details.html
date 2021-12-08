@@ -18,31 +18,29 @@
             {% endif %}
         </div>
         <div class="col col-md-8">
-
-                <h3>Segment efforts</h3>
-                {% if segments_efforts %}
-                    <div class="table-responsive">
-                        <table class="table"  id="data_table">
-                            <thead>
+            <h3>Segment efforts</h3>
+            {% if segments_efforts %}
+                <div class="table-responsive">
+                    <table class="table"  id="data_table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for effort in segments_efforts %}
                             <tr>
-                                <th scope="col">Name</th>
-                                <th scope="col">Time</th>
+                                <td>
+                                    <a href="{% url "activities:effort_details" pk=effort.id %}" >{{ effort.segment.name }}</a>
+                                </td>
+                                <td>{{ effort.get_time }}</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {% for effort in segments_efforts %}
-                                <tr>
-                                    <td>
-                                        <a href="{% url "activities:effort_details" pk=effort.id %}" >{{ effort.segment.name }}</a>
-                                    </td>
-                                    <td>{{ effort.get_time }}</td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endif %}
-
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
