@@ -40,3 +40,12 @@ DATABASES = {
 
 STATIC_ROOT = os.getenv('STATIC_ROOT')
 MEDIA_ROOT = os.getenv('MEDIA_ROOT')
+
+STRAVA_API = {
+    'name': 'lgactivities',
+    'callback_domain': "lgactivities.lgalarno.ca",
+    'URLS': {
+        'oauth': "https://www.strava.com/oauth/",
+        'athlete': "https://www.strava.com/api/v3/",
+    }
+}
