@@ -148,7 +148,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRAVA_API = {
     'name': 'lgactivities',
-    'callback_domain': "lgactivities.ddnsfree.com",
+    'callback_domain': "lgactivities.lgalarno.ca",
     'URLS': {
         'oauth': "https://www.strava.com/oauth/",
         'athlete': "https://www.strava.com/api/v3/",
