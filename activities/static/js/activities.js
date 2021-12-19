@@ -6,10 +6,6 @@ $(document).ready(
         $('#data_table').DataTable({
                 "dom": 'ltip',
                 "searching": false,
-                "columnDefs": [
-                    { "orderable": false,
-                        "targets": 0 }
-                ]
             }
         );
     }

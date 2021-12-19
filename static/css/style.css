@@ -9,13 +9,13 @@
 
 /* dataTable*/
 table.dataTable thead .sorting_asc {
-  background: url("https://cdn.datatables.net/1.10.24/images/sort_asc.png") no-repeat center left;
+  background: url("../css/datatables/images/sort_asc.png") no-repeat center left;
 }
 table.dataTable thead .sorting_desc {
-  background: url("https://cdn.datatables.net/1.10.24/images/sort_desc.png") no-repeat center left;
+  background: url("../css/datatables/images/sort_desc.png") no-repeat center left;
 }
 table.dataTable thead .sorting {
-  background: url("https://cdn.datatables.net/1.10.24/images/sort_both.png") no-repeat center left;
+  background: url("../css/datatables/images/sort_both.png") no-repeat center left;
 }
 table.dataTable .current_effort {
   background: #ccffff;
