@@ -1,10 +1,10 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.contrib.auth.models import User
 from django.conf import settings
 from dateutil.relativedelta import relativedelta
 
-from .models import FetchActivitiesTask
-from .tasks import fetchactivities_task
+from .models import SyncActivitiesTask
+from .tasks import get_activities_task, add
 
 from allauth.socialaccount.models import SocialApp, SocialToken, SocialAccount
 # Create your tests here.
@@ -18,7 +18,7 @@ class GetactivitiesTest(TestCase):
         u = User.objects.create(username="lgalarneau")
         u.save()
 
-        FetchActivitiesTask.objects.create(
+        SyncActivitiesTask.objects.create(
             user=u,
             start_date="2021-08-17T02:35:14Z",
             end_date="2021-08-21T02:35:14Z",
@@ -50,7 +50,7 @@ class GetactivitiesTest(TestCase):
 
     def test_date_delta(self):
         u = User.objects.get(username="lgalarneau")
-        gettask, created = FetchActivitiesTask.objects.get_or_create(user=u)
+        gettask, created = SyncActivitiesTask.objects.get_or_create(user=u)
         self.assertFalse(created)
 
         sa = SocialAccount.objects.get(user=u)
@@ -62,8 +62,12 @@ class GetactivitiesTest(TestCase):
         ta = SocialToken.objects.get(app=sap)
         self.assertEqual(ta.app, sap)
 
-        gat = fetchactivities_task(user=u)
-        self.assertTrue(gat)
+        gati = get_activities_task(user=u.id, get_type="import")
+        self.assertTrue(gati)
+
+        gats = get_activities_task(user=u.id, get_type="sync")
+        self.assertTrue(gats)
+
 
 # class GetTaskTest(TestCase):
 #
@@ -73,3 +77,10 @@ class GetactivitiesTest(TestCase):
 #
 #     def test_date_delta(self):
 #         u = User.objects.get(username="lgalarneau")
+
+
+class MyTest(TestCase):
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    def test_foo(self):
+        self.assertTrue(add.delay(5, 5))
