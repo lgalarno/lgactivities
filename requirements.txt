@@ -25,7 +25,7 @@ djangorestframework==3.12.4
 fontawesome-free==5.15.3
 gevent==21.8.0
 greenlet==1.1.1
-idna==3.2
+idna==2.10
 importlib-metadata==4.6.3
 kombu==5.1.0
 oauthlib==3.1.0

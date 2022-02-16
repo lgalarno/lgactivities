@@ -1,10 +1,12 @@
-import os
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+######################################################################
 # Application definition
+######################################################################
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -60,9 +62,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'lgactivities.wsgi.application'
 
+######################################################################
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
-
+######################################################################
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -78,9 +81,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+######################################################################
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
+######################################################################
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -91,15 +95,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-# django-allauth
-SITE_ID = 1
 
+######################################################################
+# django-allauth
+######################################################################
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+SITE_ID = 1
 
 # Provider specific local
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -125,25 +132,31 @@ SOCIALACCOUNT_PROVIDERS = {'strava': {
     }
 }
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+######################################################################
+# LOGIN/LOGOUT REDIRECT
+######################################################################
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/calendar/'
+LOGIN_URL = '/'
 
+######################################################################
+# CRISPY_FORMS
+######################################################################
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+use_custom_control = True
+
+######################################################################
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+######################################################################
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/calendar/'
-LOGIN_URL = '/'
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
@@ -153,11 +166,3 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
-
-FROM_EMAIL = os.getenv('FROM_EMAIL')
-EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
-
-CELERY_BROKER_URL = os.getenv('RABBITMQ_URL')
-CELERY_RESULT_BACKEND = "django-db"
-CELERY_WORKER_POOL = "solo"
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

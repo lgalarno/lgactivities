@@ -21,9 +21,10 @@ DEBUG = bool(int(os.getenv('DEBUG', False)))
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') if os.getenv('ALLOWED_HOSTS') else []
 
+######################################################################
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
+######################################################################
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DATABASE_ENGINE'),
@@ -38,9 +39,16 @@ DATABASES = {
     },
 }
 
+######################################################################
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.2/howto/static-files/
+######################################################################
 STATIC_ROOT = os.getenv('STATIC_ROOT')
 MEDIA_ROOT = os.getenv('MEDIA_ROOT')
 
+######################################################################
+# STRAVA_API
+######################################################################
 STRAVA_API = {
     'name': os.getenv('STRAVA_API_NAME'),
     'callback_domain': os.getenv('STRAVA_callback_domain'),
@@ -49,3 +57,14 @@ STRAVA_API = {
         'athlete': "https://www.strava.com/api/v3/",
     }
 }
+
+FROM_EMAIL = os.getenv('FROM_EMAIL')
+EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
+
+######################################################################
+# CELERY
+######################################################################
+CELERY_BROKER_URL = os.getenv('RABBITMQ_URL')
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_WORKER_POOL = "solo"
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

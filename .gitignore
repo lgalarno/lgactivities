@@ -2,7 +2,7 @@ db.sqlite3
 *.pyc
 staticfiles
 .idea
-.env.*
+.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -111,4 +111,4 @@ venv.bak/
 /static_dev/
 /media/
 
-/lgactivities/settings/dev.py
+/lgactivities/settings/development.py
