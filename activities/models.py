@@ -1,11 +1,15 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
 from django.shortcuts import reverse
 
+# from profiles.models import User
+
 import datetime
 
 from .tasks import send_email
+
 
 icon_path = "images/activity-types/"
 
@@ -28,7 +32,7 @@ ACTIVITY_ICONS = {
 
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=127, blank=True, null=True)
     icon = models.CharField(max_length=127, blank=True, null=True)
@@ -134,7 +138,7 @@ class Segment(models.Model):
 
 class StaredSegment(models.Model):
     segment = models.ForeignKey(to=Segment, on_delete=models.CASCADE)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.username} - {self.segment.name}"

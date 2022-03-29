@@ -10,10 +10,11 @@ import math
 import requests
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+import pytz
 
 from activities.models import Activity
 
-from profiles.models import StravaProfile
+# from profiles.models import StravaProfile
 
 from .models import ImportActivitiesTask, SyncActivitiesTask
 from .utils import formaterror, get_activities

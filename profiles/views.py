@@ -4,14 +4,14 @@ from django.views.generic import UpdateView
 
 from allauth.socialaccount.models import SocialAccount
 
-from .models import StravaProfile
+from .models import User
 
 # Create your views here.
 
 
 class EditProfile(UpdateView):
     model = User
-    fields = ['email', 'username', 'first_name', 'last_name']
+    fields = ['email', 'username', 'first_name', 'last_name', 'time_zone']
     template_name = 'edit_profile.html'
     success_message = 'Changes successfully saved'
 
@@ -34,12 +34,12 @@ class EditProfile(UpdateView):
         # except:
         #     pass
         sau = SocialAccount.objects.get(user=u)
-        sid = StravaProfile.objects.get(user=u)
+        # sid = StravaProfile.objects.get(user=u)
         context['StravaID'] = sau.uid
-        context['city'] = sid.city
-        context['country'] = sid.country
-        if sid.avatar:
-            context['avatar'] = sid.avatar.url
+        context['city'] = u.city
+        context['country'] = u.country
+        if u.avatar:
+            context['avatar'] = u.avatar.url
         return context
 
     def get_success_url(self):

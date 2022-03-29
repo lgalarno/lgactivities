@@ -1,4 +1,5 @@
-from django.contrib.auth.models import User
+
+from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
 from django_celery_beat.models import (
@@ -8,9 +9,12 @@ from django_celery_beat.models import (
     PeriodicTasks,
 )
 
+# from profiles.models import User
+
 import json
 
 # Create your models here.
+
 
 TASK_FREQUENCY = (
     (1, 'Daily'),
@@ -20,7 +24,7 @@ TASK_FREQUENCY = (
 
 
 class ImportActivitiesTask(models.Model):
-    user = models.OneToOneField(User, related_name="import_activities_task", on_delete=models.CASCADE)
+    user = models.OneToOneField(to=settings.AUTH_USER_MODEL, related_name="import_activities_task", on_delete=models.CASCADE)
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     to_date = models.DateTimeField(blank=True, null=True)
@@ -89,7 +93,7 @@ def set_periodic_task(sender, instance, **kwargs):
 
 
 class SyncActivitiesTask(models.Model):
-    user = models.OneToOneField(User, related_name="sync_activities_task", on_delete=models.CASCADE)
+    user = models.OneToOneField(to=settings.AUTH_USER_MODEL, related_name="sync_activities_task", on_delete=models.CASCADE)
     start_date = models.DateTimeField(blank=True, null=True)
     from_date = models.DateTimeField(blank=True, null=True)
     # end_date = models.DateTimeField(blank=True, null=True)
@@ -105,28 +109,38 @@ class SyncActivitiesTask(models.Model):
         task_name = f'user-{self.user.username}-sync-'
         h = self.start_date.hour
         m = self.start_date.minute
+        # nowfun = lambda: datetime.datetime.now(pytz.timezone('America/Montreal'))
         if self.periodic_task:
             self.disable_periodic_task(save=True)
         if self.frequency == 30:
             schedule, _ = CrontabSchedule.objects.get_or_create(
                 day_of_month=self.start_date.day,
-                hour=h,
-                minute=m
+                # hour=h,
+                # minute=m,
+                # nowfun=nowfun
             )
             task_name = task_name + 'Monthly'
         elif self.frequency == 7:
             schedule, _ = CrontabSchedule.objects.get_or_create(
                 day_of_week=self.start_date.weekday() + 1,  # Monday, 00:00
-                hour=h,
-                minute=m
+                # hour=h,
+                # minute=m,
+                # nowfun=nowfun
             )
             task_name = task_name + 'Weekly'
         elif self.frequency == 1:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                hour=h,
-                minute=m
+                # hour=h,
+                # minute=m,
+                # nowfun=nowfun
             )
             task_name = task_name + 'Daily'
+        schedule.hour = h
+        schedule.minute = m
+        # schedule.nowfun = nowfun
+        #TODO timezone is encoded. Get from user?
+        schedule.timezone = 'Canada/Eastern'
+        schedule.save()
         obj, _ = PeriodicTask.objects.get_or_create(
             kwargs=json.dumps({
                 'user': self.user.pk,
