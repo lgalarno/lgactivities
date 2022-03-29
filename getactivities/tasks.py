@@ -10,15 +10,16 @@ from .utils import get_activities
 STRAVA_API = settings.STRAVA_API
 
 
+# TODO update with from_date to_date
 def _update_task_model(model=None):
     # today = datetime.utcnow().replace(tzinfo=pytz.utc)
     if model.frequency > 7:
-        start_date = model.start_date + relativedelta(months=1)
-        model.end_date = start_date + relativedelta(months=1)
+        from_date = model.from_date + relativedelta(months=1)
+        model.to_date = from_date + relativedelta(months=1)
     else:
-        start_date = model.start_date + relativedelta(days=model.frequency)
-        model.end_date = start_date + relativedelta(days=model.frequency)
-    model.start_date = start_date
+        from_date = model.from_date + relativedelta(days=model.frequency)
+        model.to_date = from_date + relativedelta(days=model.frequency)
+    model.from_date = from_date
     model.save()
 
 
@@ -32,7 +33,7 @@ def get_activities_task(user=None, get_type=None):
             get_task_model = SyncActivitiesTask.objects.get(user=u)
         else:
             return f"ERROR! User {user} task type does not exist."
-        g = get_activities(user=u, start_date=get_task_model.start_date, end_date=get_task_model.end_date)
+        g = get_activities(user=u, start_date=get_task_model.from_date, end_date=get_task_model.to_date)
         _update_task_model(get_task_model)
         return g
     except ImportActivitiesTask.DoesNotExist:

@@ -91,7 +91,9 @@ def set_periodic_task(sender, instance, **kwargs):
 class SyncActivitiesTask(models.Model):
     user = models.OneToOneField(User, related_name="sync_activities_task", on_delete=models.CASCADE)
     start_date = models.DateTimeField(blank=True, null=True)
-    end_date = models.DateTimeField(blank=True, null=True)
+    from_date = models.DateTimeField(blank=True, null=True)
+    # end_date = models.DateTimeField(blank=True, null=True)
+    to_date = models.DateTimeField(blank=True, null=True)
     frequency = models.IntegerField(choices=TASK_FREQUENCY, default=7)
     periodic_task = models.ForeignKey(PeriodicTask, null=True, blank=True, on_delete=models.SET_NULL)
     active = models.BooleanField(default=False)
@@ -101,26 +103,28 @@ class SyncActivitiesTask(models.Model):
 
     def enable_periodic_task(self, save=True):
         task_name = f'user-{self.user.username}-sync-'
+        h = self.start_date.hour
+        m = self.start_date.minute
         if self.periodic_task:
             self.disable_periodic_task(save=True)
         if self.frequency == 30:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                day_of_month=1,
-                hour=0,
-                minute=0
+                day_of_month=self.start_date.day,
+                hour=h,
+                minute=m
             )
             task_name = task_name + 'Monthly'
         elif self.frequency == 7:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                day_of_week=1,  # Monday, 00:00
-                hour=0,
-                minute=0
+                day_of_week=self.start_date.weekday() + 1,  # Monday, 00:00
+                hour=h,
+                minute=m
             )
             task_name = task_name + 'Weekly'
         elif self.frequency == 1:
             schedule, _ = CrontabSchedule.objects.get_or_create(
-                hour=0,
-                minute=0
+                hour=h,
+                minute=m
             )
             task_name = task_name + 'Daily'
         obj, _ = PeriodicTask.objects.get_or_create(

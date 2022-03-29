@@ -37,26 +37,44 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
     def get_form(self):
         form = super().get_form()
         form.fields['start_date'].widget = forms.DateInput(
-            attrs={'type': 'date'}
+            attrs={'type': 'date',
+                   'min': datetime.today().date()
+                   }
         )
         return form
 
     def form_valid(self, form):
         instance = form.save(commit=False)
+        now = datetime.now().replace(microsecond=0)
+        instance.start_date = instance.start_date.combine(instance.start_date, now.time()) + relativedelta(hours=+1)
+        instance.to_date = instance.start_date
         if instance.frequency == 30:
-            instance.start_date = datetime(instance.start_date.year, instance.start_date.month, day=1)
-            instance.end_date = instance.start_date + relativedelta(months=1)
-        else:
-            if instance.frequency == 7:
-                # set the start date to the previous Monday (datetime day 0)
-                d = instance.start_date.weekday()
-                instance.start_date = instance.start_date + relativedelta(days=-d)
-            instance.end_date = instance.start_date + relativedelta(days=instance.frequency)
+            if instance.start_date.day > 28:
+                #TODO send message in js if dom >28 and frequency == 30
+                messages.error(self.request, "Since the day of month is > 28, we adjusted the task to run on the 28th of each month. Note that the next synchronisation will only happen next month. You may want to change the starting date.")
+                sd = instance.start_date + relativedelta(months=+1)
+                instance.start_date = sd.replace(day=28)
+                instance.to_date = instance.start_date
+
+            #instance.start_date = datetime(instance.start_date.year, instance.start_date.month, day=1)
+            instance.from_date = instance.start_date + relativedelta(months=-1)
+            # instance.end_date = instance.start_date + relativedelta(months=1)
+        elif instance.frequency == 7:
+            # set the start date to the previous Monday (datetime day 0)
+            #d = instance.start_date.weekday()
+            #instance.start_date = instance.start_date + relativedelta(days=-d)
+            instance.from_date = instance.start_date + relativedelta(weeks=-1)
+        elif instance.frequency == 1:
+            instance.from_date = instance.start_date + relativedelta(days=-1)
+            # instance.end_date = instance.start_date + relativedelta(days=instance.frequency)
         m = ''
         if instance.active:
-            m = f"The first run is schedule on {instance.end_date.strftime('%Y-%m-%d')} at 00:00h " \
-                f"to get activities from  {instance.start_date.strftime('%Y-%m-%d')} to " \
-                f"{(instance.end_date + relativedelta(days=-1)).strftime('%Y-%m-%d')}"
+            # m = f"The first run is schedule on {instance.end_date.strftime('%Y-%m-%d')} at 00:00h " \
+            #     f"to get activities from  {instance.start_date.strftime('%Y-%m-%d')} to " \
+            #     f"{(instance.end_date + relativedelta(days=-1)).strftime('%Y-%m-%d')}"
+            m = f"The first run is schedule on {instance.start_date.strftime('%Y-%m-%d')} at {instance.start_date.strftime('%H:%M:%S')} " \
+                f"to get activities from {instance.from_date.strftime('%Y-%m-%d')} to " \
+                f"{instance.to_date.strftime('%Y-%m-%d')}"
         messages.success(self.request, f"Your task has been registered. {m}")
         return super().form_valid(form)
 
