@@ -126,6 +126,7 @@ class SyncActivitiesTask(models.Model):
         elif self.frequency == 1:
             schedule = CrontabSchedule()
             descr = descr + f'daily, at '
+        #TODO adjust for tz
         descr = descr + f'{self.start_date.strftime("%H:%M")}'
         schedule.hour = h
         schedule.minute = m
@@ -161,10 +162,10 @@ class SyncActivitiesTask(models.Model):
         obj = PeriodicTask(name=task_name,
                            crontab=schedule,
                            )
-        obj.kwargs=json.dumps({
+        obj.kwargs = json.dumps({
                 'user': self.user.pk,
                 'get_type': 'sync'
-            }),
+            })
         obj.name = task_name
         obj.task = 'getactivities.tasks.get_activities_task'
         obj.description = descr

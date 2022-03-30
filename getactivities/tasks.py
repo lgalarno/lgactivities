@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from celery import shared_task
 from dateutil.relativedelta import relativedelta
@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from .models import ImportActivitiesTask, SyncActivitiesTask
 from .utils import get_activities
 
+User = get_user_model()
 STRAVA_API = settings.STRAVA_API
 
 
