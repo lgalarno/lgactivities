@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
@@ -22,10 +21,10 @@ def upload_location(instance, filename):
 
 class User(AbstractUser):
     TIMEZONES = tuple(zip(pytz.common_timezones, pytz.common_timezones))
-    city        = models.CharField(max_length=120, blank=True, null=True)
-    country     = models.CharField(max_length=120, blank=True, null=True)
+    # city        = models.CharField(max_length=120, blank=True, null=True)
+    # country     = models.CharField(max_length=120, blank=True, null=True)
     time_zone   = models.CharField(max_length=32,  choices=TIMEZONES, default='UTC')
-    avatar_url  = models.URLField(max_length=200, blank=True, null=True)
+    # avatar_url  = models.URLField(max_length=200, blank=True, null=True)
     avatar      = models.ImageField(upload_to=upload_location, null=True, blank=True)
 
     def __str__(self):
@@ -57,11 +56,11 @@ def retrieve_social_data(request, user, **kwargs):
     if sa:
         avatar_url = sa.get_avatar_url()
         profile, created = User.objects.get_or_create(user=user)
-        profile.avatar_url = avatar_url
-        # profile.avatar = get_avatar_from_url(avatar_url)
-        profile.get_avatar_from_url(avatar_url)
-        profile.city = sa.extra_data.get("city")
-        profile.country = sa.extra_data.get("country")
+        # profile.avatar_url = avatar_url
+        profile.avatar = get_avatar_from_url(avatar_url)
+        # profile.get_avatar_from_url(avatar_url)
+        # profile.city = sa.extra_data.get("city")
+        # profile.country = sa.extra_data.get("country")
         profile.save()
         username = sa.extra_data.get("username")
         if (not username == "") and (not username==None):

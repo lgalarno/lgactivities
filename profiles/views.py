@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView
 
@@ -36,8 +35,8 @@ class EditProfile(UpdateView):
         sau = SocialAccount.objects.get(user=u)
         # sid = StravaProfile.objects.get(user=u)
         context['StravaID'] = sau.uid
-        context['city'] = u.city
-        context['country'] = u.country
+        context['city'] = sau.extra_data.get("city")
+        context['country'] = sau.extra_data.get("country")
         if u.avatar:
             context['avatar'] = u.avatar.url
         return context

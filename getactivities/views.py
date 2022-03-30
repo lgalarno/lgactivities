@@ -10,11 +10,9 @@ import math
 import requests
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import pytz
 
 from activities.models import Activity
-
-# from profiles.models import StravaProfile
+from profiles.models import User
 
 from .models import ImportActivitiesTask, SyncActivitiesTask
 from .utils import formaterror, get_activities
@@ -81,7 +79,7 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        sid = StravaProfile.objects.get(user_id=self.request.user.pk)
+        sid = User.objects.get(pk=self.request.user.pk)
         context['title'] = 'get-task'
 
         if sid.avatar:
@@ -123,7 +121,7 @@ class ImportActivitiesTaskView(LoginRequiredMixin, UpdateView):
             if instance.frequency > 7:
                 instance.end_date = instance.start_date + relativedelta(months=1)
                 dt = relativedelta(instance.to_date, instance.start_date)
-                n = dt.years * 12 + dt.months + (dt.days > 0) +1
+                n = dt.years * 12 + dt.months + (dt.days > 0) + 1
             else:
                 instance.end_date = instance.start_date + relativedelta(days=instance.frequency)
                 dt = (instance.to_date - instance.start_date).days
@@ -139,7 +137,8 @@ class ImportActivitiesTaskView(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        sid = StravaProfile.objects.get(user_id=self.request.user.pk)
+        # sid = StravaProfile.objects.get(user_id=self.request.user.pk)
+        sid = User.objects.get(pk=self.request.user.pk)
         context['title'] = 'import-task'
 
         if sid.avatar:

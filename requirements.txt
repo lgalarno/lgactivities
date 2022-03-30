@@ -22,12 +22,15 @@ django-crispy-forms==1.11.2
 django-dotenv==1.4.2
 django-timezone-field==4.2.1
 djangorestframework==3.12.4
+docopt==0.6.2
 fontawesome-free==5.15.3
 gevent==21.8.0
 greenlet==1.1.1
 idna==2.10
 importlib-metadata==4.6.3
 kombu==5.1.0
+mysqlclient==2.1.0
+num2words==0.5.10
 oauthlib==3.1.0
 pathtools==0.1.2
 pika==1.2.0
