@@ -55,12 +55,11 @@ def retrieve_social_data(request, user, **kwargs):
     # check if the user has signed up via social media
     if sa:
         avatar_url = sa.get_avatar_url()
-        profile, created = User.objects.get_or_create(user=user)
+        #profile, created = User.objects.get_or_create(user=user.username)
+        profile = User.objects.get(username=user.username)
         profile.avatar_url = avatar_url
         # profile.avatar = profile.get_avatar_from_url(avatar_url)
         profile.get_avatar_from_url(avatar_url)
-        # profile.city = sa.extra_data.get("city")
-        # profile.country = sa.extra_data.get("country")
         profile.save()
         username = sa.extra_data.get("username")
         if (not username == "") and (not username==None):
