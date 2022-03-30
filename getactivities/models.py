@@ -156,7 +156,8 @@ class SyncActivitiesTask(models.Model):
 
         # delete old crontab
         ct = self.crontab
-        ct.delete()
+        if ct:
+            ct.delete()
         obj = PeriodicTask(name=task_name,
                            crontab=schedule,
                            )
