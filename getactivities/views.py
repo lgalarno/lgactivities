@@ -67,14 +67,14 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
             instance.from_date = instance.start_date + relativedelta(days=-1)
             # instance.end_date = instance.start_date + relativedelta(days=instance.frequency)
         m = ''
-        if instance.active:
-            # m = f"The first run is schedule on {instance.end_date.strftime('%Y-%m-%d')} at 00:00h " \
-            #     f"to get activities from  {instance.start_date.strftime('%Y-%m-%d')} to " \
-            #     f"{(instance.end_date + relativedelta(days=-1)).strftime('%Y-%m-%d')}"
-            m = f"The first run is schedule on {instance.start_date.strftime('%Y-%m-%d')} at {instance.start_date.strftime('%H:%M:%S')} " \
-                f"to get activities from {instance.from_date.strftime('%Y-%m-%d')} to " \
-                f"{instance.to_date.strftime('%Y-%m-%d')}"
-        messages.success(self.request, f"Your task has been registered. {m}")
+        # if instance.active:
+        #     # m = f"The first run is schedule on {instance.end_date.strftime('%Y-%m-%d')} at 00:00h " \
+        #     #     f"to get activities from  {instance.start_date.strftime('%Y-%m-%d')} to " \
+        #     #     f"{(instance.end_date + relativedelta(days=-1)).strftime('%Y-%m-%d')}"
+        #     m = f"The first run is schedule on {instance.start_date.strftime('%Y-%m-%d')} at {instance.start_date.strftime('%H:%M:%S')} " \
+        #         f"to get activities from {instance.from_date.strftime('%Y-%m-%d')} to " \
+        #         f"{instance.to_date.strftime('%Y-%m-%d')}"
+        messages.success(self.request, f"Your task has been saved.")  # {m}")
         return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):

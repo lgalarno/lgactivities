@@ -11,7 +11,6 @@ User = get_user_model()
 STRAVA_API = settings.STRAVA_API
 
 
-# TODO update with from_date to_date
 def _update_task_model(model=None):
     # today = datetime.utcnow().replace(tzinfo=pytz.utc)
     if model.frequency > 7:

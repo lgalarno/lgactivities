@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView
 
@@ -17,6 +18,10 @@ class EditProfile(UpdateView):
     def get_object(self):
         obj = get_object_or_404(User, pk=self.request.user.pk)
         return obj
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Your profile has been saved.")  # {m}")
+        return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)

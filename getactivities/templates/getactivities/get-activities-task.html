@@ -6,15 +6,21 @@
 
 {% block content %}
     <div class="row justify-content-md-center">
-        <div class="col col-lg-4">
-            <h3>Task to automate the synchronisation of your new activities stored in Strava.</h3>
+        <div class="col col-lg-5" >
+            <h3>Task to automate the synchronisation of your new activities in Strava.</h3>
             <p>Enter the start date and the frequency to lookup for your activities stored on
                 Strava. Use the "Active" checkbox to indicate if you want the task to run or not.</p>
         </div>
-        <div class="col col-lg-4">
+        <div class="col col-lg-5">
             {% if object.from_date %}
-                <h3>Current task</h3>
-                <h4>{{ object.periodic_task.description }}</h4>
+                <div style="border-style: solid; border-radius: 10px;padding: 10px;">
+                    <h3>Current task</h3>
+                    <p>{{ object.periodic_task.description }}</p>
+                    <p>Next run is schedule for <b>{{ object.to_date }}</b> to get activities from <b>{{ object.from_date.date }}</b> to <b>{{ object.to_date.date }}</b></p>
+                    {% if not object.active %}
+                        <p><i>The task is currently inactive</i></p>
+                    {% endif %}
+                </div>
             {% else %}
                 <h4>Create a new task</h4>
             {% endif %}
