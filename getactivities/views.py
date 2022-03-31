@@ -4,9 +4,11 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.views.generic import UpdateView
 
 import math
+import pytz
 import requests
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -44,8 +46,8 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         instance = form.save(commit=False)
-        now = datetime.now().replace(microsecond=0)
-        instance.start_date = instance.start_date.combine(instance.start_date, now.time()) + relativedelta(hours=+1)
+        now = timezone.now().replace(microsecond=0)  # datetime.now().replace(microsecond=0)
+        instance.start_date = timezone.make_aware(instance.start_date.combine(instance.start_date, now.time()) + relativedelta(hours=+1))
         instance.to_date = instance.start_date
         if instance.frequency == 30:
             if instance.start_date.day > 28:

@@ -7,6 +7,9 @@ from django_celery_beat.models import (
     PeriodicTask,
     PeriodicTasks,
 )
+from django.utils import timezone
+
+import pytz
 
 from num2words import num2words
 import json
@@ -126,13 +129,13 @@ class SyncActivitiesTask(models.Model):
         elif self.frequency == 1:
             schedule = CrontabSchedule()
             descr = descr + f'daily, at '
-        #TODO adjust for tz
-        descr = descr + f'{self.start_date.strftime("%H:%M")}'
         schedule.hour = h
         schedule.minute = m
         tz = self.user.time_zone
         if not tz:
             tz = 'UTC'
+        sd = timezone.localtime(self.start_date, pytz.timezone(tz))
+        descr = descr + f'{sd.strftime("%H:%M")}'
         schedule.timezone = tz
         schedule.save()
 
