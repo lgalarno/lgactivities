@@ -26,8 +26,10 @@ TASK_FREQUENCY = (
 class ImportActivitiesTask(models.Model):
     user = models.OneToOneField(to=settings.AUTH_USER_MODEL, related_name="import_activities_task",
                                 on_delete=models.CASCADE)
+    description = models.CharField(max_length=255, blank=True, null=True)
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
+    from_date = models.DateTimeField(blank=True, null=True)
     to_date = models.DateTimeField(blank=True, null=True)
     frequency = models.IntegerField(choices=TASK_FREQUENCY[1:3], default=30)
     n_intervals = models.IntegerField(blank=True, null=True)
@@ -44,16 +46,16 @@ class ImportActivitiesTask(models.Model):
                 every=1,
                 period='hours'
             )
-            obj, _ = PeriodicTask.objects.get_or_create(
+            obj = PeriodicTask(
                 interval=schedule,
                 kwargs=json.dumps({
                     'user': self.user.pk,
                     'get_type': 'import'
                 }),
                 name=task_name,
-                task='getactivities.tasks.get_activities_task'
+                task='getactivities.tasks.get_activities_task',
+                enabled=True
             )
-            obj.enabled = True
             obj.save()
             PeriodicTasks.update_changed()
             self.periodic_task = obj
@@ -75,9 +77,10 @@ class ImportActivitiesTask(models.Model):
 @receiver(models.signals.pre_save, sender=ImportActivitiesTask)
 def set_periodic_task(sender, instance, **kwargs):
     """
+    enable or disable periodic_task when a ImportActivitiesTask instance is saved
     """
     if instance.active:
-        if instance.start_date > instance.to_date:
+        if instance.from_date > instance.to_date:
             instance.active = False
 
     if instance.active and not instance.periodic_task:
@@ -112,7 +115,7 @@ class SyncActivitiesTask(models.Model):
         if self.periodic_task:
             self.disable_periodic_task(save=True)
         task_name = f'{self.user.username}-sync'
-        descr = task_name + f" will run "
+        descr = f"The task {task_name} will run "
         h = self.start_date.hour
         m = self.start_date.minute
         if self.frequency == 30:
@@ -164,15 +167,14 @@ class SyncActivitiesTask(models.Model):
             ct.delete()
         obj = PeriodicTask(name=task_name,
                            crontab=schedule,
+                           kwargs=json.dumps({
+                               'user': self.user.pk,
+                               'get_type': 'sync'
+                           }),
+                           task='getactivities.tasks.get_activities_task',
+                           description=descr,
+                           enabled=True
                            )
-        obj.kwargs = json.dumps({
-                'user': self.user.pk,
-                'get_type': 'sync'
-            })
-        obj.name = task_name
-        obj.task = 'getactivities.tasks.get_activities_task'
-        obj.description = descr
-        obj.enabled = True
         obj.save()
         self.periodic_task = obj
         self.crontab = schedule

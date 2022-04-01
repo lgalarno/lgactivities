@@ -29,6 +29,7 @@ def get_activities_task(user=None, get_type=None):
         u = User.objects.get(pk=user)
         if get_type == 'import':
             get_task_model = ImportActivitiesTask.objects.get(user=u)
+            get_task_model.n_intervals -= 1
         elif get_type == 'sync':
             get_task_model = SyncActivitiesTask.objects.get(user=u)
         else:

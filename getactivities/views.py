@@ -8,8 +8,8 @@ from django.utils import timezone
 from django.views.generic import UpdateView
 
 import math
-import pytz
 import requests
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
@@ -59,7 +59,6 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
 
             #instance.start_date = datetime(instance.start_date.year, instance.start_date.month, day=1)
             instance.from_date = instance.start_date + relativedelta(months=-1)
-            # instance.end_date = instance.start_date + relativedelta(months=1)
         elif instance.frequency == 7:
             # set the start date to the previous Monday (datetime day 0)
             #d = instance.start_date.weekday()
@@ -68,7 +67,7 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
         elif instance.frequency == 1:
             instance.from_date = instance.start_date + relativedelta(days=-1)
             # instance.end_date = instance.start_date + relativedelta(days=instance.frequency)
-        m = ''
+        # m = ''
         # if instance.active:
         #     # m = f"The first run is schedule on {instance.end_date.strftime('%Y-%m-%d')} at 00:00h " \
         #     #     f"to get activities from  {instance.start_date.strftime('%Y-%m-%d')} to " \
@@ -76,7 +75,7 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
         #     m = f"The first run is schedule on {instance.start_date.strftime('%Y-%m-%d')} at {instance.start_date.strftime('%H:%M:%S')} " \
         #         f"to get activities from {instance.from_date.strftime('%Y-%m-%d')} to " \
         #         f"{instance.to_date.strftime('%Y-%m-%d')}"
-        messages.success(self.request, f"Your task has been saved.")  # {m}")
+        messages.success(self.request, "The task has been saved.")  # {m}")
         return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
@@ -95,22 +94,24 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
 class ImportActivitiesTaskView(LoginRequiredMixin, UpdateView):
     model = ImportActivitiesTask
     template_name = 'getactivities/import-activities-task.html'
-    fields = ['start_date', 'to_date', 'frequency', 'active']
+    fields = ['start_date', 'end_date', 'frequency', 'active']
 
     def get_object(self):
         obj, created = ImportActivitiesTask.objects.get_or_create(user=self.request.user)
         if created:
-            obj.to_date = datetime.today().date()
+            obj.end_date = datetime.today().date()
             obj.start_date = datetime.today().date()
         return obj
-
+    #TODO warning in js when start date > end date
     def get_form(self):
         form = super().get_form()
         form.fields['start_date'].widget = forms.DateInput(
-            attrs={'type': 'date'}
+            attrs={'type': 'date',
+                   'max': datetime.today().date()},
         )
-        form.fields['to_date'].widget = forms.DateInput(
-            attrs={'type': 'date'}
+        form.fields['end_date'].widget = forms.DateInput(
+            attrs={'type': 'date',
+                   'max': datetime.today().date()}
         )
         return form
 
@@ -120,26 +121,31 @@ class ImportActivitiesTaskView(LoginRequiredMixin, UpdateView):
             form.add_error('start_date', 'The Start date should be before the To date')
             return self.form_invalid(form)
         else:
+            instance.from_date = instance.start_date
             if instance.frequency > 7:
-                instance.end_date = instance.start_date + relativedelta(months=1)
-                dt = relativedelta(instance.to_date, instance.start_date)
+                instance.to_date = instance.from_date + relativedelta(months=1)
+                dt = relativedelta(instance.end_date, instance.start_date)
                 n = dt.years * 12 + dt.months + (dt.days > 0) + 1
+                f = "monthly"
             else:
-                instance.end_date = instance.start_date + relativedelta(days=instance.frequency)
-                dt = (instance.to_date - instance.start_date).days
+                instance.to_date = instance.from_date + relativedelta(days=instance.frequency)
+                dt = (instance.end_date - instance.start_date).days
                 n = math.ceil(dt / 7) + 1
+                if instance.frequency == 1:
+                    f = "daily"
+                elif instance.frequency == 7:
+                    f = "weekly"
 
-            #dt = relativedelta(instance.to_date, instance.start_date)
+            sd = instance.start_date.date()
+            ed = instance.end_date.date()
+            instance.description = f"Task to get your Strava activities from {sd} to {ed} in {f} steps."
             instance.n_intervals = n
-            m = f'Your data will be available in {n} hours'
-            if not instance.active:
-                m = m + ' when active'
-            messages.success(self.request, m)
+            messages.success(self.request, 'The task has been saved')
+
         return super().form_valid(form)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        # sid = StravaProfile.objects.get(user_id=self.request.user.pk)
         sid = User.objects.get(pk=self.request.user.pk)
         context['title'] = 'import-task'
 
