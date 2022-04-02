@@ -51,8 +51,7 @@ class SyncActivitiesTaskView(LoginRequiredMixin, UpdateView):
         instance.to_date = instance.start_date
         if instance.frequency == 30:
             if instance.start_date.day > 28:
-                #TODO send message in js if dom >28 and frequency == 30
-                messages.error(self.request, "Since the day of month is > 28, we adjusted the task to run on the 28th of each month. Note that the next synchronisation will only happen next month. You may want to change the starting date.")
+                messages.error(self.request, "Since the day of month is greater than 28, we adjusted the task to run on the 28th of each month. Note that the next synchronisation will only happen next month. You may want to change the starting date.")
                 sd = instance.start_date + relativedelta(months=+1)
                 instance.start_date = sd.replace(day=28)
                 instance.to_date = instance.start_date
