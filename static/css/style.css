@@ -33,25 +33,31 @@ table.dataTable .current_effort {
   margin: auto;
   font-size: 12px;
   color: #ff8033;
-
+  border-collapse:separate;
+/*  border: solid black 1px;
+  border-radius:10px;*/
+  border-spacing: 2px;
 }
 
-.calendar tr, .calendar td {
+/*.calendar tr, .calendar td {
   border: 1px solid black;
-}
+}*/
 
 .calendar th {
   padding: 10px;
   text-align: center;
   font-size: 16px;
-  /*background: #ccffff;*/
-  background: white;
+  background: #262626;
+  border-radius:10px;
+/*  background: #f2f2f2;*/
+/*  background: white;*/
 }
 
 .calendar td {
   width: 180px;
   height: 100px;
   padding: 20px 0px 0px 5px;
+  border-radius:10px;
 }
 
 .month {
@@ -60,17 +66,18 @@ table.dataTable .current_effort {
 .year {
   font-size: 25px;
   color: black;
+  display:inline;
 }
 .date {
   font-size: 16px;
 }
 
 .has_date {
-  background: #f2f2f2;;
+  background: #f2f2f2;
 }
 
 .has_no_date {
-  background: #d9d9d9;
+  background: white;
 }
 
 .calendar ul {
@@ -130,7 +137,7 @@ footer {
   color: black;
 }
 a {
-  color: #4d4d4d;
+  color: #666666;
 }
 a:hover {
   color: #000000;
@@ -146,13 +153,21 @@ a:hover {
 }
 
 /* LGA colors */
-.lga {
+/*.lga {
   background-color: #ff8033;
+}*/
+
+.lga {
+  border-top: 3px solid #ff8033;
+  box-shadow: 0 2px 2px 0 rgb(0, 0, 0, 0.15);
 }
 
 hr.lga {
   border-top: 1px solid #ff8033;
+  box-shadow:0px 1px 4px #ff8033;
+  opacity: 0.5;
 }
+
 /* Strava colors */
 .strava_link {
   color: #FC4C02;

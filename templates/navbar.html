@@ -42,6 +42,7 @@
             </ul>
         {% endif %}
         <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% if user.avatar %}
@@ -51,20 +52,22 @@
                     {% endif %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'getactivities:getactivities' %}"><i class="far fa-calendar-plus"></i> Get activities </a>
                     <a class="dropdown-item" href="{% url 'profiles:EditProfile' %}"><i class="far fa-id-card"></i> Profile</a>
                     <a class="dropdown-item" href="{% url 'account_logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </div>
             </li>
+         {% endif %}
             <li class="nav nav-item">
                 <a class="nav-link" href=
                 {% if not request.user.is_authenticated and not "login" in request.get_full_path %}
-                    "/accounts/strava/login/?process=login">Log in with Strava
+                    "/accounts/strava/login/?process=login"> <img src="{% static 'images/Strava/btn_strava_connectwith_orange.png' %}" class="d-inline-block" alt="Connect with Strava">
                 {% else %}
-                    "https://www.strava.com/">
+                     "https://www.strava.com/" target="_blank" rel="noopener noreferrer"> <img src="{% static 'images/Strava/api_logo_pwrdBy_strava_stack_light.png' %}" width="111" height="48" class="d-inline-block" alt="Powered by Strava">
                 {% endif %}
-                <img src="{% static 'images/Strava/api_logo_pwrdBy_strava_stack_white.png' %}" width="93" height="40" class="d-inline-block" alt="Powered by Strava">
                 </a>
             </li>
+
         </ul>
     </div>
 </nav>

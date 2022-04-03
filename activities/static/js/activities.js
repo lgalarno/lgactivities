@@ -85,9 +85,12 @@ $(function() {
                             color: 'rgb(255, 0, 0)',
                             width: 1,
                             dash:'dot'
-                        }
+                        },
                    }
                    ],
+                xaxis:{
+                    autorange: true
+                },
                 showlegend: false
             };
             Plotly.newPlot(segment_data_endpoint, data, layout, {responsive: true});

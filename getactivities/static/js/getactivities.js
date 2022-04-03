@@ -5,7 +5,7 @@ $(function() {
     /////////////////////////////////////////////////////////////
     // Waiting button
     /////////////////////////////////////////////////////////////
-    function waiting_js(form) // Submit button clicked
+    function waiting_js(get_act_form) // Submit button clicked
     {
         var icnDownload = document.getElementById("icnDownload");
         form.btnDownload.value = "Please wait...";
@@ -23,30 +23,28 @@ $(function() {
     var frequencSelectValue = frequencSelect.value
     var startDateDate = new Date(startDate.value);
     var day = startDateDate.getUTCDate();
-    warning_day_28_js();
+    warning_day_28(frequencSelectValue, day);
 
     frequencSelect.addEventListener(`change`, (e) => {
         const select = e.target;
         frequencSelectValue = select.value;
-        warning_day_28_js();
+        warning_day_28(frequencSelectValue, day);
     });
 
     startDate.addEventListener(`change`, (e) => {
         const select = e.target;
         startDateDate = new Date(select.value);
         day = startDateDate.getUTCDate();
-        warning_day_28_js();
+        warning_day_28(frequencSelectValue, day);
     });
 
-    function warning_day_28_js()
+    function warning_day_28(f, d)
     {
         var alert_box_display = document.getElementById("alert_box");
-        if (frequencSelectValue == 30 && day > 28) {
+        if (f == 30 && d > 28) {
             $(alert_box_display).show();
-            console.log(`gotcha!`);
         } else {
             $(alert_box_display).hide();
-            console.log(`OK!`);
         };
     };
 });

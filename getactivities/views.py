@@ -101,7 +101,6 @@ class ImportActivitiesTaskView(LoginRequiredMixin, UpdateView):
             obj.end_date = datetime.today().date()
             obj.start_date = datetime.today().date()
         return obj
-    #TODO warning in js when start date > end date
     def get_form(self):
         form = super().get_form()
         form.fields['start_date'].widget = forms.DateInput(

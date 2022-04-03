@@ -11,7 +11,7 @@
             <h4>Select a date range:</h4>
         </div>
         <div class="col col-lg-3">
-            <form action="{% url 'getactivities:getactivities' %}" method="POST" id="form" onsubmit="return waiting_js(this);" >
+            <form action="{% url 'getactivities:getactivities' %}" method="POST" id="get_act_form" onsubmit="return waiting_js(this);" >
                 {% csrf_token %}
                 <div class="form-group">
                     <label class="col-form-label" for="start">Start Date </label>
