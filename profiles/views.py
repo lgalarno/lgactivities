@@ -1,59 +1,50 @@
-from django.contrib.auth.models import User
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView
 
 from allauth.socialaccount.models import SocialAccount
 
-from .models import StravaProfile
-from .forms import UserProfileForm, StravaProfileForm
+from .models import User
 
 # Create your views here.
 
 
 class EditProfile(UpdateView):
     model = User
-    # form_class = UserProfileForm
-    fields = ['email', 'username', 'first_name', 'last_name']
+    fields = ['email', 'username', 'first_name', 'last_name', 'time_zone']
     template_name = 'edit_profile.html'
+    success_message = 'Changes successfully saved'
 
     def get_object(self):
         obj = get_object_or_404(User, pk=self.request.user.pk)
         return obj
 
+    def form_valid(self, form):
+        messages.success(self.request, f"Your profile has been saved.")  # {m}")
+        return super().form_valid(form)
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'edit_profile'
-        sau = SocialAccount.objects.get(user_id=self.request.user.pk)
-        sid = StravaProfile.objects.get(user_id=self.request.user.pk)
+        u = self.get_object()
+        # try:
+        #     if u.sync_activities_task.active:
+        #         context['sync'] = SyncActivitiesTask.objects.get(user=u)
+        # except:
+        #     pass
+        # try:
+        #     if u.import_activities_task.active:
+        #         context['import'] = ImportActivitiesTask.objects.get(user=u)
+        # except:
+        #     pass
+        sau = SocialAccount.objects.get(user=u)
+        # sid = StravaProfile.objects.get(user=u)
         context['StravaID'] = sau.uid
-        context['city'] = sid.city
-        context['country'] = sid.country
-        if sid.avatar:
-            context['avatar'] = sid.avatar.url
+        context['city'] = sau.extra_data.get("city")
+        context['country'] = sau.extra_data.get("country")
+        if u.avatar:
+            context['avatar'] = u.avatar.url
         return context
 
     def get_success_url(self):
         return '/profile/edit/'
-
-
-# def edit_profile(request):
-#     u = get_object_or_404(User, pk=request.user.pk)
-#     sau = get_object_or_404(SocialAccount, user_id=request.user.pk)
-#     context = {
-#         "title": "-edit_profile",
-#         "StravaID": sau.uid}
-#     if request.method == 'POST':
-#         user_form = UserProfileForm(request.POST, instance=u)
-#         strava_form = StravaProfileForm(request.POST, instance=u.user)
-#         if user_form.is_valid() and strava_form.is_valid():
-#             user_form.save()
-#             strava_form.save()
-#             messages.success(request, 'Profile has been updated.')
-#         context["user_profile_form"] = user_form
-#         context["strava_profile_form"] = strava_form
-#         return render(request, 'edit_profile.html', context)
-#
-#     context["user_profile_form"] = UserProfileForm(instance=u)
-#     context["strava_profile_form"] = StravaProfileForm(instance=u.user)
-#     return render(request, 'edit_profile.html', context)

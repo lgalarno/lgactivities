@@ -1,26 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-{% include 'header.html' %}
-<header>
-    <title>LGActivities {% block title %}{% endblock %}</title>
-</header>
 
-<body>
-    {% include 'navbar.html' %}
+    {% include 'header.html' %}
 
-    <main role="main" class="container-fluid">
-        <br>
-        {% include 'messages_display.html' %}
+    <body>
+        {% include 'navbar.html' %}
+{#        <hr class="lgb">#}
+        <main role="main">
+            <div class="container-fluid">
+                <br>
+                {% include 'messages_display.html' %}
 
-        {% block content %}
-        {% endblock content %}
+                {% block content %}
+                {% endblock content %}
+                <br>
+            </div>
+        </main> <!-- /container -->
 
-    </main> <!-- /container -->
+        {% include 'footer.html' %}
 
-    {% include 'footer.html' %}
+        {% include 'js.html' %}
 
-    {% block js %}
-    {% endblock js %}
+        {% block js %}{% endblock js %}
 
-</body>
+    </body>
 </html>

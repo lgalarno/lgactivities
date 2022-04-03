@@ -1,21 +1,14 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.dispatch import receiver
 from django.shortcuts import reverse
 
+# from profiles.models import User
+
 import datetime
 
-from .utils import send_email
+from .tasks import send_email
 
-# ACTIVITY_ICONS = {
-#     "Run": "fas fa-running",
-#     "Ride": "fas fa-biking",
-#     "Workout": "fas fa-dumbbell",
-#     "IceSkate": "fas fa-skating",
-#     "Hike": "fas fa-hiking",
-#     "VirtualRide": "fas fa-biking",
-#     "RollerSki": "",
-# }
 
 icon_path = "images/activity-types/"
 
@@ -27,18 +20,21 @@ ACTIVITY_ICONS = {
     "Hike": "hiking.png",
     "VirtualRide": "virtualride.png",
     "RollerSki": "rollerski.png",
+    "InlineSkate": "InlineSkate.png",
     "Snowshoe": "snowshoe.png",
-    "NordicSki": "nordicski.png"
+    "NordicSki": "nordicski.png",
+    "StandUpPaddling": "StandUpPaddling.png",
+    "Kayaking": "Kayaking.png",
+    "VirtualRun": "virtualrun.png"
 }
+
 
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    type = models.CharField(max_length=127)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, blank=True, null=True)
+    type = models.CharField(max_length=127, blank=True, null=True)
     icon = models.CharField(max_length=127, blank=True, null=True)
-    start_lat = models.FloatField(blank=True, null=True)
-    start_lng = models.FloatField(blank=True, null=True)
     start_date = models.DateTimeField(blank=True, null=True)
     start_date_local = models.DateTimeField(blank=True, null=True)
 
@@ -57,27 +53,6 @@ class Activity(models.Model):
     def get_date(self, *args, **kwargs):
         return self.start_date_local.strftime("%m/%d/%Y")
 
-    #TODO keep or remove?
-    def get_type_icon(self):
-        type_icon = ACTIVITY_ICONS.get(self.type)
-        if type_icon is not None:
-            self.icon = icon_path + type_icon
-        else:
-            mail_subject = 'lgactivities - New activity type'
-            mail_body = f"""
-            A new activity type was entered into the database of lgactivities and will require a new icon:
-
-            Activity type: {self.type}
-            Activity ID: {self.id}
-            user: {self.user}
-
-            This email was sent by lgactivities.
-            """
-            send_email(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
-            self.icon = ""
-        self.save()
-        return self.icon
-
     @property
     def get_html_url(self):
         url = reverse('activities:activity-details', args=(self.id,))
@@ -91,33 +66,36 @@ class Activity(models.Model):
 @receiver(models.signals.pre_save, sender=Activity)
 def get_type_icon(sender, instance, **kwargs):
     """
+    Task to send an e-mail notification when a new activity type is created.
+    And administrator will have to update ACTIVITY_ICONS accordingly
     """
     type = instance.type
-    i = ACTIVITY_ICONS.get(type)
-    if i is not None:
-        instance.icon = icon_path + ACTIVITY_ICONS.get(type)
+    if type == "" or type is None:
+        pass
     else:
-        mail_subject = 'lgactivities - New activity type'
-        mail_body = f"""
-        A new activity type was entered into the database of lgactivities and will require a new icon:
-        
-        Activity type: {type}
-        Activity ID: {instance.id}
-        user: {instance.user}
-        
-        This email was sent by lgactivities.
-        """
-        send_email(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
-        instance.icon = ""
-    return instance
+        i = ACTIVITY_ICONS.get(type)
+        if i is not None:
+            instance.icon = icon_path + i
+        else:
+            mail_subject = 'lgactivities - New activity type'
+            mail_body = f"""
+            A new activity type was entered into the database of lgactivities and will require a new icon:
+
+            Activity type: {type}
+            Activity ID: {instance.id}
+            user: {instance.user}
+
+            This email was sent by lgactivities.
+            """
+            send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+            instance.icon = ""
+            # instance.icon = 'email'
 
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
 class Segment(models.Model):
     id = models.BigIntegerField(primary_key=True)
-    name = models.CharField(max_length=255)
-    start_lat = models.FloatField(blank=True, null=True)
-    start_lng = models.FloatField(blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True, null=True)
     updated = models.DateTimeField(blank=True, null=True)
     kom = models.CharField(max_length=20, blank=True, null=True)
     qom = models.CharField(max_length=20, blank=True, null=True)
@@ -126,24 +104,18 @@ class Segment(models.Model):
         return self.name
 
     def update_from_strava(self, segment_detail):
-        # self.start_lat = segment_detail['start_latlng'][0]
-        # self.start_lng = segment_detail['start_latlng'][1]
-        self.kom = segment_detail['xoms']['kom']
-        self.qom = segment_detail['xoms']['qom']
-        self.updated = segment_detail['updated_at']
+        self.kom = segment_detail.get('xoms').get('kom')
+        self.qom = segment_detail.get('xoms').get('qom')
+        self.updated = segment_detail.get('updated_at')
         self.save()
         m, created = Map.objects.get_or_create(segment=self)
         if created:
-            m.polyline = segment_detail['map']['polyline']
+            m.polyline = segment_detail.get('map').get('polyline')
             m.save()
         return self
 
-    # def get_absolute_url(self):
-    #     return reverse('activities:segment_details', args=(self.id,))
-
     def get_all_efforts(self, user=None):
         return self.segmenteffort_set.filter(activity__user=user)
-
 
     def get_stared(self, user=None):
         return self.staredsegment_set.filter(user=user)
@@ -165,7 +137,7 @@ class Segment(models.Model):
 
 class StaredSegment(models.Model):
     segment = models.ForeignKey(to=Segment, on_delete=models.CASCADE)
-    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.user.username} - {self.segment.name}"
@@ -237,20 +209,24 @@ class SegmentEffort(models.Model):
     def get_date(self, *args, **kwargs):
         return self.start_date_local.strftime("%m/%d/%Y")
 
-    def save(self, *args, **kwargs):
-        s = Segment.objects.get(id=self.segment.id)
-        pr = 1
-        sefforts = s.segmenteffort_set.all().order_by('elapsed_time')[:3]
-        for se in sefforts:
-            if self.elapsed_time < se.elapsed_time:
-                break
-            pr += 1
-        if pr > 3:
-            self.pr_rank = None
-        else:
-            self.pr_rank = pr
-        super(SegmentEffort, self).save(*args, **kwargs)
-
     @property
     def get_strava_url(self):
         return f'https://www.strava.com/activities/{self.activity_id}/segments/{self.id}'
+
+
+@receiver(models.signals.pre_save, sender=SegmentEffort)
+def set_pr_rank(sender, instance, **kwargs):
+    if instance.id is None:
+        pass
+    else:
+        s = Segment.objects.get(id=instance.segment.id)
+        pr = 1
+        sefforts = s.segmenteffort_set.all().order_by('elapsed_time')[:3]
+        for se in sefforts:
+            if instance.elapsed_time < se.elapsed_time:
+                break
+            pr += 1
+        if pr > 3:
+            instance.pr_rank = None
+        else:
+            instance.pr_rank = pr

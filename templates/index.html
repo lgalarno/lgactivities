@@ -2,7 +2,13 @@
 
 {% block content %}
     <br>
-    <h2 style="text-align:center">{% if request.user.is_authenticated %}Welcome {{ request.user.first_name }}! {% else %}You need to login to access this page{% endif %}</h2>
+    <h2 style="text-align:center">
+        {% if request.user.is_authenticated %}
+            Welcome {{ request.user.first_name }}!
+        {% else %}
+            You need to <a href="/accounts/strava/login/?process=login">log in with Strava</a> to view content
+        {% endif %}
+    </h2>
     <br>
 {% endblock %}
 

@@ -1,15 +1,9 @@
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.views.generic import ListView, DetailView
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 
-import requests
-
-from getactivities.utils import formaterror, get_token
-
-from .models import Activity, SegmentEffort, Map, StaredSegment
+from .models import Activity, SegmentEffort, StaredSegment
 from .utils import update_segment
 
 # Create your views here.
