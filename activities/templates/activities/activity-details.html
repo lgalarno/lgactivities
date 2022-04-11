@@ -6,7 +6,8 @@
     <div class="row">
         <div class="col col-md-4">
             <h2>
-                <img src="{% static object.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type }}">
+{% comment %}                <img src="{% static object.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type }}">{% endcomment %}
+                <img src="{% static object.activity_type.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.activity_type.type }}">
                 {{ object.name }}
                 <span>
                     <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>

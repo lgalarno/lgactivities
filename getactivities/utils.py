@@ -8,7 +8,8 @@ from datetime import datetime, timedelta
 
 from allauth.socialaccount.models import SocialApp, SocialToken
 
-from activities.models import Activity, Map, Segment, SegmentEffort
+from activities.models import Activity, Map, Segment, SegmentEffort, ActivityType
+from activities.tasks import send_email
 
 STRAVA_API = settings.STRAVA_API
 
@@ -48,14 +49,6 @@ def get_token(user=None):
     return e, t.token
 
 
-# def res(request, token_url, payload):
-#     result=True
-#     res = requests.post(token_url, data=payload, verify=False)
-#     if 'errors' in res.json():
-#         result=False
-#     return res, result
-
-
 def formaterror(message):
     if type(message) == list:
         return json.dumps(message[0])
@@ -80,9 +73,17 @@ def get_activities(user=None, start_date=None, end_date=None):
         e, activities = _requestStravaTask(url, headers, params, verify=True)
         if not e:
             for activity in activities:
+
                 a, created = Activity.objects.get_or_create(id=activity.get('id'), user=user)
                 a.name = activity.get('name')
-                a.type = activity.get('type')
+
+                at, created = ActivityType.objects.get_or_create(type=activity.get('type'))
+                if created:
+                    at.color = "red"
+                    at.icon = "images/activity-types/unknown.png"
+                    new_activity_type_email(at=at.type, a=a.id, u=user.username)
+
+                a.type = at  # activity.get('type')
                 a.start_date = activity.get('start_date')
                 a.start_date_local = activity.get('start_date_local')
                 a.save()
@@ -119,6 +120,21 @@ def get_activities(user=None, start_date=None, end_date=None):
 
             return f"{len(activities)} new activities for {user.username}, from {datetime.date(start_date)} to {datetime.date(end_date)}  "
     return f"ERROR! User {user.username} - from {start_date} to {end_date}."
+
+
+def new_activity_type_email(at=None, a=None, u=None):
+    if at and a and u:
+        mail_subject = 'lgactivities - New activity type'
+        mail_body = f"""
+        A new activity type was entered into the database of lgactivities and will require a new icon:
+
+        Activity type: {at}
+        Activity ID: {a}
+        user: {u}
+
+        This email was sent by lgactivities.
+        """
+        send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
 
 
 def _requestStravaTask(url, headers, params, verify=False):

@@ -3,36 +3,44 @@ from django.db import models
 from django.dispatch import receiver
 from django.shortcuts import reverse
 
-# from profiles.models import User
-
 import datetime
 
-from .tasks import send_email
+# icon_path = "images/activity-types/"
+
+# ACTIVITY_ICONS = {
+#     "Run": "run.png",
+#     "Ride": "biking.png",
+#     "Workout": "workout.png",
+#     "IceSkate": "iceskate.png",
+#     "Hike": "hiking.png",
+#     "VirtualRide": "virtualride.png",
+#     "RollerSki": "rollerski.png",
+#     "InlineSkate": "InlineSkate.png",
+#     "Snowshoe": "snowshoe.png",
+#     "NordicSki": "nordicski.png",
+#     "StandUpPaddling": "StandUpPaddling.png",
+#     "Kayaking": "Kayaking.png",
+#     "VirtualRun": "virtualrun.png"
+# }
 
 
-icon_path = "images/activity-types/"
+class ActivityType(models.Model):
+    type = models.CharField(max_length=127)
+    icon = models.CharField(max_length=127, blank=True, null=True)
+    color = models.CharField(max_length=31, blank=True, null=True)
 
-ACTIVITY_ICONS = {
-    "Run": "run.png",
-    "Ride": "biking.png",
-    "Workout": "workout.png",
-    "IceSkate": "iceskate.png",
-    "Hike": "hiking.png",
-    "VirtualRide": "virtualride.png",
-    "RollerSki": "rollerski.png",
-    "InlineSkate": "InlineSkate.png",
-    "Snowshoe": "snowshoe.png",
-    "NordicSki": "nordicski.png",
-    "StandUpPaddling": "StandUpPaddling.png",
-    "Kayaking": "Kayaking.png",
-    "VirtualRun": "virtualrun.png"
-}
+    def __str__(self):
+        return self.type
 
 
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=True, null=True)
+    activity_type = models.ForeignKey(to=ActivityType,
+                                      on_delete=models.CASCADE,
+                                      blank=True,
+                                      null=True)
     type = models.CharField(max_length=127, blank=True, null=True)
     icon = models.CharField(max_length=127, blank=True, null=True)
     start_date = models.DateTimeField(blank=True, null=True)
@@ -62,34 +70,34 @@ class Activity(models.Model):
     def get_strava_url(self):
         return f'https://www.strava.com/activities/{self.id}'
 
-
-@receiver(models.signals.pre_save, sender=Activity)
-def get_type_icon(sender, instance, **kwargs):
-    """
-    Task to send an e-mail notification when a new activity type is created.
-    And administrator will have to update ACTIVITY_ICONS accordingly
-    """
-    type = instance.type
-    if type == "" or type is None:
-        pass
-    else:
-        i = ACTIVITY_ICONS.get(type)
-        if i is not None:
-            instance.icon = icon_path + i
-        else:
-            mail_subject = 'lgactivities - New activity type'
-            mail_body = f"""
-            A new activity type was entered into the database of lgactivities and will require a new icon:
-
-            Activity type: {type}
-            Activity ID: {instance.id}
-            user: {instance.user}
-
-            This email was sent by lgactivities.
-            """
-            send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
-            instance.icon = ""
-            # instance.icon = 'email'
+#
+# @receiver(models.signals.pre_save, sender=Activity)
+# def get_type_icon(sender, instance, **kwargs):
+#     """
+#     Task to send an e-mail notification when a new activity type is created.
+#     And administrator will have to update ACTIVITY_ICONS accordingly
+#     """
+#     type = instance.type
+#     if type == "" or type is None:
+#         pass
+#     else:
+#         i = ACTIVITY_ICONS.get(type)
+#         if i is not None:
+#             instance.icon = icon_path + i
+#         else:
+#             mail_subject = 'lgactivities - New activity type'
+#             mail_body = f"""
+#             A new activity type was entered into the database of lgactivities and will require a new icon:
+#
+#             Activity type: {type}
+#             Activity ID: {instance.id}
+#             user: {instance.user}
+#
+#             This email was sent by lgactivities.
+#             """
+#             send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+#             instance.icon = ""
+#             # instance.icon = 'email'
 
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460

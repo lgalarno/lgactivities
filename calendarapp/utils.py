@@ -30,9 +30,10 @@ class Calendar(HTMLCalendar):
         """
         activities_per_day = activities.filter(start_date_local__day=day)
         d = ''
-        # TODO add color according to activity type in css
+
         for activity in activities_per_day:
-            d += f'<li class="{activity.type}"> {activity.get_html_url} </li>'
+            # d += f'<li class="{activity.type}"> {activity.get_html_url} </li>'
+            d += f'<li style="color: {activity.activity_type.color};"> {activity.get_html_url} </li>'
 
         if day != 0:
             return f"<td class='has_date'><span class='date'>{day}</span><ul> {d} </ul></td>"

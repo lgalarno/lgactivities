@@ -205,7 +205,7 @@ def set_periodic_task(sender, instance, **kwargs):
         instance.disable_periodic_task(save=False)
 
 
-class Task_log(models.Model):
+class TaskLog(models.Model):
     sync_task = models.OneToOneField(to=SyncActivitiesTask,
                                      on_delete=models.CASCADE,
                                      blank=True,

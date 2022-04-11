@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Activity, Map, Segment, SegmentEffort, StaredSegment
+from .models import Activity, Map, Segment, SegmentEffort, StaredSegment, ActivityType
 
 
 class SegmentAdmin(admin.ModelAdmin):
@@ -29,6 +29,7 @@ class SegmentEffortAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Activity, ActivityAdmin)
+admin.site.register(ActivityType)
 admin.site.register(Map)
 admin.site.register(StaredSegment)
 admin.site.register(Segment, SegmentAdmin)
