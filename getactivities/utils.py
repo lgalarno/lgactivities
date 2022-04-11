@@ -9,7 +9,8 @@ from datetime import datetime, timedelta
 from allauth.socialaccount.models import SocialApp, SocialToken
 
 from activities.models import Activity, Map, Segment, SegmentEffort, ActivityType
-from activities.tasks import send_email
+
+import getactivities.tasks as tasks
 
 STRAVA_API = settings.STRAVA_API
 
@@ -82,8 +83,9 @@ def get_activities(user=None, start_date=None, end_date=None):
                     at.color = "red"
                     at.icon = "images/activity-types/unknown.png"
                     new_activity_type_email(at=at.type, a=a.id, u=user.username)
+                    at.save()
 
-                a.type = at  # activity.get('type')
+                a.activity_type = at  # activity.get('type')
                 a.start_date = activity.get('start_date')
                 a.start_date_local = activity.get('start_date_local')
                 a.save()
@@ -134,7 +136,7 @@ def new_activity_type_email(at=None, a=None, u=None):
 
         This email was sent by lgactivities.
         """
-        send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+        tasks.send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
 
 
 def _requestStravaTask(url, headers, params, verify=False):

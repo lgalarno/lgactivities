@@ -12,8 +12,8 @@ class SegmentAdmin(admin.ModelAdmin):
 
 
 class ActivityAdmin(admin.ModelAdmin):
-    list_display = ['name', 'type']
-    list_filter = ['type']
+    list_display = ['name', 'type', 'user', 'start_date_local']
+    list_filter = ['type', 'user']
     search_fields = ['name', 'type', 'id']
 
     class Meta:

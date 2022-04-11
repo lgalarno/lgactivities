@@ -6,8 +6,8 @@ from dateutil.relativedelta import relativedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import getactivities.utils as utils
 from .models import ImportActivitiesTask, SyncActivitiesTask
-from .utils import get_activities
 
 import smtplib
 
@@ -61,7 +61,7 @@ def get_activities_task(user=None, get_type=None):
             get_task_model = SyncActivitiesTask.objects.get(user=u)
         else:
             return f"ERROR! User {user} task type does not exist."
-        g = get_activities(user=u, start_date=get_task_model.from_date, end_date=get_task_model.to_date)
+        g = utils.get_activities(user=u, start_date=get_task_model.from_date, end_date=get_task_model.to_date)
         _update_task_model(get_task_model)
         return g
     except ImportActivitiesTask.DoesNotExist:
@@ -77,27 +77,3 @@ def add(x, y):
     :return:
     '''
     return x + y
-
-
-# @shared_task
-# def import_activities_task(user=None):
-#     try:
-#         u = User.objects.get(pk=user)
-#         import_task = ImportActivitiesTask.objects.get(user=u)
-#         g = get_activities(user=u, start_date=import_task.start_date, end_date=import_task.end_date)
-#         _update_task_model(import_task)
-#         return g
-#     except ImportActivitiesTask.DoesNotExist:
-#         return f"ERROR! User {user} task does not exist."
-#
-#
-# @shared_task
-# def sync_activities_task(user=None):
-#     try:
-#         u = User.objects.get(pk=user)
-#         sync_task = SyncActivitiesTask.objects.get(user=u)
-#         g = get_activities(user=u, start_date=sync_task.start_date, end_date=sync_task.end_date)
-#         _update_task_model(sync_task)
-#         return g
-#     except SyncActivitiesTask.DoesNotExist:
-#         return f"ERROR! User {user} task does not exist."

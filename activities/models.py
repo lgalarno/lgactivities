@@ -5,44 +5,24 @@ from django.shortcuts import reverse
 
 import datetime
 
-# icon_path = "images/activity-types/"
-
-# ACTIVITY_ICONS = {
-#     "Run": "run.png",
-#     "Ride": "biking.png",
-#     "Workout": "workout.png",
-#     "IceSkate": "iceskate.png",
-#     "Hike": "hiking.png",
-#     "VirtualRide": "virtualride.png",
-#     "RollerSki": "rollerski.png",
-#     "InlineSkate": "InlineSkate.png",
-#     "Snowshoe": "snowshoe.png",
-#     "NordicSki": "nordicski.png",
-#     "StandUpPaddling": "StandUpPaddling.png",
-#     "Kayaking": "Kayaking.png",
-#     "VirtualRun": "virtualrun.png"
-# }
-
 
 class ActivityType(models.Model):
-    type = models.CharField(max_length=127)
+    name = models.CharField(max_length=127)
     icon = models.CharField(max_length=127, blank=True, null=True)
     color = models.CharField(max_length=31, blank=True, null=True)
 
     def __str__(self):
-        return self.type
+        return self.name
 
 
 class Activity(models.Model):
     id = models.BigIntegerField(primary_key=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=True, null=True)
-    activity_type = models.ForeignKey(to=ActivityType,
-                                      on_delete=models.CASCADE,
-                                      blank=True,
-                                      null=True)
-    type = models.CharField(max_length=127, blank=True, null=True)
-    icon = models.CharField(max_length=127, blank=True, null=True)
+    type = models.ForeignKey(to=ActivityType,
+                             on_delete=models.CASCADE,
+                             blank=True,
+                             null=True)
     start_date = models.DateTimeField(blank=True, null=True)
     start_date_local = models.DateTimeField(blank=True, null=True)
 
