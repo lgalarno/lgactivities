@@ -75,21 +75,20 @@ def get_activities(user=None, start_date=None, end_date=None):
         if not e:
             for activity in activities:
 
-                a, created = Activity.objects.get_or_create(id=activity.get('id'), user=user)
+                a, act_created = Activity.objects.get_or_create(id=activity.get('id'), user=user)
                 a.name = activity.get('name')
 
-                at, created = ActivityType.objects.get_or_create(type=activity.get('type'))
-                if created:
+                at, type_created = ActivityType.objects.get_or_create(name=activity.get('type'))
+                if type_created:
                     at.color = "red"
                     at.icon = "images/activity-types/unknown.png"
                     new_activity_type_email(at=at.type, a=a.id, u=user.username)
                     at.save()
-
-                a.activity_type = at  # activity.get('type')
+                a.type = at  # activity.get('type')
                 a.start_date = activity.get('start_date')
                 a.start_date_local = activity.get('start_date_local')
                 a.save()
-                if created:
+                if act_created:
                     """
                     get activity detailed 
                     """
@@ -97,19 +96,19 @@ def get_activities(user=None, start_date=None, end_date=None):
                     url = f"{STRAVA_API['URLS']['athlete']}activities/{a.id}/?include_all_efforts=True"
                     e, activity_detailed = _requestStravaTask(url, headers, params, verify=True)
                     if not e:
-                        m, created = Map.objects.get_or_create(activity=a)
+                        m, map_created = Map.objects.get_or_create(activity=a)
                         m.polyline = activity_detailed.get('map').get('polyline')
                         m.save()
                         if "segment_efforts" in activity_detailed:
                             segment_efforts = activity_detailed.get("segment_efforts")
                             for se in segment_efforts:
-                                segment, created = Segment.objects.get_or_create(
+                                segment, segment_created = Segment.objects.get_or_create(
                                     id=se.get('segment').get('id')
                                 )
                                 segment.name = se.get('segment').get('name')
                                 segment.save()
                                 # elements required for 'set_pr_rank' in models of SegmentEffort
-                                obj, created = SegmentEffort.objects.get_or_create(
+                                obj, effort_created = SegmentEffort.objects.get_or_create(
                                     id=se.get('id'),
                                     activity=a,
                                     segment=segment,
