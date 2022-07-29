@@ -10,6 +10,8 @@ from allauth.socialaccount.models import SocialApp, SocialToken, SocialAccount
 # Create your tests here.
 
 STRAVA_API = settings.STRAVA_API
+STRAVA_CLIENT_ID = settings.STRAVA_CLIENT_ID
+STRAVA_CLIENT_SECRET = settings.STRAVA_CLIENT_SECRET
 
 
 class GetactivitiesTest(TestCase):
@@ -35,16 +37,16 @@ class GetactivitiesTest(TestCase):
         sap = SocialApp.objects.create(
             provider="Strava",
             name='lgactivities',
-            client_id='65506',
-            secret='8d127df0e3426ce186314d064d3206bac8c2bed8',
-            key='23df88df854fb2bbf460d4415f85a9d49a099451',
+            client_id=STRAVA_CLIENT_ID,
+            secret=STRAVA_CLIENT_SECRET,
+            key='',
         )
         sap.save()
 
         ta = SocialToken.objects.create(
             app=sap,
             account=sa,
-            token_secret='9a9f6fd4085f126a4e8bc0aafcb634610d1485d9'
+            token_secret=''
         )
         ta.save()
 

@@ -57,6 +57,7 @@ def formaterror(message):
         return 'unknown error'
 
 
+#TODO remove leading spaces in name
 def get_activities(user=None, start_date=None, end_date=None):
     if start_date is None or end_date is None or user is None:
         return False

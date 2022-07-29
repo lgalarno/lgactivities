@@ -27,6 +27,7 @@ class Activity(models.Model):
     start_date_local = models.DateTimeField(blank=True, null=True)
 
     class Meta:
+        ordering = ['-start_date_local']
         verbose_name_plural = "Activities"
 
     def __str__(self):

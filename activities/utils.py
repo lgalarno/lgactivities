@@ -12,8 +12,8 @@ from getactivities.utils import formaterror, get_token
 STRAVA_API = settings.STRAVA_API
 
 # def send_email(to_email, mail_subject, mail_body):
-#     username = settings.FROM_EMAIL
-#     password = settings.EMAIL_PASSWORD
+#     username = settings_old.FROM_EMAIL
+#     password = settings_old.EMAIL_PASSWORD
 #
 #     mimemsg = MIMEMultipart()
 #     mimemsg['From']=username

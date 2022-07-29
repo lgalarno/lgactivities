@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.views.generic import ListView, DetailView
 
-from .models import Activity, SegmentEffort, StaredSegment
+from .models import Activity, SegmentEffort, StaredSegment, ActivityType
 from .utils import update_segment
 
 # Create your views here.
@@ -50,6 +50,23 @@ class EffortDetailsView(LoginRequiredMixin, DetailView):
         context['efforts'] = self.object.segment.get_all_efforts(user=self.request.user)
         context['staring'] = self.object.segment.is_stared(user=self.request.user)
         context['title'] = 'segment details'
+        return context
+
+
+class ActivityListView(LoginRequiredMixin, ListView):
+    model = Activity
+    template_name = "activities/activity-list.html"
+    paginate_by = 20
+
+    def get_queryset(self):
+        return Activity.objects.filter(user=self.request.user)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        # types = self.object_list.get()
+        # print(types[0])
+        # context['types'] = types
+        context['title'] = 'activity list'
         return context
 
 
