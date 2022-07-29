@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'lgactivities.local')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'lgactivities.settings')
 
 application = get_asgi_application()
