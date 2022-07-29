@@ -203,8 +203,7 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 ######################################################################
-DEV = os.environ.get('DEV')
-
+DEV = bool(int(os.getenv('DEV', False)))  # os.environ.get('DEV')
 if DEV:
     DATABASES = {
         'default': {
