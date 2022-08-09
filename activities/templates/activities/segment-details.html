@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col col-md-4">
+
+
+             <h2>
+                <img src="{% static object.type.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type.name }}">
+                {{ object.name }}
+                 <span>
+                    <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>
+                </span>
+                <small>
+                    {% if staring %}
+                        <a class="btn-staring" title="Segment stared" data-href="{{ object.get_staring_api_url }}" data-staring="{{ object.staring }}" href="#">
+                            <img id="staring" src="{% static 'images/bookmark_blue.png' %}" width="24" height="24" class="d-inline-block" alt="Segment stared">
+                        </a>
+                    {% else %}
+                        <a class="btn-staring" title="Segment not stared" data-href="{{ object.get_staring_api_url }}" data-staring="{{ object.staring }}" href="#">
+                            <img id="staring" src="{% static 'images/bookmark_blue_outline.png' %}" width="24" height="24" class="d-inline-block" alt="Segment not stared">
+                        </a>
+                    {% endif %}
+                </small>
+            </h2>
+
+
+{% comment %}            <h2>
+                <img src="{% static object.type.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type.name }}">
+                {{ object.name }}
+                <span>
+                    <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>
+                </span>
+            </h2>{% endcomment %}
+            <small>{{ object.start_date_local }}</small>
+            {% if not object.map.polyline == '' %}
+                <div id="mapid" endpoint="{{ object.map.get_mapdata_api_url }}">></div>
+            {% endif %}
+        </div>
+        <div class="col col-md-8">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            PB:
+                            <a href="{% url 'activities:activity-details' pb.activity_id %}" >
+                                {{ pb.get_time }}
+                                <small> {{ pb.activity.name }} - {{ pb.get_date }}</small>
+                            </a>
+                        </th>
+                        <th>KOM: {{ object.kom }}</th>
+                        <th>QOM: {{ object.qom }}</th>
+                        <th>updated: {{ object.updated }}</th>
+                    </tr>
+                </thead>
+            </table>
+            <h3>All efforts</h3>
+            {% if efforts %}
+                <div class="table-responsive">
+                    <table class="table"  id="data_table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Activity</th>
+                            <th scope="col">Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for effort in efforts %}
+                            <tr>
+                                <td>
+                                    <a href="{% url "activities:activity-details" effort.activity.id %}" >{{ effort.activity.name }}
+                                    <small>{{ effort.activity.get_date }}</small>
+                                    </a>
+                                <td>{{ effort.get_time }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col">
+            <br>
+            <hr>
+            <h3>All efforts</h3>
+            <div id="recent_efforts_chart" style="height:400px;" endpoint="{{ object.get_plotdata_api_url }}"></div>
+            <hr>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/activities.js' %}"></script>
+{% endblock js %}

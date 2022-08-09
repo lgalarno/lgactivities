@@ -8,7 +8,6 @@ from django.utils import timezone
 from django.views.generic import UpdateView
 
 import math
-import requests
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -101,6 +100,7 @@ class ImportActivitiesTaskView(LoginRequiredMixin, UpdateView):
             obj.end_date = datetime.today().date()
             obj.start_date = datetime.today().date()
         return obj
+
     def get_form(self):
         form = super().get_form()
         form.fields['start_date'].widget = forms.DateInput(
@@ -180,9 +180,9 @@ def getactivities(request):
     return render(request, 'getactivities/get-getactivities.html', context)
 
 
-def _requestStrava(url, headers, params, verify=False):
-    e = False
-    data = requests.get(url, headers=headers, params=params, verify=verify).json()
-    if 'errors' in data:
-        e = formaterror(data['errors'])
-    return e, data
+# def _requestStrava(url, headers, params, verify=False):
+#     e = False
+#     data = requests.get(url, headers=headers, params=params, verify=verify).json()
+#     if 'errors' in data:
+#         e = formaterror(data['errors'])
+#     return e, data

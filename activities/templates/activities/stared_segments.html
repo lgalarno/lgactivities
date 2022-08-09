@@ -7,22 +7,23 @@
         <div class="col col-md-12">
         {% if staredsegment_list %}
             <h3>Segments</h3>
+            <br>
                 <div class="table-responsive">
-                    <table class="table"  id="data_table">
+                    <table class="table" id="data_table_list">
                         <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col"># efforts</th>
-                            <th scope="col">Best time</th>
-                            <th scope="col">Last effort</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col"># efforts</th>
+                                <th scope="col">Best time</th>
+                                <th scope="col">Last effort</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {% for ss in staredsegment_list %}
                             <tr>
                                 <td>
-                                    <a href="{{ ss.get_best_effort_url }}">
-                                        <img src="{% static ss.get_best_effort.activity.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ ss.get_best_effort.activity.type.name }}">
+                                    <a href="{{ ss.segment.get_absolute_url }}">
+                                        <img src="{% static ss.segment.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ ss.type.name }}">
                                         {{ ss.segment.name }}
                                     </a>
                                 </td>

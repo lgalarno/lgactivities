@@ -225,11 +225,6 @@ else:
                 'use_unicode': True, },
         },
     }
-######################################################################
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-######################################################################
-
 
 ######################################################################
 # STRAVA_API
@@ -255,3 +250,8 @@ CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL')
 CELERY_RESULT_BACKEND = "django-db"
 # CELERY_WORKER_POOL = "solo"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+
+######################################################################
+# Other security
+######################################################################
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"

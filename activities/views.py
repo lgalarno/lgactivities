@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.views.generic import ListView, DetailView
 
-from .models import Activity, SegmentEffort, StaredSegment, ActivityType
+from .models import Activity, SegmentEffort, StaredSegment, ActivityType, Segment
 from .utils import update_segment
 
 # Create your views here.
@@ -32,6 +32,32 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
+# TODO filter by activity type
+class SegmentDetailsView(LoginRequiredMixin, DetailView):
+    model = Segment
+    template_name = 'activities/segment-details.html'
+
+    # def get_queryset(self):
+    #     return Segment.objects.filter(user=self.request.user)
+
+    def get_object(self, queryset=None):
+        obj = cache.get('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), None)
+        if not obj:
+            obj = super(SegmentDetailsView, self).get_object(queryset)
+            cache.set('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), obj)
+        return obj
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data()
+        efforts = self.object.get_all_efforts(user=self.request.user)
+        update_segment(u=self.request.user, segment=self.object)
+        context['efforts'] = efforts
+        context['pb'] = self.object.get_best_effort(user=self.request.user)
+        context['staring'] = self.object.is_stared(user=self.request.user)
+        context['title'] = 'Segment'
+        return context
+
+
 class EffortDetailsView(LoginRequiredMixin, DetailView):
     model = SegmentEffort
     template_name = 'activities/effort-details.html'
@@ -46,7 +72,8 @@ class EffortDetailsView(LoginRequiredMixin, DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         # update segment if new kom, Qom, updated
-        update_segment(u=self.request.user, this_effort=self.object)
+        s = Segment.objects.get(id=self.object.segment.id)
+        update_segment(u=self.request.user, segment=s)
         context['efforts'] = self.object.segment.get_all_efforts(user=self.request.user)
         context['staring'] = self.object.segment.is_stared(user=self.request.user)
         context['title'] = 'segment details'
@@ -56,7 +83,6 @@ class EffortDetailsView(LoginRequiredMixin, DetailView):
 class ActivityListView(LoginRequiredMixin, ListView):
     model = Activity
     template_name = "activities/activity-list.html"
-    paginate_by = 20
 
     def get_queryset(self):
         return Activity.objects.filter(user=self.request.user)
@@ -67,6 +93,26 @@ class ActivityListView(LoginRequiredMixin, ListView):
         # print(types[0])
         # context['types'] = types
         context['title'] = 'activity list'
+        return context
+
+
+class SegmentListView(LoginRequiredMixin, ListView):
+    model = Segment
+    template_name = "activities/segment-list.html"
+
+    def get_queryset(self):
+        s = Segment.objects.filter(segmenteffort__activity__user=10).distinct()
+        return s
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        # types = self.object_list.get()
+        # print(types[0])
+        # context['types'] = types
+        context['title'] = 'segment list'
+        ss = StaredSegment.objects.filter(user=self.request.user)
+        ssids = [s.segment for s in ss]
+        context['stared_segment'] = ssids
         return context
 
 

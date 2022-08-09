@@ -88,6 +88,10 @@ class Segment(models.Model):
     updated = models.DateTimeField(blank=True, null=True)
     kom = models.CharField(max_length=20, blank=True, null=True)
     qom = models.CharField(max_length=20, blank=True, null=True)
+    type = models.ForeignKey(to=ActivityType,
+                             on_delete=models.CASCADE,
+                             blank=True,
+                             null=True)
 
     def __str__(self):
         return self.name
@@ -103,6 +107,9 @@ class Segment(models.Model):
             m.save()
         return self
 
+    def get_absolute_url(self):
+        return reverse('activities:segment-details', args=(self.id,))
+
     def get_all_efforts(self, user=None):
         return self.segmenteffort_set.filter(activity__user=user)
 
@@ -115,6 +122,19 @@ class Segment(models.Model):
         else:
             return False
 
+    def get_number_efforts(self, user):
+        return self.segmenteffort_set.filter(activity__user=user).count()
+
+    def get_best_effort(self, user):
+        return self.segmenteffort_set.filter(activity__user=user).order_by('elapsed_time').first()
+
+    def get_last_effort(self, user):
+        return self.segmenteffort_set.filter(activity__user=user).order_by('-start_date_local').first()
+
+    def get_best_effort_url(self):
+        best = self.get_best_effort()
+        return reverse('activities:effort_details', kwargs={'pk': best.pk})
+
     @property
     def get_staring_api_url(self):
         return reverse('activities:activities-api:SegmentStaringAPIToggle', kwargs={"segment_id": self.id})
@@ -122,6 +142,10 @@ class Segment(models.Model):
     @property
     def get_plotdata_api_url(self):
         return reverse('activities:activities-api:SegmentDataAPI', kwargs={"segment_id": self.id})
+
+    @property
+    def get_strava_url(self):
+        return f'https://www.strava.com/segments/{self.id}'
 
 
 class StaredSegment(models.Model):

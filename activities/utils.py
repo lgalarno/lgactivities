@@ -32,16 +32,16 @@ STRAVA_API = settings.STRAVA_API
 #         return e
 
 
-def update_segment(u, this_effort):
+def update_segment(u, segment):
     e, access_token = get_token(user=u)
     if not e:
         header = {'Authorization': f'Bearer {access_token}'}
         param = {}
-        url = f"{STRAVA_API['URLS']['athlete']}segments/{this_effort.segment_id}"
+        url = f"{STRAVA_API['URLS']['athlete']}segments/{segment.id}"
         segment_detail = requests.get(url, headers=header, params=param, verify=False).json()
         if 'errors' in segment_detail:
             e = formaterror(segment_detail['errors'])
             return e
         else:
-            this_effort.segment.update_from_strava(segment_detail=segment_detail)
+            segment.update_from_strava(segment_detail=segment_detail)
             return True

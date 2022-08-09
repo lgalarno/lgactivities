@@ -5,30 +5,26 @@
 {% block content %}
     <div class="row justify-content-md-center">
         <div class="col col-md-10">
-        {% if activity_list %}
-            <h3>Activities</h3>
+        {% if segment_list %}
+            <h3>Segments</h3>
                 <div class="table-responsive">
                     <table class="table"  id="data_table_list">
                         <thead>
                         <tr>
                             <th scope="col">Type</th>
-                            <th scope="col">Date</th>
                             <th scope="col">Name</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for a in activity_list %}
+                        {% for s in segment_list %}
                             <tr>
                                 <td>
-                                    <img src="{% static a.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ a.type.name }}">
-                                    {{ a.type.name }}
+                                    <img src="{% static s.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ s.type.name }}">
+                                    {{ s.type.name }}
                                 </td>
                                 <td>
-                                    {{ a.get_date }}
-                                </td>
-                                <td>
-                                    <a href="{% url 'activities:activity-details' a.id %}" >
-                                        {{ a.name }}
+                                    <a href="{% url 'activities:segment-details' s.id %}" >
+                                        {{ s.name }}
                                     </a>
                                 </td>
                             </tr>

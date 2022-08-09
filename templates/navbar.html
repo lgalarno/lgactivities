@@ -22,7 +22,17 @@
                         <i class="fa fa-tasks"></i>
                          My Activities
                     </a>
-
+                </div>
+            </div>
+            <div class="nav-item dropdown">
+                <div class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Segments
+                </div>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'activities:segment-list' %}">
+                        <i class="fa fa-tasks"></i>
+                         Segments
+                    </a>
                     <a class="dropdown-item" href="{% url 'activities:stared-segments' %}">
                     <img src="{% static 'images/bookmark_blue.png' %}" width="18" height="18" class="d-inline-block" alt="Stared segments">
                      Stared segments

@@ -3,9 +3,15 @@ $(function() {
         /////////////////////////////////////////////////////////////
         // DataTable
         /////////////////////////////////////////////////////////////
+
         $('#data_table').DataTable({
-                "dom": 'ltip',
-                "searching": false,
+            "searching": false,
+            pageLength: 10
+            }
+        );
+        $('#data_table_list').DataTable({
+            "searching": true,
+            pageLength: 25,
             }
         );
 
