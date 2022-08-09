@@ -101,7 +101,7 @@ class SegmentListView(LoginRequiredMixin, ListView):
     template_name = "activities/segment-list.html"
 
     def get_queryset(self):
-        s = Segment.objects.filter(segmenteffort__activity__user=10).distinct()
+        s = Segment.objects.filter(segmenteffort__activity__user=self.request.user).distinct()
         return s
 
     def get_context_data(self, *args, **kwargs):
