@@ -89,9 +89,6 @@ class ActivityListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        # types = self.object_list.get()
-        # print(types[0])
-        # context['types'] = types
         context['title'] = 'activity list'
         return context
 
@@ -106,9 +103,6 @@ class SegmentListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        # types = self.object_list.get()
-        # print(types[0])
-        # context['types'] = types
         context['title'] = 'segment list'
         ss = StaredSegment.objects.filter(user=self.request.user)
         ssids = [s.segment for s in ss]

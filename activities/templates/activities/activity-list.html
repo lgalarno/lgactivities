@@ -12,6 +12,7 @@
                         <thead>
                         <tr>
                             <th scope="col">Type</th>
+                            <th scope="col" class="head"></th>
                             <th scope="col">Date</th>
                             <th scope="col">Name</th>
                         </tr>
@@ -21,6 +22,8 @@
                             <tr>
                                 <td>
                                     <img src="{% static a.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ a.type.name }}">
+                                </td>
+                                <td>
                                     {{ a.type.name }}
                                 </td>
                                 <td>
@@ -34,6 +37,12 @@
                             </tr>
                         {% endfor %}
                         </tbody>
+                        <tfoot>
+                            <th scope="col">Type</th>
+                            <th scope="col"></th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Name</th>
+                        </tfoot>
                     </table>
                 </div>
             {% endif %}

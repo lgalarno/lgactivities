@@ -10,26 +10,35 @@
                 <div class="table-responsive">
                     <table class="table"  id="data_table_list">
                         <thead>
-                        <tr>
-                            <th scope="col">Type</th>
-                            <th scope="col">Name</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Type</th>
+                                <th scope="col" class="head"></th>
+                                <th scope="col">Name</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {% for s in segment_list %}
                             <tr>
                                 <td>
-                                    <img src="{% static s.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ s.type.name }}">
+                                    <img src="{% static s.type.icon %}" width="24" height="24" class="d-inline-block">
+                                </td>
+                                <td>
                                     {{ s.type.name }}
                                 </td>
                                 <td>
-                                    <a href="{% url 'activities:segment-details' s.id %}" >
-                                        {{ s.name }}
-                                    </a>
+                                <a href="{% url 'activities:segment-details' s.id %}">
+                                    {{ s.name }}
+                                </a>
                                 </td>
+
                             </tr>
                         {% endfor %}
                         </tbody>
+                        <tfoot>
+                            <th scope="col">Type</th>
+                            <th scope="col"></th>
+                            <th scope="col">Name</th>
+                        </tfoot>
                     </table>
                 </div>
             {% endif %}
