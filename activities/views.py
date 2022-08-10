@@ -32,7 +32,6 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
-# TODO filter by activity type
 class SegmentDetailsView(LoginRequiredMixin, DetailView):
     model = Segment
     template_name = 'activities/segment-details.html'
