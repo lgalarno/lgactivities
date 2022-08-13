@@ -1,6 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 
+from activities import views
+
 from .views import (
     ActivityDetailsView,
     ActivityListView,
@@ -15,6 +17,7 @@ app_name = 'activities'
 urlpatterns = [
     path('stared-segments/', login_required(StaredSegmentsListView.as_view()), name='stared-segments'),
     path('activity-list/', login_required(ActivityListView.as_view()), name='activity-list'),
+    path('activity-listfbv/', login_required(views.activity_list), name='activity-listfbv'),
     path('activity/<int:pk>/', ActivityDetailsView.as_view(), name='activity-details'),
     path('segment/<int:pk>/', SegmentDetailsView.as_view(), name='segment-details'),
     path('segment-list/', login_required(SegmentListView.as_view()), name='segment-list'),
