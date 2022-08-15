@@ -19,7 +19,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for s in segment_list %}3.
+                        {% for s in segment_list %}
                             <tr>
                                 <td>
                                     <img src="{% static s.type.icon %}" width="24" height="24" class="d-inline-block">
@@ -28,9 +28,9 @@
                                     {{ s.type.name }}
                                 </td>
                                 <td>
-                                <a href="{% url 'activities:segment-details' s.id %}">
-                                    {{ s.name }}
-                                </a>
+                                    <a href="{% url 'activities:segment-details' s.id %}">
+                                        {{ s.name }}
+                                    </a>
                                 </td>
                                 <td>
                                     {% get_number_efforts s user %}
