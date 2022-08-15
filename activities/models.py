@@ -40,7 +40,7 @@ class Activity(models.Model):
         return self.segmenteffort_set.all()
 
     def get_date(self, *args, **kwargs):
-        return self.start_date_local.strftime("%m/%d/%Y")
+        return self.start_date_local.strftime("%Y-%m-%d")  # ("%d/%m/%Y")
 
     @property
     def get_html_url(self):
@@ -194,7 +194,7 @@ class SegmentEffort(models.Model):
         return str(datetime.timedelta(seconds=self.elapsed_time))
 
     def get_date(self, *args, **kwargs):
-        return self.start_date_local.strftime("%m/%d/%Y")
+        return self.start_date_local.strftime("%Y-%m-%d")  # ("%d/%m/%Y")
 
     @property
     def get_strava_url(self):

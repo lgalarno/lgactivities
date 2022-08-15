@@ -9,14 +9,13 @@ $(function() {
             pageLength: 10
             }
         );
-
         $('#data_table_list').DataTable({
             searching: true,
             pageLength: 25,
             columnDefs: [
-                { orderable: false, targets: 0 }
+                {orderable: false, targets: 0}
                 ],
-            order: [[2, 'asc']],
+            // order: [[11, 'asc']],
             processing: true,
             deferRender: true,
             initComplete: function () {

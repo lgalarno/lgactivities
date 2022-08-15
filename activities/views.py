@@ -38,6 +38,7 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
+#TODO seperate date form activity in template -> user can sort by date
 class SegmentDetailsView(LoginRequiredMixin, DetailView):
     model = Segment
     template_name = 'activities/segment-details.html'
@@ -200,6 +201,7 @@ class ActivityListView(LoginRequiredMixin, ListView):
 #     return render(request, 'activites/activity-list-fbv.html', context)
 
 
+#TODO use cache?
 class SegmentListView(LoginRequiredMixin, ListView):
     model = Segment
     template_name = "activities/segment-list.html"
