@@ -57,7 +57,6 @@ def formaterror(message):
         return 'unknown error'
 
 
-#TODO remove leading spaces in name
 def get_activities(user=None, start_date=None, end_date=None):
     if start_date is None or end_date is None or user is None:
         return False
@@ -77,7 +76,7 @@ def get_activities(user=None, start_date=None, end_date=None):
             for activity in activities:
 
                 a, act_created = Activity.objects.get_or_create(id=activity.get('id'), user=user)
-                a.name = activity.get('name')
+                a.name = activity.get('name').strip()
 
                 at, type_created = ActivityType.objects.get_or_create(name=activity.get('type'))
                 if type_created:
@@ -106,7 +105,7 @@ def get_activities(user=None, start_date=None, end_date=None):
                                 segment, segment_created = Segment.objects.get_or_create(
                                     id=se.get('segment').get('id')
                                 )
-                                segment.name = se.get('segment').get('name')
+                                segment.name = se.get('segment').get('name').strip()
                                 segment.save()
                                 # elements required for 'set_pr_rank' in models of SegmentEffort
                                 obj, effort_created = SegmentEffort.objects.get_or_create(
