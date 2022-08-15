@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load segment_user %}
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
@@ -14,10 +15,11 @@
                                 <th scope="col">Type</th>
                                 <th scope="col" class="head"></th>
                                 <th scope="col">Name</th>
+                                <th scope="col"># efforts</th>
                             </tr>
                         </thead>
                         <tbody>
-                        {% for s in segment_list %}
+                        {% for s in segment_list %}3.
                             <tr>
                                 <td>
                                     <img src="{% static s.type.icon %}" width="24" height="24" class="d-inline-block">
@@ -30,7 +32,9 @@
                                     {{ s.name }}
                                 </a>
                                 </td>
-
+                                <td>
+                                    {% get_number_efforts s user %}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

@@ -131,38 +131,38 @@ class ActivityListView(LoginRequiredMixin, ListView):
 #         return context
 
 
-def activity_list(request):
-    # queryset_list = Activity.objects.filter(user=request.user)
-    print(request.GET)
-    print(request.META.get("QUERY_STRING", ""))
-
-    queryset_list = ActivityFilter(request.GET, queryset=Activity.objects.filter(user=request.user)).qs
-
-    query_string = request.META.get("QUERY_STRING", "")
-    validated_query_string = "&".join([x for x in re.findall(r"(\w*=\w{1,})", query_string) if not "page=" in x])
-
-    query_string = "&" + validated_query_string.lower() if (validated_query_string) else ""
-    print(query_string)
-
-    paginator = Paginator(queryset_list, 20) # Show 25 contacts per page
-    page_request_var = "page"  # naming more dynamics. see post_list.html
-    page = request.GET.get(page_request_var)
-    try:
-        queryset = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        queryset = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        queryset = paginator.page(paginator.num_pages)
-    context = {
-        'object_list': queryset,
-        'title': 'activity list',
-        'filter': ActivityFilter(),
-        'page_request_var': page_request_var,
-        "query_string": query_string,
-    }
-    return render(request, 'activities/activity-list-fbv.html', context)
+# def activity_list(request):
+#     # queryset_list = Activity.objects.filter(user=request.user)
+#     print(request.GET)
+#     print(request.META.get("QUERY_STRING", ""))
+#
+#     queryset_list = ActivityFilter(request.GET, queryset=Activity.objects.filter(user=request.user)).qs
+#
+#     query_string = request.META.get("QUERY_STRING", "")
+#     validated_query_string = "&".join([x for x in re.findall(r"(\w*=\w{1,})", query_string) if not "page=" in x])
+#
+#     query_string = "&" + validated_query_string.lower() if (validated_query_string) else ""
+#     print(query_string)
+#
+#     paginator = Paginator(queryset_list, 20) # Show 25 contacts per page
+#     page_request_var = "page"  # naming more dynamics. see post_list.html
+#     page = request.GET.get(page_request_var)
+#     try:
+#         queryset = paginator.page(page)
+#     except PageNotAnInteger:
+#         # If page is not an integer, deliver first page.
+#         queryset = paginator.page(1)
+#     except EmptyPage:
+#         # If page is out of range (e.g. 9999), deliver last page of results.
+#         queryset = paginator.page(paginator.num_pages)
+#     context = {
+#         'object_list': queryset,
+#         'title': 'activity list',
+#         'filter': ActivityFilter(),
+#         'page_request_var': page_request_var,
+#         "query_string": query_string,
+#     }
+#     return render(request, 'activities/activity-list-fbv.html', context)
 
 
 # def activity_list(request):
@@ -197,7 +197,7 @@ def activity_list(request):
 #         'title': 'activity list',
 #         'page_request_var': page_request_var,
 #     }
-#     return render(request, 'activities/activity-list-fbv.html', context)
+#     return render(request, 'activites/activity-list-fbv.html', context)
 
 
 class SegmentListView(LoginRequiredMixin, ListView):

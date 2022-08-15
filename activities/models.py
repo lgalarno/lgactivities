@@ -51,35 +51,6 @@ class Activity(models.Model):
     def get_strava_url(self):
         return f'https://www.strava.com/activities/{self.id}'
 
-#
-# @receiver(models.signals.pre_save, sender=Activity)
-# def get_type_icon(sender, instance, **kwargs):
-#     """
-#     Task to send an e-mail notification when a new activity type is created.
-#     And administrator will have to update ACTIVITY_ICONS accordingly
-#     """
-#     type = instance.type
-#     if type == "" or type is None:
-#         pass
-#     else:
-#         i = ACTIVITY_ICONS.get(type)
-#         if i is not None:
-#             instance.icon = icon_path + i
-#         else:
-#             mail_subject = 'lgactivities - New activity type'
-#             mail_body = f"""
-#             A new activity type was entered into the database of lgactivities and will require a new icon:
-#
-#             Activity type: {type}
-#             Activity ID: {instance.id}
-#             user: {instance.user}
-#
-#             This email was sent by lgactivities.
-#             """
-#             send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
-#             instance.icon = ""
-#             # instance.icon = 'email'
-
 
 # https://www.strava.com/activities/5249323025/segments/2825228422414629460
 class Segment(models.Model):
@@ -125,17 +96,17 @@ class Segment(models.Model):
         else:
             return False
 
-    def get_number_efforts(self, user):
+    def get_number_efforts(self, user=None):
         return self.segmenteffort_set.filter(activity__user=user).count()
 
-    def get_best_effort(self, user):
+    def get_best_effort(self, user=None):
         return self.segmenteffort_set.filter(activity__user=user).order_by('elapsed_time').first()
 
-    def get_last_effort(self, user):
+    def get_last_effort(self, user=None):
         return self.segmenteffort_set.filter(activity__user=user).order_by('-start_date_local').first()
 
-    def get_best_effort_url(self):
-        best = self.get_best_effort()
+    def get_best_effort_url(self, user=None):
+        best = self.get_best_effort(user)
         return reverse('activities:effort_details', kwargs={'pk': best.pk})
 
     @property
