@@ -38,7 +38,6 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
-#TODO seperate date form activity in template -> user can sort by date
 class SegmentDetailsView(LoginRequiredMixin, DetailView):
     model = Segment
     template_name = 'activities/segment-details.html'

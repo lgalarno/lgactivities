@@ -26,14 +26,6 @@
                 </small>
             </h2>
 
-
-{% comment %}            <h2>
-                <img src="{% static object.type.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type.name }}">
-                {{ object.name }}
-                <span>
-                    <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>
-                </span>
-            </h2>{% endcomment %}
             <small>{{ object.start_date_local }}</small>
             {% if not object.map.polyline == '' %}
                 <div id="mapid" endpoint="{{ object.map.get_mapdata_api_url }}">></div>
@@ -63,6 +55,7 @@
                         <thead>
                         <tr>
                             <th scope="col">Activity</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Time</th>
                         </tr>
                         </thead>
@@ -70,9 +63,10 @@
                         {% for effort in efforts %}
                             <tr>
                                 <td>
-                                    <a href="{% url "activities:activity-details" effort.activity.id %}" >{{ effort.activity.name }}
-                                    <small>{{ effort.activity.get_date }}</small>
+                                    <a href="{% url "activities:activity-details" effort.activity.id %}" >
+                                        {{ effort.activity.name }}
                                     </a>
+                                <td>{{ effort.activity.get_date }}</td>
                                 <td>{{ effort.get_time }}</td>
                             </tr>
                         {% endfor %}
