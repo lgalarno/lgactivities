@@ -1,15 +1,15 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
-from django.shortcuts import render
+# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+# from django.db.models import Q
+# from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-import re
-
-from .filters import ActivityFilter
-from .models import Activity, SegmentEffort, StaredSegment, ActivityType, Segment
+# import re
+#
+# from .filters import ActivityFilter
+from .models import Activity, SegmentEffort, StaredSegment, Segment
 from .utils import update_segment
 
 # Create your views here.
@@ -25,10 +25,12 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         return Activity.objects.filter(user=self.request.user)
 
     def get_object(self, queryset=None):
-        obj = cache.get('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), None)
+        obj = cache.get(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", None)
+        print(obj)
         if not obj:
             obj = super(ActivityDetailsView, self).get_object(queryset)
-            cache.set('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), obj)
+            print(obj)
+            cache.set(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", obj)
         return obj
 
     def get_context_data(self, *args, **kwargs):
@@ -42,14 +44,11 @@ class SegmentDetailsView(LoginRequiredMixin, DetailView):
     model = Segment
     template_name = 'activities/segment-details.html'
 
-    # def get_queryset(self):
-    #     return Segment.objects.filter(user=self.request.user)
-
     def get_object(self, queryset=None):
-        obj = cache.get('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), None)
+        obj = cache.get(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", None)
         if not obj:
             obj = super(SegmentDetailsView, self).get_object(queryset)
-            cache.set('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), obj)
+            cache.set(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", obj)
         return obj
 
     def get_context_data(self, *args, **kwargs):
@@ -68,10 +67,10 @@ class EffortDetailsView(LoginRequiredMixin, DetailView):
     template_name = 'activities/effort-details.html'
 
     def get_object(self, queryset=None):
-        obj = cache.get('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), None)
+        obj = cache.get(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", None)
         if not obj:
             obj = super(EffortDetailsView, self).get_object(queryset)
-            cache.set('%s-%s' % (self.model.__name__.lower(), self.kwargs['pk']), obj)
+            cache.set(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", obj)
         return obj
 
     def get_context_data(self, *args, **kwargs):

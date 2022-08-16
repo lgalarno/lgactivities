@@ -247,7 +247,8 @@ STRAVA_CLIENT_SECRET = os.environ.get('STRAVA_CLIENT_SECRET')
 ######################################################################
 # CELERY
 ######################################################################
-CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL')
+# CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL')
+CELERY_BROKER_URL = os.environ.get('REDIS_URL')
 CELERY_RESULT_BACKEND = "django-db"
 # CELERY_WORKER_POOL = "solo"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
@@ -256,3 +257,23 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 # Other security
 ######################################################################
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+
+
+######################################################################
+# CACHES
+######################################################################
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+#         'LOCATION': '127.0.0.1:11211',
+#     }
+# }
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get('REDIS_URL'),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
