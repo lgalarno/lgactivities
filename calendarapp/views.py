@@ -12,7 +12,6 @@ STRAVA_API = settings.STRAVA_API
 
 
 class CalendarView(LoginRequiredMixin, ListView):
-    # login_url = 'login'
     model = Activity
     template_name = 'calendarapp/calendar.html'
 
