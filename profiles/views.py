@@ -27,18 +27,7 @@ class EditProfile(UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'edit_profile'
         u = self.get_object()
-        # try:
-        #     if u.sync_activities_task.active:
-        #         context['sync'] = SyncActivitiesTask.objects.get(user=u)
-        # except:
-        #     pass
-        # try:
-        #     if u.import_activities_task.active:
-        #         context['import'] = ImportActivitiesTask.objects.get(user=u)
-        # except:
-        #     pass
         sau = SocialAccount.objects.get(user=u)
-        # sid = StravaProfile.objects.get(user=u)
         context['StravaID'] = sau.uid
         context['city'] = sau.extra_data.get("city")
         context['country'] = sau.extra_data.get("country")

@@ -1,14 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
-# from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-# from django.db.models import Q
-# from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-# import re
-#
-# from .filters import ActivityFilter
+
 from .models import Activity, SegmentEffort, StaredSegment, Segment
 from .utils import update_segment
 
@@ -199,7 +194,6 @@ class ActivityListView(LoginRequiredMixin, ListView):
 #     return render(request, 'activites/activity-list-fbv.html', context)
 
 
-#TODO use cache?
 class SegmentListView(LoginRequiredMixin, ListView):
     model = Segment
     template_name = "activities/segment-list.html"

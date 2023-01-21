@@ -52,8 +52,6 @@ class RecentEffortsDataAPI(APIView):
         data = {
             'all_dates': all_dates,
             'all_times': all_times,
-            # 'best_perf_time': all_times[best_perf_index],
-            # 'best_perf_date': all_dates[best_perf_index],
             'best_perf_index': best_perf_index,
             'activity_url': activity_url,
             'activity_names': activity_names,

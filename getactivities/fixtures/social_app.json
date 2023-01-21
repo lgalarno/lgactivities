@@ -1,0 +1,31 @@
+[
+  {
+    "model": "sites.site", 
+    "pk": 1, 
+    "fields": {
+      "domain": "localhost", 
+      "name": "local"
+    }
+  },
+  {
+        "model":"socialaccount.socialapp",
+        "pk":1,
+        "fields":{
+            "id":"1",
+            "provider":"strava",
+            "name":"lgactivities",
+            "client_id":"65506",
+            "secret":"8d127df0e3426ce186314d064d3206bac8c2bed8",
+            "key":"23df88df854fb2bbf460d4415f85a9d49a099451"
+        }
+  },
+  {
+        "model":"socialaccount.socialapp_sites",
+        "pk":1,
+        "fields":{
+            "id":1,
+            "socialapp_id":1,
+            "site_id":1
+        }
+  }
+]

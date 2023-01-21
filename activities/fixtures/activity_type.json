@@ -3,7 +3,7 @@
         "model": "activities.ActivityType",
         "pk": 1,
         "fields": {
-            "type": "Run",
+            "name": "Run",
             "icon": "images/activity-types/run.png",
             "color": "green"
         }
@@ -12,7 +12,7 @@
         "model": "activities.ActivityType",
         "pk": 2,
         "fields": {
-            "type": "Ride",
+            "name": "Ride",
             "icon": "images/activity-types/biking.png",
             "color": "red"
         }
@@ -21,7 +21,7 @@
         "model": "activities.ActivityType",
         "pk": 3,
         "fields": {
-            "type": "Workout",
+            "name": "Workout",
             "icon": "images/activity-types/workout.png",
             "color": "#D38954"
         }
@@ -30,7 +30,7 @@
         "model": "activities.ActivityType",
         "pk": 4,
         "fields": {
-            "type": "IceSkate",
+            "name": "IceSkate",
             "icon": "images/activity-types/iceskate.png",
             "color": "#B0ECFA"
         }
@@ -39,7 +39,7 @@
         "model": "activities.ActivityType",
         "pk": 5,
         "fields": {
-            "type": "Hike",
+            "name": "Hike",
             "icon": "images/activity-types/hiking.png",
             "color": "#5D994E"
         }
@@ -48,7 +48,7 @@
         "model": "activities.ActivityType",
         "pk": 6,
         "fields": {
-            "type": "VirtualRide",
+            "name": "VirtualRide",
             "icon": "images/activity-types/virtualride.png",
             "color": "#782902"
         }
@@ -57,7 +57,7 @@
         "model": "activities.ActivityType",
         "pk": 7,
         "fields": {
-            "type": "RollerSki",
+            "name": "RollerSki",
             "icon": "images/activity-types/rollerski.png",
             "color": ""
         }
@@ -66,7 +66,7 @@
         "model": "activities.ActivityType",
         "pk": 8,
         "fields": {
-            "type": "InlineSkate",
+            "name": "InlineSkate",
             "icon": "images/activity-types/InlineSkate.png",
             "color": "green"
         }
@@ -75,7 +75,7 @@
         "model": "activities.ActivityType",
         "pk": 9,
         "fields": {
-            "type": "Snowshoe",
+            "name": "Snowshoe",
             "icon": "images/activity-types/snowshoe.png",
             "color": ""
         }
@@ -84,7 +84,7 @@
         "model": "activities.ActivityType",
         "pk": 10,
         "fields": {
-            "type": "NordicSki",
+            "name": "NordicSki",
             "icon": "images/activity-types/nordicski.png",
             "color": "#072127"
         }
@@ -93,7 +93,7 @@
         "model": "activities.ActivityType",
         "pk": 11,
         "fields": {
-            "type": "StandUpPaddling",
+            "name": "StandUpPaddling",
             "icon": "images/activity-types/StandUpPaddling.png",
             "color": ""
         }
@@ -102,7 +102,7 @@
         "model": "activities.ActivityType",
         "pk": 12,
         "fields": {
-            "type": "Kayaking",
+            "name": "Kayaking",
             "icon": "images/activity-types/Kayaking.png",
             "color": ""
         }
@@ -111,7 +111,7 @@
         "model": "activities.ActivityType",
         "pk": 13,
         "fields": {
-            "type": "VirtualRun",
+            "name": "VirtualRun",
             "icon": "images/activity-types/virtualrun.png",
             "color": ""
         }

@@ -133,11 +133,12 @@ table.dataTable .current_effort {
   color: #0b505b;
 }
 .calendar .links-arrow {
-  color: #4d4d4d;
+  /*color:  #4d4d4d;*/
+  color:  whitesmoke;
 }
 
 .calendar .links-arrow:hover {
-  color: #000000;
+  color: gray;
   text-decoration: none;
 }
 

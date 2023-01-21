@@ -106,6 +106,7 @@ def get_activities(user=None, start_date=None, end_date=None):
                                     id=se.get('segment').get('id')
                                 )
                                 segment.name = se.get('segment').get('name').strip()
+                                segment.type = at
                                 segment.save()
                                 # elements required for 'set_pr_rank' in models of SegmentEffort
                                 obj, effort_created = SegmentEffort.objects.get_or_create(
