@@ -1,11 +1,19 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
+from django.core.files.storage import FileSystemStorage
+from django.db.models import Q
+from django.http import HttpResponse, Http404, HttpResponseServerError
+from django.shortcuts import render
+from django.utils.encoding import smart_str
 from django.views.generic import ListView, DetailView
 
+from os import path
+
+import requests
 
 from .models import Activity, SegmentEffort, StaredSegment, Segment
-from .utils import update_segment
+from .utils import update_segment, fit_to_csv, virtualride_in_fit
 
 # Create your views here.
 
@@ -257,3 +265,93 @@ class StaredSegmentsListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(*args, **kwargs)
         context['title'] = 'stared segments'
         return context
+
+
+# def repair_tacx_activity(request):
+#     suggested = True
+#     lookups = Q(user=request.user) and \
+#               (Q(name__icontains='Chianti') | Q(name__icontains='Download') | Q(name__icontains='Grossglockner') | Q(name__icontains='Amstel') | Q(name__icontains='TACX'))
+#     activities = Activity.objects.filter(lookups).exclude(type__name='VirtualRide')
+#     if not activities:
+#         suggested = False
+#         activities = Activity.objects.filter(user=request.user).exclude(type__name='VirtualRide')
+#     context = {'title': 'stared segments',
+#                'activities': activities,
+#                'suggested': suggested
+#                }
+#     return render(request, 'activities/tacx-to-virtual-list.html', context)
+
+
+def tacx_to_virtual(request):
+
+    if request.method == "POST":
+        fit_file = request.FILES['fit_file']
+        if fit_file:
+            fs = FileSystemStorage()
+            fn = path.join('files', fit_file.name)  # fit_file.name
+            fs.save(fn, fit_file)
+            fp = path.join(fs.location, fn)
+            if 'to_csv' in request.POST:
+                csv_file, r = fit_to_csv(fp)
+                if r:
+                    response = HttpResponse(
+                        open(csv_file, 'rb').read(),
+                        content_type='text/csv',
+                        headers={'Content-Disposition': f"attachment; filename = {path.basename(csv_file)}"},
+                    )
+                    return response
+                else:
+                    return HttpResponseServerError(f"<h1>Server Error (500): {csv_file}</h1>")
+            elif 'to_virtual' in request.POST:
+                new_fit_file, r = virtualride_in_fit(fp)
+                if r:
+                    response = HttpResponse(
+                        open(new_fit_file, 'rb').read(),
+                        content_type='application/fit ',
+                        headers={'Content-Disposition': f"attachment; filename = {path.basename(new_fit_file)}"},
+                    )
+                    return response
+                else:
+                    return HttpResponseServerError(f"<h1>Server Error (500): {new_fit_file}</h1>")
+            else:
+                raise Http404
+            #
+    context = {'title': 'tacx to virtual ride'
+               }
+    return render(request, 'activities/tacx-to-virtual.html', context)
+
+
+# def tacx_to_virtual_list(request):
+#     suggested = True
+#     lookups = Q(user=request.user) and \
+#               (Q(name__icontains='Chianti') | Q(name__icontains='Download') | Q(name__icontains='Grossglockner') | Q(name__icontains='Amstel') | Q(name__icontains='TACX'))
+#     activities = Activity.objects.filter(lookups).exclude(type__name='VirtualRide')
+#     if not activities:
+#         suggested = False
+#         activities = Activity.objects.filter(user=request.user).exclude(type__name='VirtualRide')
+#     context = {'title': 'tacx to virtual-list',
+#                'activities': activities,
+#                'suggested': suggested
+#                }
+#     return render(request, 'activities/tacx-to-virtual-list.html', context)
+#
+#
+# def tacx_to_virtual(request, pk):
+#     # url = f'https://www.strava.com/activities/{pk}/export_original'
+#     # r = requests.get(url)
+#     get_fit_file(request.user, pk)
+#     # print(r.status_code)
+#     # if r.status_code == 200:
+#     #     # save attached file
+#     #     # create a new instance of FileSystemStorage
+#     #     # fs = FileSystemStorage()
+#     #     # file = fs.save('temp.fit', r.content)
+#     #     # # the fileurl variable now contains the url to the file. This can be used to serve the file when needed.
+#     #     # fileurl = fs.url(file)
+#     #
+#     #     with open('/media/luc/DataFast/owncloud/public_html/lgactivities/media/files/temp.fit', 'wb') as f:
+#     #         f.write(r.content)
+#
+#     context = {'title': 'tacx to virtual ride'
+#                }
+#     return render(request, 'activities/tacx-to-virtual-list.html', context)

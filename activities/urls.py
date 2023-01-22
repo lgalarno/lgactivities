@@ -23,5 +23,8 @@ urlpatterns = [
     path('segment-list/', cache_page(600)(SegmentListView.as_view()), name='segment-list'),
     # path('activity/<int:activity_id>/effort/<int:effort_id>/', login_required(segment_details), name='segment_details'),
     path('effort/<int:pk>/', EffortDetailsView.as_view(), name='effort_details'),
+    # path('tacx-to-virtual-list/', views.tacx_to_virtual_list, name='tacx_to_virtual_list'),
+    # path('tacx-to-virtual/<int:pk>/', views.tacx_to_virtual, name='tacx_to_virtual'),
+    path('tacx-to-virtual/', views.tacx_to_virtual, name='tacx_to_virtual'),
     path('api/', include('activities.api.urls', namespace="activities-api")),
 ]

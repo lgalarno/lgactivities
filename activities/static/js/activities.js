@@ -1,6 +1,16 @@
 $(function() {
 
         /////////////////////////////////////////////////////////////
+        // inputGroupFile
+        /////////////////////////////////////////////////////////////
+
+        document.querySelector('.custom-file-input').addEventListener('change',function(e){
+          var fileName = document.getElementById("inputGroupFile04").files[0].name;
+          var nextSibling = e.target.nextElementSibling
+          nextSibling.innerText = fileName
+        })
+
+        /////////////////////////////////////////////////////////////
         // DataTable
         /////////////////////////////////////////////////////////////
 

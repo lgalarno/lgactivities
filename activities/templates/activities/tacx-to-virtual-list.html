@@ -3,9 +3,9 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
+    {% if activities %}
     <div class="row justify-content-md-center">
         <div class="col col-md-10">
-        {% if activity_list %}
             <h3>Activities</h3>
                 <div class="table-responsive">
                     <table class="table"  id="data_table_list">
@@ -15,16 +15,18 @@
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                         <tr>
                             <th scope="col"></th>
                             <th scope="col" class="head">Type</th>
                             <th scope="col">Date</th>
                             <th scope="col">Name</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {% for a in activity_list %}
+                        {% for a in activities %}
                             <tr>
                                 <td>
                                     <img src="{% static a.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ a.type.name }}">
@@ -36,8 +38,14 @@
                                     {{ a.get_date }}
                                 </td>
                                 <td>
-                                    <a href="{% url 'activities:activity-details' a.id %}" >
-                                        {{ a.name }}
+                                    {{ a.name }}
+                                </td>
+                                <td>
+                                    <a href="{% url 'activities:activity-details' a.id %}" title="View">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+                                    <a href="{% url 'activities:tacx_to_virtual' a.id %}" title="Convert to VirtualRide">
+                                        <i class="fas fa-arrow-alt-circle-right"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -48,13 +56,38 @@
                             <th scope="col"></th>
                             <th scope="col">Date</th>
                             <th scope="col">Name</th>
+                            <th scope="col"></th>
                         </tfoot>
                     </table>
                 </div>
-            {% endif %}
+        </div>
+    </div>
+{% comment %}    <div class="row justify-content-md-center">
+        <div class="col col-md-10">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="activity_list">Suggestion</label>
+                <div class="col-sm-10">
+                    <select name="activity_list" class="form-control" id="activity_list" required>
+                        {% for a in tacx_activities %}
+                            <option value="{{ a.ID }}">{{ a.name }} - {{ a.type.name }} - {{ a.get_date }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="form-text text-muted"> Name - Type - Date</small>
+                </div>
+            </div>
+        </div>
+    </div>{% endcomment %}
+    {% endif %}
+    <div class="row justify-content-md-center" id="search_list">
+        <div class="col col-md-10">
+        </div>
+    </div>
+    <div class="row justify-content-md-center" id="search_list">
+        <div class="col col-md-10">
         </div>
     </div>
 {% endblock %}
+
 {% block js %}
     <script src="{% static 'js/activities.js' %}"></script>
 {% endblock js %}
