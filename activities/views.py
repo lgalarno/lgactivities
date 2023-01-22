@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.utils.encoding import smart_str
 from django.views.generic import ListView, DetailView
 
-from os import path
+import os
 
 import requests
 
@@ -288,33 +288,36 @@ def tacx_to_virtual(request):
         fit_file = request.FILES['fit_file']
         if fit_file:
             fs = FileSystemStorage()
-            fn = path.join('files', fit_file.name)  # fit_file.name
+            fn = os.path.join('files', fit_file.name)  # fit_file.name
             fs.save(fn, fit_file)
-            fp = path.join(fs.location, fn)
+            fp = os.path.join(fs.location, fn)
             if 'to_csv' in request.POST:
-                csv_file, r = fit_to_csv(fp)
+                new_file, r = fit_to_csv(fp)
                 if r:
+                    f = open(new_file, 'rb').read()
                     response = HttpResponse(
-                        open(csv_file, 'rb').read(),
+                        f,
                         content_type='text/csv',
-                        headers={'Content-Disposition': f"attachment; filename = {path.basename(csv_file)}"},
+                        headers={'Content-Disposition': f"attachment; filename = {os.path.basename(new_file)}"},
                     )
-                    return response
+
                 else:
-                    return HttpResponseServerError(f"<h1>Server Error (500): {csv_file}</h1>")
+                    return HttpResponseServerError(f"<h1>Server Error (500): {new_file}</h1>")
             elif 'to_virtual' in request.POST:
-                new_fit_file, r = virtualride_in_fit(fp)
+                new_file, r = virtualride_in_fit(fp)
                 if r:
                     response = HttpResponse(
-                        open(new_fit_file, 'rb').read(),
+                        open(new_file, 'rb').read(),
                         content_type='application/fit ',
-                        headers={'Content-Disposition': f"attachment; filename = {path.basename(new_fit_file)}"},
+                        headers={'Content-Disposition': f"attachment; filename = {os.path.basename(new_file)}"},
                     )
-                    return response
                 else:
-                    return HttpResponseServerError(f"<h1>Server Error (500): {new_fit_file}</h1>")
+                    return HttpResponseServerError(f"<h1>Server Error (500): {new_file}</h1>")
             else:
                 raise Http404
+            fs.delete(fn)
+            os.remove(new_file)
+            return response
             #
     context = {'title': 'tacx to virtual ride'
                }
