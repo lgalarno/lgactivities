@@ -2,7 +2,7 @@ from django.conf import settings
 
 from fit_tool.fit_file import FitFile
 from fit_tool.fit_file_builder import FitFileBuilder
-from fit_tool.profile.messages.session_message import SessionMessage, SessionSubSportField
+from fit_tool.profile.messages.session_message import SessionMessage
 
 from os import path
 
@@ -44,7 +44,7 @@ def update_segment(u, segment):
         header = {'Authorization': f'Bearer {access_token}'}
         param = {}
         url = f"{STRAVA_API['URLS']['athlete']}segments/{segment.id}"
-        segment_detail = requests.get(url, headers=header, params=param, verify=False).json()
+        segment_detail = requests.get(url, headers=header, params=param).json()
         if 'errors' in segment_detail:
             e = formaterror(segment_detail['errors'])
             return e

@@ -2,15 +2,11 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.core.files.storage import FileSystemStorage
-from django.db.models import Q
 from django.http import HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render
-from django.utils.encoding import smart_str
 from django.views.generic import ListView, DetailView
 
 import os
-
-import requests
 
 from .models import Activity, SegmentEffort, StaredSegment, Segment
 from .utils import update_segment, fit_to_csv, virtualride_in_fit
@@ -49,13 +45,14 @@ class SegmentDetailsView(LoginRequiredMixin, DetailView):
         obj = cache.get(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", None)
         if not obj:
             obj = super(SegmentDetailsView, self).get_object(queryset)
+            update_segment(u=self.request.user, segment=obj)
+            obj.refresh_from_db()
             cache.set(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", obj)
         return obj
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
         efforts = self.object.get_all_efforts(user=self.request.user)
-        update_segment(u=self.request.user, segment=self.object)
         context['efforts'] = efforts
         context['pb'] = self.object.get_best_effort(user=self.request.user)
         context['staring'] = self.object.is_stared(user=self.request.user)
@@ -71,14 +68,15 @@ class EffortDetailsView(LoginRequiredMixin, DetailView):
         obj = cache.get(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", None)
         if not obj:
             obj = super(EffortDetailsView, self).get_object(queryset)
+            # update segment if new kom, Qom, updated
+            s = Segment.objects.get(id=obj.segment.id)
+            update_segment(u=self.request.user, segment=s)
+            obj.refresh_from_db()
             cache.set(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", obj)
         return obj
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data()
-        # update segment if new kom, Qom, updated
-        s = Segment.objects.get(id=self.object.segment.id)
-        update_segment(u=self.request.user, segment=s)
         context['efforts'] = self.object.segment.get_all_efforts(user=self.request.user)
         context['staring'] = self.object.segment.is_stared(user=self.request.user)
         context['title'] = 'segment details'
