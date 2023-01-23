@@ -29,10 +29,8 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
 
     def get_object(self, queryset=None):
         obj = cache.get(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", None)
-        print(obj)
         if not obj:
             obj = super(ActivityDetailsView, self).get_object(queryset)
-            print(obj)
             cache.set(f"{self.model.__name__.lower()}-{self.kwargs['pk']}", obj)
         return obj
 
@@ -283,7 +281,6 @@ class StaredSegmentsListView(LoginRequiredMixin, ListView):
 
 
 def fit_file_utils(request):
-    print('aaa')
     if request.method == "POST":
         fit_file = request.FILES['fit_file']
         if fit_file:
