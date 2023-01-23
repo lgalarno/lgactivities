@@ -23,8 +23,8 @@
                              My Activities
                         </a>
                         {% if request.user.username == 'lgalarneau' %}
-                            <a class="dropdown-item" href="{% url 'activities:tacx_to_virtual' %}">
-                            <i class="fas fa-file-export"></i>
+                            <a class="dropdown-item" href="{% url 'activities:fit_file_utils' %}">
+                            <i class="fas fa-file-contract"></i>
                              FIT file
                             </a>
                         {% endif %}

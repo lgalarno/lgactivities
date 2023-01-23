@@ -282,8 +282,8 @@ class StaredSegmentsListView(LoginRequiredMixin, ListView):
 #     return render(request, 'activities/tacx-to-virtual-list.html', context)
 
 
-def tacx_to_virtual(request):
-
+def fit_file_utils(request):
+    print('aaa')
     if request.method == "POST":
         fit_file = request.FILES['fit_file']
         if fit_file:
@@ -321,7 +321,7 @@ def tacx_to_virtual(request):
             #
     context = {'title': 'tacx to virtual ride'
                }
-    return render(request, 'activities/tacx-to-virtual.html', context)
+    return render(request, 'activities/fit-file-utils.html', context)
 
 
 # def tacx_to_virtual_list(request):
