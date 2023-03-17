@@ -26,7 +26,7 @@ class Calendar(HTMLCalendar):
 
         :param day:
         :param activities:
-        :return: list of activities for a the day in a table data (td) cell
+        :return: list of activities for the day in a table data (td) cell
         """
         activities_per_day = activities.filter(start_date_local__day=day)
         d = ''

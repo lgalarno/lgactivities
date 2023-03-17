@@ -18,6 +18,7 @@ class SegmentStaringAPIToggle(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, segment_id=None):
+
         obj = get_object_or_404(Segment, pk=segment_id)
         s, created = StaredSegment.objects.get_or_create(
             segment=obj,

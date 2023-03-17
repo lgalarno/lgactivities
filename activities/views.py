@@ -287,8 +287,10 @@ def fit_file_utils(request):
             fs.save(fn, fit_file)
             fp = os.path.join(fs.location, fn)
             if 'to_csv' in request.POST:
+
                 new_file, r = fit_to_csv(fp)
                 if r:
+                    print(new_file)
                     f = open(new_file, 'rb').read()
                     response = HttpResponse(
                         f,

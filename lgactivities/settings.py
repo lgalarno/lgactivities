@@ -205,11 +205,24 @@ REST_FRAMEWORK = {
 ######################################################################
 DEV = bool(int(os.getenv('DEV', False)))  # os.environ.get('DEV')
 if DEV:
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.sqlite3',
+    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    #     }
+    # }
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
+            'ENGINE': os.environ.get('DATABASE_ENGINE'),
+            'HOST': os.environ.get('DATABASE_HOST'),
+            'PORT': os.environ.get('DATABASE_PORT'),
+            'USER': os.environ.get('DATABASE_USER'),
+            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+            'NAME': os.environ.get('DATABASE_NAME'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+                'use_unicode': True, },
+        },
     }
 else:
     DATABASES = {
