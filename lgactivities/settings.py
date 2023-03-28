@@ -9,24 +9,22 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of local and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import os
-from pathlib import Path
-from dotenv import load_dotenv
 
+from pathlib import Path
+from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-load_dotenv(os.path.join(BASE_DIR, '.env'))
+config = dotenv_values(BASE_DIR / '.env')
 
 # # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-
+SECRET_KEY = config["DJANGO_SECRET_KEY"]
 #
 # # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = str(os.environ.get('DEBUG')) == "1"  # 1 == True
+DEBUG = str(config["DEBUG"]) == "1"  # 1 == True
+
 #
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',') if os.environ.get('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = config["ALLOWED_HOSTS"].split(',') if config["ALLOWED_HOSTS"] else []
 
 ######################################################################
 # Application definition
@@ -72,7 +70,7 @@ ROOT_URLCONF = 'lgactivities.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR /'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -181,11 +179,11 @@ use_custom_control = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",
 ]
 
-STATIC_ROOT = os.environ.get('STATIC_ROOT')
-MEDIA_ROOT = os.environ.get('MEDIA_ROOT', os.path.join(BASE_DIR, "media"))
+STATIC_ROOT = config.get('STATIC_ROOT')
+MEDIA_ROOT = config.get('MEDIA_ROOT', BASE_DIR / "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -203,7 +201,8 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 ######################################################################
-DEV = bool(int(os.getenv('DEV', False)))  # os.environ.get('DEV')
+
+DEV = bool(int(config.get('DEV', False)))  # os.environ.get('DEV')
 if DEV:
     # DATABASES = {
     #     'default': {
@@ -213,12 +212,12 @@ if DEV:
     # }
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get('DATABASE_ENGINE'),
-            'HOST': os.environ.get('DATABASE_HOST'),
-            'PORT': os.environ.get('DATABASE_PORT'),
-            'USER': os.environ.get('DATABASE_USER'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'NAME': os.environ.get('DATABASE_NAME'),
+            'ENGINE': config["DATABASE_ENGINE"],
+            'HOST': config["DATABASE_HOST"],
+            'PORT': config["DATABASE_PORT"],
+            'USER': config["DATABASE_USER"],
+            'PASSWORD': config["DATABASE_PASSWORD"],
+            'NAME': config["DATABASE_NAME"],
             'OPTIONS': {
                 'charset': 'utf8mb4',
                 'use_unicode': True, },
@@ -227,12 +226,12 @@ if DEV:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': os.environ.get('DATABASE_ENGINE'),
-            'HOST': os.environ.get('DATABASE_HOST'),
-            'PORT': os.environ.get('DATABASE_PORT'),
-            'USER': os.environ.get('DATABASE_USER'),
-            'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-            'NAME': os.environ.get('DATABASE_NAME'),
+            'ENGINE': config["DATABASE_ENGINE"],  # os.environ.get('DATABASE_ENGINE'),
+            'HOST': config["DATABASE_HOST"],  # os.environ.get('DATABASE_HOST'),
+            'PORT': config["DATABASE_PORT"],  # os.environ.get('DATABASE_PORT'),
+            'USER': config["DATABASE_USER"],  # os.environ.get('DATABASE_USER'),
+            'PASSWORD': config["DATABASE_PASSWORD"],  #os.environ.get('DATABASE_PASSWORD'),
+            'NAME': config["DATABASE_NAME"],  # os.environ.get('DATABASE_NAME'),
             'OPTIONS': {
                 'charset': 'utf8mb4',
                 'use_unicode': True, },
@@ -243,24 +242,23 @@ else:
 # STRAVA_API
 ######################################################################
 STRAVA_API = {
-    'name': os.getenv('STRAVA_API_NAME'),
-    'callback_domain': os.environ.get('STRAVA_callback_domain'),
+    'name':  config["STRAVA_API_NAME"],  # os.getenv('STRAVA_API_NAME'),
+    'callback_domain': config["STRAVA_callback_domain"],  # environ.get('STRAVA_callback_domain'),
     'URLS': {
         'oauth': "https://www.strava.com/oauth/",
         'athlete': "https://www.strava.com/api/v3/",
     }
 }
 
-FROM_EMAIL = os.environ.get('FROM_EMAIL')
-EMAIL_PASSWORD = os.environ.get('EMAIL_PASSWORD')
-STRAVA_CLIENT_ID = os.environ.get('STRAVA_CLIENT_ID')
-STRAVA_CLIENT_SECRET = os.environ.get('STRAVA_CLIENT_SECRET')
+FROM_EMAIL = config["FROM_EMAIL"]  # os.environ.get('FROM_EMAIL')
+EMAIL_PASSWORD = config["EMAIL_PASSWORD"]  # os.environ.get('EMAIL_PASSWORD')
+STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]  # os.environ.get('STRAVA_CLIENT_ID')
+STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]  #os.environ.get('STRAVA_CLIENT_SECRET')
 
 ######################################################################
 # CELERY
 ######################################################################
-# CELERY_BROKER_URL = os.environ.get('RABBITMQ_URL')
-CELERY_BROKER_URL = os.environ.get('REDIS_URL')
+CELERY_BROKER_URL = config["REDIS_URL"]   # os.environ.get('REDIS_URL')
 CELERY_RESULT_BACKEND = "django-db"
 # CELERY_WORKER_POOL = "solo"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
@@ -283,7 +281,7 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL'),
+        "LOCATION": config["REDIS_URL"],  # os.environ.get('REDIS_URL'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
