@@ -212,12 +212,12 @@ if DEV:
     # }
     DATABASES = {
         'default': {
-            'ENGINE': config["DATABASE_ENGINE"],
-            'HOST': config["DATABASE_HOST"],
-            'PORT': config["DATABASE_PORT"],
-            'USER': config["DATABASE_USER"],
-            'PASSWORD': config["DATABASE_PASSWORD"],
-            'NAME': config["DATABASE_NAME"],
+            'ENGINE': config.get('DATABASE_ENGINE'),
+            'HOST': config.get('DATABASE_HOST'),
+            'PORT': config.get('DATABASE_PORT'),
+            'USER': config.get('DATABASE_USER'),
+            'PASSWORD': config.get('DATABASE_PASSWORD'),
+            'NAME': config.get('DATABASE_NAME'),
             'OPTIONS': {
                 'charset': 'utf8mb4',
                 'use_unicode': True, },
@@ -226,12 +226,12 @@ if DEV:
 else:
     DATABASES = {
         'default': {
-            'ENGINE': config["DATABASE_ENGINE"],  # os.environ.get('DATABASE_ENGINE'),
-            'HOST': config["DATABASE_HOST"],  # os.environ.get('DATABASE_HOST'),
-            'PORT': config["DATABASE_PORT"],  # os.environ.get('DATABASE_PORT'),
-            'USER': config["DATABASE_USER"],  # os.environ.get('DATABASE_USER'),
-            'PASSWORD': config["DATABASE_PASSWORD"],  #os.environ.get('DATABASE_PASSWORD'),
-            'NAME': config["DATABASE_NAME"],  # os.environ.get('DATABASE_NAME'),
+            'ENGINE': config.get('DATABASE_ENGINE'),
+            'HOST': config.get('DATABASE_HOST'),
+            'PORT': config.get('DATABASE_PORT'),
+            'USER': config.get('DATABASE_USER'),
+            'PASSWORD': config.get('DATABASE_PASSWORD'),
+            'NAME': config.get('DATABASE_NAME'),
             'OPTIONS': {
                 'charset': 'utf8mb4',
                 'use_unicode': True, },
