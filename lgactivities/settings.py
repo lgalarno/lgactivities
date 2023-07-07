@@ -15,7 +15,7 @@ from dotenv import dotenv_values
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-config = dotenv_values(BASE_DIR / '.env')
+config = dotenv_values(BASE_DIR / '..' / '.env')
 
 # # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config["DJANGO_SECRET_KEY"]
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.strava',
     'crispy_forms',
+    "crispy_bootstrap5",
     'django_celery_beat',
     'django_celery_results',
     'django_filters',
@@ -169,8 +170,9 @@ LOGIN_URL = '/'
 ######################################################################
 # CRISPY_FORMS
 ######################################################################
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
-use_custom_control = True
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+# use_custom_control = True
 
 ######################################################################
 # Static files (CSS, JavaScript, Images)
@@ -183,7 +185,7 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = config.get('STATIC_ROOT')
-MEDIA_ROOT = config.get('MEDIA_ROOT', BASE_DIR / "media")
+MEDIA_ROOT = config.get('MEDIA_ROOT', BASE_DIR / '..' / "media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -201,42 +203,19 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 ######################################################################
-
-DEV = bool(int(config.get('DEV', False)))  # os.environ.get('DEV')
-if DEV:
-    # DATABASES = {
-    #     'default': {
-    #         'ENGINE': 'django.db.backends.sqlite3',
-    #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    #     }
-    # }
-    DATABASES = {
-        'default': {
-            'ENGINE': config.get('DATABASE_ENGINE'),
-            'HOST': config.get('DATABASE_HOST'),
-            'PORT': config.get('DATABASE_PORT'),
-            'USER': config.get('DATABASE_USER'),
-            'PASSWORD': config.get('DATABASE_PASSWORD'),
-            'NAME': config.get('DATABASE_NAME'),
-            'OPTIONS': {
-                'charset': 'utf8mb4',
-                'use_unicode': True, },
-        },
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': config.get('DATABASE_ENGINE'),
-            'HOST': config.get('DATABASE_HOST'),
-            'PORT': config.get('DATABASE_PORT'),
-            'USER': config.get('DATABASE_USER'),
-            'PASSWORD': config.get('DATABASE_PASSWORD'),
-            'NAME': config.get('DATABASE_NAME'),
-            'OPTIONS': {
-                'charset': 'utf8mb4',
-                'use_unicode': True, },
-        },
-    }
+DATABASES = {
+    'default': {
+        'ENGINE': config.get('DATABASE_ENGINE'),
+        'HOST': config.get('DATABASE_HOST'),
+        'PORT': config.get('DATABASE_PORT'),
+        'USER': config.get('DATABASE_USER'),
+        'PASSWORD': config.get('DATABASE_PASSWORD'),
+        'NAME': config.get('DATABASE_NAME'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'use_unicode': True, },
+    },
+}
 
 ######################################################################
 # STRAVA_API

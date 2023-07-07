@@ -2,7 +2,7 @@ db.sqlite3
 *.pyc
 staticfiles
 .idea
-.env
+../.env
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -88,7 +88,7 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
+../.env
 .venv
 env/
 venv/
