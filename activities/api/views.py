@@ -1,9 +1,11 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, HttpResponse
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
+import plotly.graph_objects as go
+import datetime
 import json
 import polyline
 
@@ -45,7 +47,7 @@ class RecentEffortsDataAPI(APIView):
     def get(self, request, segment_id=None):
         segment = get_object_or_404(Segment, pk=segment_id)
         all_efforts = segment.get_all_efforts(user=request.user)
-        all_times = [e.get_time() for e in all_efforts]
+        all_times = [e.get_time_str() for e in all_efforts]
         all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
         best_perf_index = all_times.index(min(all_times))
         activity_url = [e.activity.get_absolute_url() for e in all_efforts]
@@ -58,6 +60,76 @@ class RecentEffortsDataAPI(APIView):
             'activity_names': activity_names,
         }
         return Response(data)
+
+
+class RecentEffortsDataHTMXAPI(APIView):
+    """
+    * Requires authentication.
+    """
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, segment_id=None):
+        segment = get_object_or_404(Segment, pk=segment_id)
+        all_efforts = segment.get_all_efforts(user=request.user)
+        all_times = [e.get_time() for e in all_efforts]
+        all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
+        best_perf_index = all_times.index(min(all_times))
+        activity_url = [e.activity.get_absolute_url() for e in all_efforts]
+        activity_names = [e.activity.name for e in all_efforts]
+
+        mock_date = datetime.datetime(2020, 1, 8, 0, 0, 0)
+        y_datetime = [mock_date + t for t in all_times]
+        fig = go.Figure()
+
+        fig.add_trace(go.Scatter(
+            x=all_dates,
+            y=y_datetime,
+            mode='markers',
+            name="",
+            text=activity_names,
+            hoverinfo='all'
+        ))
+        fig.add_trace(go.Scatter(
+            x=[all_dates[best_perf_index]],
+            y=[y_datetime[best_perf_index]],
+            mode='markers',
+            hoverinfo='skip',
+            marker={
+                "color": 'rgba(0, 0, 0, 0)',
+                "size": 20,
+                "line": {
+                    "color": 'rgb(255, 0, 0)',
+                    "width": 2
+                }
+            }
+        )
+        )
+        fig.update_layout(
+            hovermode='closest',
+            template="none",
+            yaxis={
+                "tickformat": '%H:%M:%S'
+            },
+            xaxis={
+                "autorange": True
+            },
+            showlegend=False
+        )
+        fig.add_shape(
+            type="line",
+            xref='paper',
+            x0=0,
+            y0=y_datetime[best_perf_index],
+            x1=1,
+            y1=y_datetime[best_perf_index],
+            line={
+                "color": 'rgb(255, 0, 0)',
+                "width": 1,
+                "dash": 'dot'
+            },
+        )
+        return HttpResponse(fig.to_html())
 
 
 class GetMapDataAPI(APIView):

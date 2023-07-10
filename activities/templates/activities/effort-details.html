@@ -28,7 +28,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>This effort: {{ object.get_time }}</th>
+                            <th>This effort: {{ object.get_time_str }}</th>
                             <th>KOM: {{ object.segment.kom }}</th>
                             <th>QOM: {{ object.segment.qom }}</th>
                             <th>updated: {{ object.segment.updated }}</th>
@@ -67,11 +67,24 @@
             <hr>
             <h3>All efforts</h3>
             <div id="recent_efforts_chart" style="height:400px;" endpoint="{{ object.segment.get_plotdata_api_url }}"></div>
+            <br>
+{#            <span class="badge bg-success rounded-pill"#}
+{#                  title="draw"#}
+{#                  style="cursor: pointer"#}
+{#                  hx-get="{% url 'activities:activities-api:SegmentChartHTMX-API' object.segment.id %}"#}
+{#                  hx-target="#recent_efforts_chart_HTMX"#}
+{#            >#}
+{#                draw#}
+{#            </span>#}
+{#            <div id="recent_efforts_chart_HTMX" style="height:400px;"></div>#}
             <hr>
         </div>
     </div>
 {% endblock %}
 
 {% block js %}
-    <script src="{% static 'js/activities.js' %}"></script>
+    <script src="{% static 'js/plotly_efforts.js' %}"></script>
+    <script src="{% static 'js/leafletmap_activities.js' %}"></script>
+    <script src="{% static 'js/datatable.js' %}"></script>
+    <script src="{% static 'js/segment_staring.js' %}"></script>
 {% endblock js %}

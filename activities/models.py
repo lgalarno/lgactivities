@@ -190,8 +190,11 @@ class SegmentEffort(models.Model):
     def __str__(self):
         return f"{self.activity.name}: {self.segment.name}"
 
-    def get_time(self, *args, **kwargs):
+    def get_time_str(self, *args, **kwargs):
         return str(datetime.timedelta(seconds=self.elapsed_time))
+
+    def get_time(self, *args, **kwargs):
+        return datetime.timedelta(seconds=self.elapsed_time)
 
     def get_date(self, *args, **kwargs):
         return self.start_date_local.strftime("%Y-%m-%d")  # ("%d/%m/%Y")

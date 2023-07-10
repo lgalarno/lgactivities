@@ -1,11 +1,12 @@
 from django.urls import path
 
-from .views import SegmentStaringAPIToggle, RecentEffortsDataAPI, GetMapDataAPI
+from .views import SegmentStaringAPIToggle, RecentEffortsDataAPI, GetMapDataAPI, RecentEffortsDataHTMXAPI
 
 app_name = 'activities-api'
 
 urlpatterns = [
     path('segment-staring/<int:segment_id>/', SegmentStaringAPIToggle.as_view(), name='SegmentStaringAPIToggle'),
     path('segment-data/<int:segment_id>/', RecentEffortsDataAPI.as_view(), name='SegmentDataAPI'),
+    path('segment-chart-htmx/<int:segment_id>/', RecentEffortsDataHTMXAPI.as_view(), name='SegmentChartHTMX-API'),
     path('segment-map/<int:model_id>/', GetMapDataAPI.as_view(), name='GetMapDataAPI'),
 ]
