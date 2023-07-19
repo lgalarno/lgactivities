@@ -32,7 +32,6 @@ table.dataTable>thead .sorting:after, table.dataTable>thead .sorting_asc:after, 
 table.dataTable .current_effort {
   background: #ccffff;
 }
-
 /* leafletmap */
 #mapid {  /* all maps */
   height: 400px;
@@ -182,6 +181,30 @@ hr.lga {
 
 /* Strava colors */
 .strava_link {
-  color: #FC4C02;
+  color: #fc5200;
   font-size: 0.5em;
+}
+
+.bg-strava {
+    color: #FFFFFFFF !important;
+    background-color: #fc5200;
+    border-color: #fc5200;
+}
+
+.bg-strava:hover {
+    color: #FFFFFFFF !important;
+    background-color: #e34a00;
+    border-color: #e34a00;
+}
+
+.btn-strava {
+    color: #FFFFFFFF !important;
+    background-color: #fc5200;
+    border-color: #fc5200;
+}
+
+.btn-strava:hover {
+    color: #FFFFFFFF !important;
+    background-color: #e34a00;
+    border-color: #e34a00;
 }

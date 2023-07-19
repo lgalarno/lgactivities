@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, HttpResponse
+from django.shortcuts import get_object_or_404, HttpResponse, render
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -75,13 +75,11 @@ class RecentEffortsDataHTMXAPI(APIView):
         all_times = [e.get_time() for e in all_efforts]
         all_dates = [e.start_date_local.strftime("%m/%d/%Y") for e in all_efforts]
         best_perf_index = all_times.index(min(all_times))
-        activity_url = [e.activity.get_absolute_url() for e in all_efforts]
+        activity_urls = [e.activity.get_absolute_url() for e in all_efforts]
         activity_names = [e.activity.name for e in all_efforts]
-
         mock_date = datetime.datetime(2020, 1, 8, 0, 0, 0)
         y_datetime = [mock_date + t for t in all_times]
         fig = go.Figure()
-
         fig.add_trace(go.Scatter(
             x=all_dates,
             y=y_datetime,
@@ -129,7 +127,13 @@ class RecentEffortsDataHTMXAPI(APIView):
                 "dash": 'dot'
             },
         )
-        return HttpResponse(fig.to_html())
+        context = {
+            "chart": fig.to_html(),
+            "activity_urls": "activity_urls",
+        }
+
+        return render(request, 'activities/partials/efforts_chart.html', context)
+        # return HttpResponse(fig.to_html())
 
 
 class GetMapDataAPI(APIView):

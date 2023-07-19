@@ -247,7 +247,6 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
 ######################################################################
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-
 ######################################################################
 # CACHES
 ######################################################################

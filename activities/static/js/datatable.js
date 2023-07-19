@@ -13,7 +13,15 @@ $(function() {
             searching: true,
             pageLength: 25,
             columnDefs: [
-                {orderable: false, targets: 0}
+                {
+                    orderable: false,
+                    targets: 1  // icon
+                },
+                {
+                    targets: 0,
+                    searchable: true,
+                    visible: false
+                }
             ],
             // order: [[11, 'asc']],
             processing: true,

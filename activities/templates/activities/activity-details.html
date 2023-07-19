@@ -8,20 +8,25 @@
             <h2>
                 <img src="{% static object.type.icon %}" width="32" height="32" class="d-inline-block" alt="{{ object.type.name }}">
                 {{ object.name }}
-                <span>
-                    <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>
-                </span>
+                <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>
             </h2>
+{#            <a class="badge bg-strava rounded-pill" href="{{ object.get_strava_url }} " target="_blank" >Strava</a>#}
+
+{#                    <a href="{{ object.get_strava_url }}" target="_blank" class="strava_link" > View on Strava</a>#}
+
             <small>{{ object.start_date_local }}</small>
             {% if not object.map.polyline == '' %}
                 <div id="mapid" endpoint="{{ object.map.get_mapdata_api_url }}">></div>
             {% endif %}
         </div>
         <div class="col col-md-8">
-            <h3>Segment efforts</h3>
+            <h3  class="d-inline">Segment efforts</h3>
             {% if segments_efforts %}
+                <a class="badge bg-strava float-end" href="{% url 'activities:refresh-activity' object.id %}"><i class="fa-solid fa-arrows-rotate"></i> Refresh</a>
+                <br>
+                <br>
                 <div class="table-responsive">
-                    <table class="table"  id="data_table">
+                    <table class="table-striped" style="width:100%"" id="data_table">
                         <thead>
                         <tr>
                             <th scope="col">Name</th>

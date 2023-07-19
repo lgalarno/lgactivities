@@ -9,11 +9,10 @@ from django.views.generic import ListView, DetailView
 import os
 
 from .models import Activity, SegmentEffort, StaredSegment, Segment
-from .utils import update_segment, fit_to_csv, virtualride_in_fit
+from .utils import fit_to_csv, virtualride_in_fit
+from getactivities.utils import update_segment, get_activity
 
 # Create your views here.
-
-STRAVA_API = settings.STRAVA_API
 
 
 class ActivityDetailsView(LoginRequiredMixin, DetailView):
@@ -35,6 +34,15 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
         context['segments_efforts'] = self.object.get_all_segments()
         context['title'] = 'Activity'
         return context
+
+
+def refresh_activity(request, pk):
+    a = get_activity(request.user, pk)
+    context = {
+        'object': a,
+        'segments_efforts': a.get_all_segments()
+    }
+    return render(request, 'activities/activity-details.html', context)
 
 
 class SegmentDetailsView(LoginRequiredMixin, DetailView):

@@ -95,7 +95,16 @@ $(function() {
             });
         }
 
-    // let point_url = dataAPI.activity_url;
+
+    // let recent_efforts_urls = $('#recent_efforts_urls');
+    // if (recent_efforts_urls != null) {
+    //     console.log('aaa')
+    //     let point_urls= recent_efforts_urls.val();
+    //     console.log(point_urls)
+    //
+    // }
+
+
     // segment_data_endpoint.on('plotly_click', function(data){
     //     if (data.points.length > 0) {
     //         let link = point_url[data.points[0].pointNumber];

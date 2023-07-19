@@ -3,8 +3,8 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col col-md-12">
+    <div class="row justify-content-md-center">
+        <div class="col col-md-10">
         {% if staredsegment_list %}
             <h3>Stared segments</h3>
             <br>
@@ -18,10 +18,12 @@
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                             <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Type</th>
-                                <th scope="col" class="head" ></th>
                                 <th scope="col">Name</th>
                                 <th scope="col"># efforts</th>
                                 <th scope="col">Personal best</th>
@@ -31,6 +33,8 @@
                         <tbody>
                         {% for ss in staredsegment_list %}
                             <tr>
+                                <td>
+                                </td>
                                 <td>
                                     <img src="{% static ss.segment.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ ss.serializable_value.type.name }}">
                                 </td>
@@ -57,12 +61,13 @@
                         {% endfor %}
                         </tbody>
                         <tfoot>
-                                <th scope="col">Type</th>
-                                <th scope="col"></th>
-                                <th scope="col">Name</th>
-                                <th scope="col"># efforts</th>
-                                <th scope="col">Best time</th>
-                                <th scope="col">Last effort</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Name</th>
+                            <th scope="col"># efforts</th>
+                            <th scope="col">Personal best</th>
+                            <th scope="col">Last effort</th>
                         </tfoot>
                     </table>
                 </div>

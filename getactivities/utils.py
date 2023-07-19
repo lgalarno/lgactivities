@@ -124,6 +124,76 @@ def get_activities(user=None, start_date=None, end_date=None):
     return f"ERROR! User {user.username} - from {start_date} to {end_date}."
 
 
+#TODO get a single activity to refresh
+def get_activity(user=None, id=None):
+    if id is None:
+        return False
+    e, access_token = get_token(user=user)
+    if not e:
+        """
+        get activities
+        """
+        headers = {'Authorization': f'Bearer {access_token}'}
+        params = {
+            'include_all_efforts ': 'true',
+        }
+        url = f"{STRAVA_API['URLS']['athlete']}activities/{id}"
+        e, activity = _requestStravaTask(url, headers, params, verify=True)
+        print(activity)
+        if not e:
+            a = get_object_or_404(Activity, id=id)
+            a.name = activity.get('name').strip()
+            at, type_created = ActivityType.objects.get_or_create(name=activity.get('type'))
+            if type_created:
+                at.color = "red"
+                at.icon = "images/activity-types/unknown.png"
+                new_activity_type_email(at=at.type, a=a.id, u=user.username)
+                at.save()
+            a.type = at  # activity.get('type')
+            a.start_date = activity.get('start_date')
+            a.start_date_local = activity.get('start_date_local')
+            a.save()
+            m, map_created = Map.objects.get_or_create(activity=a)
+            m.polyline = activity.get('map').get('polyline')
+            m.save()
+            if "segment_efforts" in activity:
+                segment_efforts = activity.get("segment_efforts")
+                for se in segment_efforts:
+                    segment, segment_created = Segment.objects.get_or_create(
+                        id=se.get('segment').get('id')
+                    )
+                    segment.name = se.get('segment').get('name').strip()
+                    segment.type = at
+                    segment.save()
+                    # elements required for 'set_pr_rank' in models of SegmentEffort
+                    obj, effort_created = SegmentEffort.objects.get_or_create(
+                        id=se.get('id'),
+                        activity=a,
+                        segment=segment,
+                        elapsed_time=se.get('elapsed_time')
+                    )
+                    obj.start_date = se.get('start_date')
+                    obj.start_date_local = se.get('start_date_local')
+                    obj.distance = se.get('distance')
+                    obj.save()
+    return a
+
+
+def update_segment(u, segment):
+    e, access_token = get_token(user=u)
+    if not e:
+        header = {'Authorization': f'Bearer {access_token}'}
+        param = {}
+        url = f"{STRAVA_API['URLS']['athlete']}segments/{segment.id}"
+        segment_detail = requests.get(url, headers=header, params=param).json()
+        if 'errors' in segment_detail:
+            e = formaterror(segment_detail['errors'])
+            return e
+        else:
+            segment.update_from_strava(segment_detail=segment_detail)
+            return True
+
+
 def new_activity_type_email(at=None, a=None, u=None):
     if at and a and u:
         mail_subject = 'lgactivities - New activity type'

@@ -8,24 +8,31 @@
         {% if activity_list %}
             <h3>Activities</h3>
                 <div class="table-responsive">
-                    <table class="table"  id="data_table_list">
+                    <table class="table table-striped" style="width:100%" id="data_table_list">
                         <thead>
                         <tr>
                             <th scope="col">Filter:</th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                         <tr>
                             <th scope="col"></th>
-                            <th scope="col" class="head">Type</th>
+                            <th scope="col"></th>
+                            <th scope="col">Type</th>
                             <th scope="col">Date</th>
                             <th scope="col">Name</th>
+                            <th scope="col"></th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for a in activity_list %}
                             <tr>
+                                <td>
+                                    {{ a.id }}
+                                </td>
                                 <td>
                                     <img src="{% static a.type.icon %}" width="24" height="24" class="d-inline-block" alt="{{ a.type.name }}">
                                 </td>
@@ -40,14 +47,20 @@
                                         {{ a.name }}
                                     </a>
                                 </td>
+                                <td>
+                                    <a class="badge bg-strava rounded-pill" href="{{ a.get_strava_url }}" target="_blank">Strava</a>
+{#                                    <a class="badge bg-success rounded-pill" href="#"><i class="fa-solid fa-arrows-rotate"></i>refresh</a>#}
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
                         <tfoot>
-                            <th scope="col">Type</th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col" class="head">Type</th>
                             <th scope="col">Date</th>
                             <th scope="col">Name</th>
+                            <th scope="col"></th>
                         </tfoot>
                     </table>
                 </div>

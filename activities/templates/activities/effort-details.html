@@ -67,7 +67,7 @@
             <hr>
             <h3>All efforts</h3>
             <div id="recent_efforts_chart" style="height:400px;" endpoint="{{ object.segment.get_plotdata_api_url }}"></div>
-            <br>
+{#            <br>#}
 {#            <span class="badge bg-success rounded-pill"#}
 {#                  title="draw"#}
 {#                  style="cursor: pointer"#}
@@ -77,6 +77,12 @@
 {#                draw#}
 {#            </span>#}
 {#            <div id="recent_efforts_chart_HTMX" style="height:400px;"></div>#}
+{#            <div id="recent_efforts_chart_HTMX" style="height:400px;"#}
+{#                 hx-get="{% url 'activities:activities-api:SegmentChartHTMX-API' object.segment.id %}"#}
+{#                 hx-trigger="load"#}
+{#            >#}
+{#                {% include 'activities/partials/efforts_chart.html' %}#}
+{#            </div>#}
             <hr>
         </div>
     </div>

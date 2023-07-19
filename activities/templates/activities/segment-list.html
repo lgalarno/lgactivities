@@ -9,24 +9,31 @@
         {% if segment_list %}
             <h3>Segments</h3>
                 <div class="table-responsive">
-                    <table class="table"  id="data_table_list">
+                    <table class="table table-striped" style="width:100%" id="data_table_list">
                         <thead>
                             <tr>
                                 <th scope="col">Filter:</th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
                                 <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                             <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                                 <th scope="col">Type</th>
-                                <th scope="col" class="head"></th>
                                 <th scope="col">Name</th>
                                 <th scope="col"># efforts</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
                         {% for s in segment_list %}
                             <tr>
+                                <td>
+                                    {{ s.id }}
+                                </td>
                                 <td>
                                     <img src="{% static s.type.icon %}" width="24" height="24" class="d-inline-block">
                                 </td>
@@ -41,13 +48,19 @@
                                 <td>
                                     {% get_number_efforts s user %}
                                 </td>
+                                <td>
+                                     <a class="badge bg-strava rounded-pill" href="{{ s.get_strava_url }}" target="_blank">Strava</a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>
                         <tfoot>
-                            <th scope="col">Type</th>
                             <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col">Type</th>
                             <th scope="col">Name</th>
+                            <th scope="col"># efforts</th>
+                            <th scope="col"></th>
                         </tfoot>
                     </table>
                 </div>

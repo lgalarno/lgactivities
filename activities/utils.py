@@ -6,52 +6,6 @@ from fit_tool.profile.messages.session_message import SessionMessage
 
 from os import path
 
-import requests
-# import smtplib
-# from email.mime.multipart import MIMEMultipart
-# from email.mime.text import MIMEText
-
-from getactivities.utils import formaterror, get_token
-
-# from .models import Map
-
-STRAVA_API = settings.STRAVA_API
-
-# def send_email(to_email, mail_subject, mail_body):
-#     username = settings_old.FROM_EMAIL
-#     password = settings_old.EMAIL_PASSWORD
-#
-#     mimemsg = MIMEMultipart()
-#     mimemsg['From']=username
-#     mimemsg['To'] = to_email
-#     mimemsg['Subject']=mail_subject
-#     mimemsg.attach(MIMEText(mail_body, 'plain'))
-#     try:
-#         connection = smtplib.SMTP(host='smtp.office365.com', port=587)
-#         connection.starttls()
-#         connection.login(username,password)
-#         connection.send_message(mimemsg)
-#         connection.quit()
-#         return True
-#     except Exception as e:
-#         connection.quit()
-#         return e
-
-
-def update_segment(u, segment):
-    e, access_token = get_token(user=u)
-    if not e:
-        header = {'Authorization': f'Bearer {access_token}'}
-        param = {}
-        url = f"{STRAVA_API['URLS']['athlete']}segments/{segment.id}"
-        segment_detail = requests.get(url, headers=header, params=param).json()
-        if 'errors' in segment_detail:
-            e = formaterror(segment_detail['errors'])
-            return e
-        else:
-            segment.update_from_strava(segment_detail=segment_detail)
-            return True
-
 
 def virtualride_in_fit(fp):
     result = True
