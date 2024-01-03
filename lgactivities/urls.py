@@ -33,7 +33,7 @@ urlpatterns = [
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),),
     # TODO about page
     path('about/', TemplateView.as_view(template_name="index.html"), name="about"),
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('accounts/', include('allauth.urls')),
     path('getactivities/', include('getactivities.urls', namespace="getactivities")),
     path('activities/', include('activities.urls', namespace="activities")),

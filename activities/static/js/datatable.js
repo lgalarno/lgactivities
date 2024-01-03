@@ -32,7 +32,7 @@ $(function() {
                     .every(function () {
                         let column = this;
                         let select = $('<select><option value=""></option></select>')
-                            .appendTo($("#data_table_list thead tr:eq(0) th").eq(column.index()).empty())
+                            .appendTo($("#data_table_list thead tr:eq(1) th").eq(column.index()).empty())
                             .on('change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex($(this).val());
                                 column.search(val ? '^' + val + '$' : '', true, false).draw();

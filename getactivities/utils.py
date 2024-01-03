@@ -139,7 +139,6 @@ def get_activity(user=None, id=None):
         }
         url = f"{STRAVA_API['URLS']['athlete']}activities/{id}"
         e, activity = _requestStravaTask(url, headers, params, verify=True)
-        print(activity)
         if not e:
             a = get_object_or_404(Activity, id=id)
             a.name = activity.get('name').strip()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import ImportActivitiesTask, SyncActivitiesTask
+from .models import ImportActivitiesTask, SyncActivitiesTask, TaskLog
 
 # Register your models here.
 
@@ -21,3 +21,4 @@ class SyncActivitiesTaskAdmin(admin.ModelAdmin):
 
 admin.site.register(ImportActivitiesTask, ImportActivitiesTaskAdmin)
 admin.site.register(SyncActivitiesTask, SyncActivitiesTaskAdmin)
+admin.site.register(TaskLog)

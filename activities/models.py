@@ -45,7 +45,7 @@ class Activity(models.Model):
     @property
     def get_html_url(self):
         url = reverse('activities:activity-details', args=(self.id,))
-        return f'<a href="{url}"> {self.name} </a>'
+        return f'<a href="{url}"> {self.name[:20]} </a>'
 
     @property
     def get_strava_url(self):

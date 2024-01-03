@@ -26,22 +26,22 @@
                 <br>
                 <br>
                 <div class="table-responsive">
-                    <table class="table table-striped" style="width:100%"" id="data_table">
+                    <table class="table table-striped" style="width:100%" id="data_table">
                         <thead>
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Time</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Time</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {% for effort in segments_efforts %}
-                            <tr>
-                                <td>
-                                    <a href="{% url "activities:effort_details" pk=effort.id %}" >{{ effort.segment.name }}</a>
-                                </td>
-                                <td>{{ effort.get_time }}</td>
-                            </tr>
-                        {% endfor %}
+                            {% for effort in segments_efforts %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url "activities:effort_details" pk=effort.id %}" >{{ effort.segment.name }}</a>
+                                    </td>
+                                    <td>{{ effort.get_time }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
