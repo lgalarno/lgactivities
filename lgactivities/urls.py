@@ -29,10 +29,10 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name="main"),  # TemplateView.as_view(template_name="index.html"), name="main"),
+    path('', home, name="home"),  # TemplateView.as_view(template_name="index.html"), name="main"),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain"),),
     # TODO about page
-    path('about/', TemplateView.as_view(template_name="index.html"), name="about"),
+    path('about/', TemplateView.as_view(template_name="about.html"), name="about"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
     path('accounts/', include('allauth.urls')),
     path('getactivities/', include('getactivities.urls', namespace="getactivities")),
