@@ -221,23 +221,23 @@ DATABASES = {
 # STRAVA_API
 ######################################################################
 STRAVA_API = {
-    'name':  config["STRAVA_API_NAME"],  # os.getenv('STRAVA_API_NAME'),
-    'callback_domain': config["STRAVA_callback_domain"],  # environ.get('STRAVA_callback_domain'),
+    'name':  config["STRAVA_API_NAME"],
+    'callback_domain': config["STRAVA_callback_domain"],
     'URLS': {
         'oauth': "https://www.strava.com/oauth/",
         'athlete': "https://www.strava.com/api/v3/",
     }
 }
 
-FROM_EMAIL = config["FROM_EMAIL"]  # os.environ.get('FROM_EMAIL')
-EMAIL_PASSWORD = config["EMAIL_PASSWORD"]  # os.environ.get('EMAIL_PASSWORD')
-STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]  # os.environ.get('STRAVA_CLIENT_ID')
-STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]  #os.environ.get('STRAVA_CLIENT_SECRET')
+FROM_EMAIL = config["FROM_EMAIL"]
+EMAIL_PASSWORD = config["EMAIL_PASSWORD"]
+STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]
+STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]
 
 ######################################################################
 # CELERY
 ######################################################################
-CELERY_BROKER_URL = config["REDIS_URL"]   # os.environ.get('REDIS_URL')
+CELERY_BROKER_URL = config["REDIS_URL"]
 CELERY_RESULT_BACKEND = "django-db"
 # CELERY_WORKER_POOL = "solo"
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'

@@ -66,14 +66,3 @@ def get_activities_task(user=None, get_type=None):
         return g
     except ImportActivitiesTask.DoesNotExist:
         return f"ERROR! User {user} task does not exist."
-
-
-@shared_task
-def add(x, y):
-    '''
-    Simple function only to check Celery with RabbitMQ as a Message Broker
-    :param x:
-    :param y:
-    :return:
-    '''
-    return x + y

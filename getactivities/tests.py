@@ -4,7 +4,7 @@ from django.conf import settings
 from dateutil.relativedelta import relativedelta
 
 from .models import SyncActivitiesTask
-from .tasks import get_activities_task, add
+from .tasks import get_activities_task
 
 from allauth.socialaccount.models import SocialApp, SocialToken, SocialAccount
 # Create your tests here.
@@ -81,8 +81,3 @@ class GetactivitiesTest(TestCase):
 #         u = User.objects.get(username="lgalarneau")
 
 
-class MyTest(TestCase):
-
-    @override_settings(CELERY_ALWAYS_EAGER=True)
-    def test_foo(self):
-        self.assertTrue(add.delay(5, 5))
