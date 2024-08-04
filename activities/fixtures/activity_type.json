@@ -8,7 +8,7 @@
             "color": "green"
         }
     },
-            {
+    {
         "model": "activities.ActivityType",
         "pk": 2,
         "fields": {
@@ -17,7 +17,7 @@
             "color": "red"
         }
     },
-            {
+    {
         "model": "activities.ActivityType",
         "pk": 3,
         "fields": {
@@ -50,7 +50,7 @@
         "fields": {
             "name": "VirtualRide",
             "icon": "images/activity-types/virtualride.png",
-            "color": "#782902"
+            "color": "crimson"
         }
     },
             {
@@ -59,7 +59,7 @@
         "fields": {
             "name": "RollerSki",
             "icon": "images/activity-types/rollerski.png",
-            "color": ""
+            "color": "#782902"
         }
     },
             {
@@ -68,7 +68,7 @@
         "fields": {
             "name": "InlineSkate",
             "icon": "images/activity-types/InlineSkate.png",
-            "color": "green"
+            "color": "#782902"
         }
     },
             {
@@ -77,10 +77,10 @@
         "fields": {
             "name": "Snowshoe",
             "icon": "images/activity-types/snowshoe.png",
-            "color": ""
+            "color": "#072127"
         }
     },
-                    {
+    {
         "model": "activities.ActivityType",
         "pk": 10,
         "fields": {
@@ -89,31 +89,49 @@
             "color": "#072127"
         }
     },
-                    {
+    {
         "model": "activities.ActivityType",
         "pk": 11,
         "fields": {
             "name": "StandUpPaddling",
             "icon": "images/activity-types/StandUpPaddling.png",
-            "color": ""
+            "color": "blue"
         }
     },
-                    {
+    {
         "model": "activities.ActivityType",
         "pk": 12,
         "fields": {
             "name": "Kayaking",
             "icon": "images/activity-types/Kayaking.png",
-            "color": ""
+            "color": "blue"
         }
     },
-                            {
+    {
         "model": "activities.ActivityType",
         "pk": 13,
         "fields": {
             "name": "VirtualRun",
             "icon": "images/activity-types/virtualrun.png",
-            "color": ""
+            "color": "#7FFF00"
+        }
+    },
+    {
+        "model": "activities.ActivityType",
+        "pk": 15,
+        "fields": {
+            "name": "BackcountrySki",
+            "icon": "images/activity-types/backcountryski.png",
+            "color": "#072127"
+        }
+    },
+    {
+        "model": "activities.ActivityType",
+        "pk": 16,
+        "fields": {
+            "name": "Swim",
+            "icon": "images/activity-types/swimming.png",
+            "color": "blue"
         }
     }
 ]
