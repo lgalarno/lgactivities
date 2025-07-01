@@ -195,7 +195,6 @@ def fit_file_utils(request):
 
                 new_file, r = fit_to_csv(fp)
                 if r:
-                    print(new_file)
                     f = open(new_file, 'rb').read()
                     response = HttpResponse(
                         f,
