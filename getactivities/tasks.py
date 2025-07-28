@@ -20,21 +20,18 @@ STRAVA_API = settings.STRAVA_API
 def send_email(to_email, mail_subject, mail_body):
     username = settings.FROM_EMAIL
     password = settings.EMAIL_PASSWORD
-
     mimemsg = MIMEMultipart()
     mimemsg['From'] = username
     mimemsg['To'] = to_email
     mimemsg['Subject'] = mail_subject
     mimemsg.attach(MIMEText(mail_body, 'plain'))
     try:
-        connection = smtplib.SMTP(host='smtp.office365.com', port=587)
-        connection.starttls()
-        connection.login(username,password)
-        connection.send_message(mimemsg)
-        connection.quit()
+        with smtplib.SMTP('smtp.mail.yahoo.com', 587) as server:
+            server.starttls()
+            server.login(username, password)
+            server.send_message(mimemsg)
         return True
     except Exception as e:
-        connection.quit()
         return e
 
 

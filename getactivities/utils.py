@@ -74,15 +74,13 @@ def get_activities(user=None, start_date=None, end_date=None):
         e, activities = _requestStravaTask(url, headers, params, verify=True)
         if not e:
             for activity in activities:
-
                 a, act_created = Activity.objects.get_or_create(id=activity.get('id'), user=user)
                 a.name = activity.get('name').strip()
-
                 at, type_created = ActivityType.objects.get_or_create(name=activity.get('type'))
                 if type_created:
                     at.color = "red"
                     at.icon = "images/activity-types/unknown.png"
-                    new_activity_type_email(at=at.type, a=a.id, u=user.username)
+                    new_activity_type_email(at=at.name, a=a.id, u=user)
                     at.save()
                 a.type = at  # activity.get('type')
                 a.start_date = activity.get('start_date')
@@ -146,7 +144,7 @@ def get_activity(user=None, id=None):
             if type_created:
                 at.color = "red"
                 at.icon = "images/activity-types/unknown.png"
-                new_activity_type_email(at=at.type, a=a.id, u=user.username)
+                new_activity_type_email(at=at.name, a=a.id, u=user)
                 at.save()
             a.type = at  # activity.get('type')
             a.start_date = activity.get('start_date')
@@ -201,11 +199,11 @@ def new_activity_type_email(at=None, a=None, u=None):
 
         Activity type: {at}
         Activity ID: {a}
-        user: {u}
+        user: {u.username}
 
         This email was sent by lgactivities.
         """
-        tasks.send_email.delay(to_email='lgalarno@outlook.com', mail_subject=mail_subject, mail_body=mail_body)
+        tasks.send_email.delay(to_email=u.email, mail_subject=mail_subject, mail_body=mail_body)
 
 
 def _requestStravaTask(url, headers, params, verify=False):
