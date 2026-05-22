@@ -69,7 +69,6 @@ class RecentEffortsChartData(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, segment_id=None):
-        print('RecentEffortsChartData')
         segment = get_object_or_404(Segment, pk=segment_id)
         all_efforts = segment.get_all_efforts(user=request.user)
         all_times = [e.get_time() for e in all_efforts]
