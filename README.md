@@ -5,8 +5,7 @@ This is the repository for lgactivities.
 ### The core features offered are: ###
 
 ### Requirements ###
-rabbitmq (https://www.rabbitmq.com/)
-or
+
 redis (https://redis.io/)
 
 ### Installation Instructions ###
