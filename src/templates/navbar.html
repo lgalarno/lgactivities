@@ -86,6 +86,7 @@
                     <a class="nav-link" href=
                     {% if not request.user.is_authenticated and not "login" in request.get_full_path %}
                         "/accounts/strava/login/?process=login"> <img src="{% static 'images/Strava/btn_strava_connectwith_orange.png' %}" class="d-inline-block" alt="Connect with Strava">
+{#                        "{% url 'profiles:login' %}" class="d-inline-block"> Log in#}
                     {% else %}
                          "https://www.strava.com/" target="_blank" rel="noopener noreferrer"> <img src="{% static 'images/Strava/api_logo_pwrdBy_strava_stack_light.png' %}" width="111" height="48" class="d-inline-block" alt="Powered by Strava">
                     {% endif %}

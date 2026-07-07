@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row justify-content-md-center">&nbsp;</div>
+    <div class="row justify-content-md-center">
+        <div class="col-4 login_form">
+            {% if request.user.is_authenticated %}
+                <form method='POST'>{% csrf_token %}
+                    <p>Êtes vous sur de vouloir quitter?</p>
+                    <button type="submit" class="btn btn-primary"> Oui, log out. </button>
+                </form>
+            {% else %}
+                <p>Vous n'êtes pas logged in. Voulez-vous <a href='{% url "accounts:login" %}'>log in</a>?</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-md-center">&nbsp;</div>
+{% endblock %}

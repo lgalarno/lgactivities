@@ -8,6 +8,8 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.shortcuts import redirect
 
+from profiles.models import User
+
 # change yourproject.exceptions accordingly
 # from yourproject.exceptions import EmailNotFoundException
 
@@ -50,16 +52,12 @@ def link_to_local_user(sender, request, sociallogin, **kwargs):
 
     """
     print('BBBBBBBBBBBBBBBBBBB')
-    print(sociallogin.account)
-    email_address = sociallogin.account.extra_data.get("email") or sociallogin.account.extra_data.get("mail")
-    User = get_user_model()
-    print(email_address)
-    users = User.objects.filter(email=email_address)
-    print(len(users))
-    if users:
-        print('CCCCCCCCCCCCC')
-        # allauth.account.app_settings.EmailVerificationMethod
-        perform_login(request, users[0], email_verification="optional")
-        raise ImmediateHttpResponse(
-            redirect(settings.LOGIN_REDIRECT_URL.format(id=request.user.id))
-        )
+    print(sociallogin.account.extra_data)
+
+    user = User.objects.filter(email="lgalarno@gmail.com")
+    print(user)
+    perform_login(request, user, email_verification="optional")
+    print('CCCCCCCCCCCCC')
+    raise ImmediateHttpResponse(
+        redirect(settings.LOGIN_REDIRECT_URL.format(id=request.user.id))
+    )

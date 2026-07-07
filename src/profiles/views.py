@@ -1,18 +1,44 @@
 from django.contrib import messages
-from django.shortcuts import get_object_or_404
+from django.contrib.auth import login, logout
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import UpdateView
 
 from allauth.socialaccount.models import SocialAccount
 
+from .forms import CustomAuthenticationForm
 from .models import User
 
 # Create your views here.
 
 
+def login_view(request):
+    if request.method == "POST":
+        form = CustomAuthenticationForm(request, data=request.POST)
+        print(form)
+        print(form.is_valid())
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect("calendarapp:calendar_view")
+    else:
+        form = CustomAuthenticationForm(request)
+    context = {
+        "form": form
+    }
+    return render(request, "profiles/login.html", context)
+
+
+def logout_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect("accounts:login")
+    return render(request, "profiles/logout.html", {})
+
+
 class EditProfile(UpdateView):
     model = User
     fields = ['email', 'username', 'first_name', 'last_name', 'time_zone']
-    template_name = 'edit_profile.html'
+    template_name = 'profiles/edit_profile.html'
     success_message = 'Changes successfully saved'
 
     def get_object(self):

@@ -142,8 +142,8 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 # Use account_adapter to view  receiver(pre_social_login)
-# ACCOUNT_ADAPTER = 'profiles.account_adapter.MyLoginAccountAdapter'
-# SOCIALACCOUNT_ADAPTER =  'profiles.account_adapter.MySocialAccountAdapter'
+ACCOUNT_ADAPTER = 'profiles.account_adapter.MyLoginAccountAdapter'
+SOCIALACCOUNT_ADAPTER =  'profiles.account_adapter.MySocialAccountAdapter'
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 # SOCIALACCOUNT_PROVIDERS = {'strava': {
