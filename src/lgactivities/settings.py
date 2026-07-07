@@ -141,18 +141,35 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-# ACCOUNT_ADAPTER = 'profiles.account_adapter.AccountAdapter'
-# SOCIALACCOUNT_ADAPTER = 'allauth.socialaccount.adapter.DefaultSocialAccountAdapter'
+# Use account_adapter to view  receiver(pre_social_login)
+# ACCOUNT_ADAPTER = 'profiles.account_adapter.MyLoginAccountAdapter'
+# SOCIALACCOUNT_ADAPTER =  'profiles.account_adapter.MySocialAccountAdapter'
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_PROVIDERS = {'strava': {
-    'AUTH_PARAMS': {
+# SOCIALACCOUNT_PROVIDERS = {'strava': {
+#     'AUTH_PARAMS': {
+#         'SCOPE': [
+#             'read',
+#             'activity:read_all'
+#         ],
+#         'access_type': 'offline',
+#         }
+#     }
+# }
+STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]
+STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]
+SOCIALACCOUNT_PROVIDERS = {
+    'strava': {
+        'APP': {
+            'client_id': STRAVA_CLIENT_ID,
+            'secret': STRAVA_CLIENT_SECRET,
+            'key': ''  # Leave blank for Strava
+        },
         'SCOPE': [
             'read',
-            'activity:read_all'
+            'activity:read_all',  # Add extra scopes depending on needed data permissions
         ],
         'access_type': 'offline',
-        }
     }
 }
 
@@ -232,8 +249,6 @@ STRAVA_API = {
 
 FROM_EMAIL = config["FROM_EMAIL"]
 EMAIL_PASSWORD = config["EMAIL_PASSWORD"]
-STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]
-STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]
 
 ######################################################################
 # CELERY
