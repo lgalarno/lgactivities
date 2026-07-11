@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.cache import cache
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, Http404, HttpResponseServerError
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.views.generic import ListView, DetailView
 
 import os
@@ -37,6 +37,8 @@ class ActivityDetailsView(LoginRequiredMixin, DetailView):
 
 def refresh_activity(request, pk):
     a = get_activity(request.user, pk)
+    if not a:
+        a = get_object_or_404(Activity, id=pk)
     context = {
         'object': a,
         'segments_efforts': a.get_all_segments()

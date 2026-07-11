@@ -173,6 +173,11 @@ def get_activity(user=None, id=None):
                     obj.start_date_local = se.get('start_date_local')
                     obj.distance = se.get('distance')
                     obj.save()
+        else:
+            a = False
+    else:
+        a= False
+
     return a
 
 

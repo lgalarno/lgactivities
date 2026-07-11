@@ -42,7 +42,6 @@ class RecentEffortsDataAPI(APIView):
     """
     authentication_classes = [authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
-
     def get(self, request, segment_id=None):
         segment = get_object_or_404(Segment, pk=segment_id)
         all_efforts = segment.get_all_efforts(user=request.user)
@@ -61,6 +60,7 @@ class RecentEffortsDataAPI(APIView):
         return Response(data)
 
 
+#TODO add urls to activities
 class RecentEffortsChartData(APIView):
     """
     * Requires authentication.
