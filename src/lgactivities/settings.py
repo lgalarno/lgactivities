@@ -65,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'lgactivities.urls'
@@ -133,11 +134,8 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 # Provider specific local
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
@@ -146,32 +144,18 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 # SOCIALACCOUNT_ADAPTER =  'profiles.account_adapter.MySocialAccountAdapter'
 SOCIALACCOUNT_STORE_TOKENS = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
-# SOCIALACCOUNT_PROVIDERS = {'strava': {
-#     'AUTH_PARAMS': {
-#         'SCOPE': [
-#             'read',
-#             'activity:read_all'
-#         ],
-#         'access_type': 'offline',
-#         }
-#     }
-# }
-STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]
-STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]
-SOCIALACCOUNT_PROVIDERS = {
-    'strava': {
-        'APP': {
-            'client_id': STRAVA_CLIENT_ID,
-            'secret': STRAVA_CLIENT_SECRET,
-            'key': ''  # Leave blank for Strava
-        },
-        'SCOPE': [
-            'read',
-            'activity:read_all',  # Add extra scopes depending on needed data permissions
-        ],
+SOCIALACCOUNT_PROVIDERS = {'strava': {
+    'SCOPE': [
+        'read',
+        'activity:read_all'
+    ],
+    'AUTH_PARAMS': {
         'access_type': 'offline',
+        }
     }
 }
+STRAVA_CLIENT_ID = config["STRAVA_CLIENT_ID"]
+STRAVA_CLIENT_SECRET = config["STRAVA_CLIENT_SECRET"]
 
 ######################################################################
 # CUSTOM USER
